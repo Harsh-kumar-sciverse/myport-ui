@@ -15,6 +15,23 @@ class MainDashboard extends StatefulWidget {
 
 class _MainDashboardState extends State<MainDashboard> {
   int selectedIndex = -1;
+  double? platelets;
+  double? plateletsProb;
+  double? rbc;
+  double? rbcProb;
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    Map<String, dynamic> data =
+        ModalRoute.of(context)!.settings!.arguments as Map<String, dynamic>;
+    platelets = data['platelets'];
+    plateletsProb = data['plateletsProb'];
+    rbc = data['rbc'];
+    rbcProb = data['rbcProb'];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -155,11 +172,11 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '657',
+                              '${rbc == null ? 0 : rbc.toString()}',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '99.67%',
+                              '${rbcProb == null ? 0 : rbcProb.toString()}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -179,11 +196,11 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '657',
+                              '${platelets == null ? 0 : platelets.toString()}',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '99.67%',
+                              '${plateletsProb == null ? 0 : plateletsProb.toString()}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -203,11 +220,11 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '657',
+                              '0',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '99.67%',
+                              '0',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -227,11 +244,11 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '657',
+                              '0',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '99.67%',
+                              '0',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -251,11 +268,11 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '657',
+                              '0',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '99.67%',
+                              '0',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -275,11 +292,11 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '657',
+                              '0',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '99.67%',
+                              '0',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -299,11 +316,11 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '657',
+                              '0',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '99.67%',
+                              '0',
                               style: AppConstants.tableRowStyle,
                             )),
                           ])

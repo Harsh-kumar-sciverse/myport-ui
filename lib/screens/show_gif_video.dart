@@ -21,105 +21,49 @@ class ShowGifVideo extends StatefulWidget {
 }
 
 class _ShowGifVideoState extends State<ShowGifVideo> {
+  double? platelets;
+  double? plateletsProb;
+  double? rbc;
+  double? rbcProb;
 
   Future<void> sendDataToScan() async {
-
     var url = Uri.parse('http://192.168.1.101:8000/motor_control');
 
     try {
-      var response = await http.post(url,
+      var response = await http.post(
+        url,
         headers: <String, String>{
           'Content-type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{'action': 'scanslide'
-        }),
+        body: jsonEncode(<String, String>{'action': 'scanslide'}),
       );
       print('response ${response.statusCode}');
       if (response.statusCode == 200) {
         print('response 200');
-
-
-
+        var responseData = json.decode(response.body);
+        var data = responseData['counts'];
+        platelets = data['Pletelets'];
+        plateletsProb = data['Pletelets_conf'];
+        rbc = data['RBC'];
+        rbcProb = data['RBC_conf'];
       } else {
         print('failed');
       }
     } catch (e) {
       print('error in initialization $e');
     }
-
   }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     sendDataToScan();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size(50, 100),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20),
-          child: NavigationBarWidget(
-              title: 'Processing',
-              endWidget: Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      SharedPreferences preferences =
-                          await SharedPreferences.getInstance();
-                      preferences.remove('isLoggedIn');
-
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          Login.routeName, (route) => false);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.logout,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigator.of(context).pushNamed(History.routeName);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.wifi,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.power_settings_new,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              startWidget: Image.asset('assets/logo.png')),
-        ),
-      ),
       body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
@@ -127,7 +71,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
           child: Stack(
             children: [
               Image.asset(
-                'assets/gif.gif',
+                'assets/video.gif',
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 fit: BoxFit.fill,
@@ -170,11 +114,81 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                         duration: const Duration(minutes: 3),
                         onTimerEnd: () {
                           Navigator.of(context)
-                              .pushNamed(MainDashboard.routeName);
+                              .pushNamed(MainDashboard.routeName, arguments: {
+                            'platelets': platelets,
+                            'plateletsProb': plateletsProb,
+                            'rbc': rbc,
+                            'rbcProb': rbcProb,
+                          });
                         },
                       )),
                 ),
               ),
+              Positioned(
+                  top: 0,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20),
+                      child: NavigationBarWidget(
+                          title: 'Processing',
+                          endWidget: Row(
+                            children: [
+                              ElevatedButton(
+                                onPressed: () async {
+                                  SharedPreferences preferences =
+                                      await SharedPreferences.getInstance();
+                                  preferences.remove('isLoggedIn');
+
+                                  Navigator.of(context).pushNamedAndRemoveUntil(
+                                      Login.routeName, (route) => false);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    shape: const CircleBorder(),
+                                    backgroundColor: Colors.white),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Icon(
+                                    Icons.logout,
+                                    color: Color(AppConstants.primaryColor),
+                                  ),
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Navigator.of(context).pushNamed(History.routeName);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    shape: const CircleBorder(),
+                                    backgroundColor: Colors.white),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Icon(
+                                    Icons.wifi,
+                                    color: Color(AppConstants.primaryColor),
+                                  ),
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Navigator.of(context).pop();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    shape: const CircleBorder(),
+                                    backgroundColor: Colors.white),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Icon(
+                                    Icons.power_settings_new,
+                                    color: Color(AppConstants.primaryColor),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          startWidget: Image.asset('assets/logo.png')),
+                    ),
+                  ))
             ],
           )),
     );
