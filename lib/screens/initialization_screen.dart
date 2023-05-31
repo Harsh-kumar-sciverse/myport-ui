@@ -18,7 +18,7 @@ class InitializationScreen extends StatefulWidget {
 
 class _InitializationScreenState extends State<InitializationScreen> {
   bool? isLoggedIn;
-  bool isInitializing = false;
+  late bool isInitializing;
 
   getSharedPreferences() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -37,20 +37,29 @@ class _InitializationScreenState extends State<InitializationScreen> {
       isInitializing = true;
     });
     var url = Uri.parse('http://192.168.1.101:8000/motor_control');
-    final response = await http.get(url);
+
     try {
-      // var response = await http.post(url,
-      //     headers: {
-      //       "Accept": "application/json",
-      //       "Content-Type": "application/x-www-form-urlencoded"
-      //     },
-      //     encoding: Encoding.getByName("utf-8"),
-      //     body: json.encode({'action': 'initialization'}));
+      var response = await http.post(url,
+        headers: <String, String>{
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{'action': 'initialization'
+        }),
+      );
+      print('response ${response.statusCode}');
       if (response.statusCode == 200) {
         print('response 200');
+
         setState(() {
           isInitializing = false;
         });
+        if (isLoggedIn == null) {
+                Navigator.of(context).pushNamed(Login.routeName);
+              } else {
+                Navigator.of(context)
+                    .pushReplacementNamed(Home.routeName);
+              }
+
       } else {
         print('failed');
       }
@@ -140,19 +149,24 @@ class _InitializationScreenState extends State<InitializationScreen> {
                 height: 30,
                 child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    child: LinearTimer(
+                    child: LinearProgressIndicator(
                       color: const Color(AppConstants.primaryColor),
                       backgroundColor: Colors.white,
-                      duration: const Duration(seconds: 5),
-                      onTimerEnd: () {
-                        if (isLoggedIn == null) {
-                          Navigator.of(context).pushNamed(Login.routeName);
-                        } else {
-                          Navigator.of(context)
-                              .pushReplacementNamed(Home.routeName);
-                        }
-                      },
-                    )),
+                    )
+                    // LinearTimer(
+                    //   color: const Color(AppConstants.primaryColor),
+                    //   backgroundColor: Colors.white,
+                    //   duration: const Duration(seconds: 5),
+                    //   onTimerEnd: () {
+                    //     if (isLoggedIn == null) {
+                    //       Navigator.of(context).pushNamed(Login.routeName);
+                    //     } else {
+                    //       Navigator.of(context)
+                    //           .pushReplacementNamed(Home.routeName);
+                    //     }
+                    //   },
+                    // ),
+                ),
               ),
             ),
           ],

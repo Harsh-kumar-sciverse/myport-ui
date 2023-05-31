@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:linear_timer/linear_timer.dart';
 import 'package:my_port/constants/app_dialogs.dart';
@@ -8,6 +10,7 @@ import '../constants/app_constants.dart';
 import '../widgets/navigation_bar-widget.dart';
 import 'home.dart';
 import 'login.dart';
+import 'package:http/http.dart' as http;
 
 class ShowGifVideo extends StatefulWidget {
   static const routeName = '/processing';
@@ -18,6 +21,39 @@ class ShowGifVideo extends StatefulWidget {
 }
 
 class _ShowGifVideoState extends State<ShowGifVideo> {
+
+  Future<void> sendDataToScan() async {
+
+    var url = Uri.parse('http://192.168.1.101:8000/motor_control');
+
+    try {
+      var response = await http.post(url,
+        headers: <String, String>{
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{'action': 'scanslide'
+        }),
+      );
+      print('response ${response.statusCode}');
+      if (response.statusCode == 200) {
+        print('response 200');
+
+
+
+      } else {
+        print('failed');
+      }
+    } catch (e) {
+      print('error in initialization $e');
+    }
+
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    sendDataToScan();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,7 +167,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                       child: LinearTimer(
                         color: const Color(AppConstants.primaryColor),
                         backgroundColor: Colors.white,
-                        duration: const Duration(minutes: 7),
+                        duration: const Duration(minutes: 3),
                         onTimerEnd: () {
                           Navigator.of(context)
                               .pushNamed(MainDashboard.routeName);
