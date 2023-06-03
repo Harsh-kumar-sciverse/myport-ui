@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:my_port/provider/sample_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -151,12 +154,31 @@ class _MainDashboardState extends State<MainDashboard> {
                         ),
                         itemCount: imageData!.length,
                         itemBuilder: (context, index) {
-                          return Container(
-                            height: 100,
-                            width: 100,
-                            color: Colors.red,
-                            child: Text('${imageData![index]['image_path']}'),
-                          );
+                          String path = '/home/sci/Documents/ViewPort/app';
+                          final completePath = imageData![index]['image_path'];
+                          final myFile = File(completePath);
+                          // image = await myFile.readAsBytes();
+
+                          return FutureBuilder<Uint8List>(
+                              future: myFile.readAsBytes(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const SizedBox(
+                                    height: 100,
+                                    width: 100,
+                                    child: Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  );
+                                }
+                                return Container(
+                                  height: 100,
+                                  width: 100,
+                                  color: Colors.red,
+                                  child: Image.memory(snapshot.data!),
+                                );
+                              });
                         }),
                   ),
                 ],
