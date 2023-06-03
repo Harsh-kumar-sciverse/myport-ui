@@ -65,7 +65,6 @@ class _MainDashboardState extends State<MainDashboard> {
     monocyteProbability = arguments['monocyteProb'];
     print('data after navigate from showgif $arguments');
     print('data after navigate from showgif $arguments');
-
   }
 
   @override
@@ -156,9 +155,11 @@ class _MainDashboardState extends State<MainDashboard> {
                         ),
                         itemCount: imageData!.length,
                         itemBuilder: (context, index) {
-                          String path = '/home/sci/Documents/ViewPort/app';
-                          final completePath = imageData![index]['image_path'];
+                          String path = '/home/sci/Documents/ViewPort/app/';
+                          final completePath =
+                              path + imageData![index]['image_path'];
                           final myFile = File(completePath);
+                          print(path + completePath);
                           // image = await myFile.readAsBytes();
 
                           return FutureBuilder<Uint8List>(
