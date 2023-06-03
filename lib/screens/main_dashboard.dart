@@ -64,6 +64,8 @@ class _MainDashboardState extends State<MainDashboard> {
     monocyteNumber = arguments['monocytes'];
     monocyteProbability = arguments['monocyteProb'];
     print('data after navigate from showgif $arguments');
+    print('data after navigate from showgif $arguments');
+
   }
 
   @override
