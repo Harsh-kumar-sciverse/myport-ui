@@ -1,41 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:my_port/constants/app_constants.dart';
-import 'package:my_port/screens/view_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../constants/app_constants.dart';
 import '../widgets/navigation_bar-widget.dart';
 import 'home.dart';
 import 'login.dart';
+import 'package:share_plus/share_plus.dart';
 
-class History extends StatefulWidget {
-  static const routeName = '/history';
-  const History({Key? key}) : super(key: key);
+class ViewDetails extends StatefulWidget {
+  static const routeName = 'view-details';
+  const ViewDetails({Key? key}) : super(key: key);
 
   @override
-  State<History> createState() => _HistoryState();
+  State<ViewDetails> createState() => _ViewDetailsState();
 }
 
-class _HistoryState extends State<History> {
+class _ViewDetailsState extends State<ViewDetails> {
   @override
   Widget build(BuildContext context) {
-    //timesList
-    //       .map((times) => DataRow(cells: [
-    //          DataCell(
-    //            Text(times.toString(), textAlign: TextAlign.center),
-    //          ),
-    //       ]),
-    //     )
-    //     .toList(),
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size(50, 100),
         child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: NavigationBarWidget(
-              title: 'History',
+              title: 'Final Report',
               endWidget: Row(
                 children: [
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        backgroundColor: Colors.white),
+                    child: const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Icon(
+                        Icons.print,
+                        color: Color(AppConstants.primaryColor),
+                      ),
+                    ),
+                  ),
                   ElevatedButton(
                     onPressed: () async {
                       SharedPreferences preferences =
@@ -58,21 +62,6 @@ class _HistoryState extends State<History> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // Navigator.of(context).pushNamed(History.routeName);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.wifi,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
                       // Navigator.of(context).pop();
                     },
                     style: ElevatedButton.styleFrom(
@@ -82,6 +71,23 @@ class _HistoryState extends State<History> {
                       padding: EdgeInsets.all(10.0),
                       child: Icon(
                         Icons.power_settings_new,
+                        color: Color(AppConstants.primaryColor),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      // Navigator.of(context).pop();
+                      await Share.share(
+                          'check out my website https://example.com');
+                    },
+                    style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        backgroundColor: Colors.white),
+                    child: const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Icon(
+                        Icons.share,
                         color: Color(AppConstants.primaryColor),
                       ),
                     ),
@@ -109,23 +115,14 @@ class _HistoryState extends State<History> {
                           (states) => const Color(AppConstants.primaryColor)),
                       columns: [
                         DataColumn(
-                            label: Text('Index',
+                            label: Text('Name',
                                 style: AppConstants.tableColumnStyle)),
                         DataColumn(
-                            label: Text('Date & Time',
+                            label: Text('Count',
                                 style: AppConstants.tableColumnStyle)),
                         DataColumn(
-                            label: Text('Patient Name',
+                            label: Text('Probability',
                                 style: AppConstants.tableColumnStyle)),
-                        DataColumn(
-                            label: Text('Age',
-                                style: AppConstants.tableColumnStyle)),
-                        DataColumn(
-                            label: Text('Cassette ID',
-                                style: AppConstants.tableColumnStyle)),
-                        DataColumn(
-                            label: Text('Action',
-                                style: AppConstants.tableColumnStyle))
                       ],
                       rows: [
                         DataRow(
@@ -134,35 +131,54 @@ class _HistoryState extends State<History> {
                             //         .withOpacity(0.8)),
                             cells: [
                               DataCell(Text(
-                                '1',
+                                'Platelets',
                                 style: AppConstants.tableRowStyle,
                               )),
                               DataCell(Text(
-                                'Today 12:56 PM',
+                                '0',
                                 style: AppConstants.tableRowStyle,
                               )),
                               DataCell(Text(
-                                'Rohit',
+                                '0',
+                                style: AppConstants.tableRowStyle,
+                              )),
+                            ]),
+                        DataRow(
+                            // color: MaterialStateColor.resolveWith((states) =>
+                            //     const Color(AppConstants.primaryColor)
+                            //         .withOpacity(0.8)),
+                            cells: [
+                              DataCell(Text(
+                                'RBC',
                                 style: AppConstants.tableRowStyle,
                               )),
                               DataCell(Text(
-                                '23',
+                                '0',
                                 style: AppConstants.tableRowStyle,
                               )),
                               DataCell(Text(
-                                '1245289',
+                                '0',
                                 style: AppConstants.tableRowStyle,
                               )),
-                              DataCell(ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pushNamed(ViewDetails.routeName);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    shape: const StadiumBorder()),
-                                child: const Text('View'),
+                            ]),
+                        DataRow(
+                            // color: MaterialStateColor.resolveWith((states) =>
+                            //     const Color(AppConstants.primaryColor)
+                            //         .withOpacity(0.8)),
+                            cells: [
+                              DataCell(Text(
+                                'Platelets',
+                                style: AppConstants.tableRowStyle,
                               )),
-                            ])
+                              DataCell(Text(
+                                '0',
+                                style: AppConstants.tableRowStyle,
+                              )),
+                              DataCell(Text(
+                                '0',
+                                style: AppConstants.tableRowStyle,
+                              )),
+                            ]),
                       ]),
                 ),
               ],

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:my_port/provider/sample_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/app_constants.dart';
 import '../widgets/navigation_bar-widget.dart';
 import 'login.dart';
+import 'package:provider/provider.dart';
 
 class MainDashboard extends StatefulWidget {
   static const routeName = '/final-report';
@@ -15,25 +17,56 @@ class MainDashboard extends StatefulWidget {
 
 class _MainDashboardState extends State<MainDashboard> {
   int selectedIndex = -1;
-  double? platelets;
-  double? plateletsProb;
-  double? rbc;
-  double? rbcProb;
+  String? platelets;
+  String? plateletsProb;
+  String? rbc;
+  String? rbcProb;
+  String? neutrophilNumber;
+  String? neutrophilProbability;
+  String? eosinophilNumber;
+  String? eosinophilProbability;
+  String? basophilNumber;
+  String? basophilProbability;
+  String? lymphocyteNumber;
+  String? lymphocyteProbability;
+  String? monocyteNumber;
+  String? monocyteProbability;
+  List<dynamic>? imageData;
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    Map<String, dynamic> data =
-        ModalRoute.of(context)!.settings!.arguments as Map<String, dynamic>;
-    platelets = data['platelets'];
-    plateletsProb = data['plateletsProb'];
-    rbc = data['rbc'];
-    rbcProb = data['rbcProb'];
+
+    final arguments = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
+
+    // Map<String, String?> data =
+    //     ModalRoute.of(context)!.settings!.arguments as Map<String, String>;
+    print('response in main dash ${arguments['response']}');
+    imageData = arguments['response']['data']['predictions'];
+    print('image data $imageData');
+    platelets = (arguments['platelets']);
+    plateletsProb = arguments['plateletsProb'];
+    rbc = arguments['rbc'];
+    rbcProb = arguments['rbcProb'];
+    neutrophilNumber = arguments['neutrophils'];
+    neutrophilProbability = arguments['neutrophilsProb'];
+    eosinophilNumber = arguments['eosinophils'];
+    eosinophilProbability = arguments['eosinophilProb'];
+    basophilNumber = arguments['basophils'];
+    basophilProbability = arguments['basophilProb'];
+    lymphocyteNumber = arguments['lymphocyts'];
+    lymphocyteProbability = arguments['lymphocytProb'];
+    monocyteNumber = arguments['monocytes'];
+    monocyteProbability = arguments['monocyteProb'];
+    print('data after navigate from showgif $arguments');
   }
 
   @override
   Widget build(BuildContext context) {
+    print('image ${imageData}');
+    print('neutrophil $neutrophilProbability');
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size(50, 100),
@@ -102,7 +135,7 @@ class _MainDashboardState extends State<MainDashboard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: MediaQuery.of(context).size.height - 220,
+              //  height: MediaQuery.of(context).size.height - 220,
               width: MediaQuery.of(context).size.width / 1.5,
               decoration: BoxDecoration(border: Border.all(color: Colors.blue)),
               child: Column(
@@ -113,15 +146,16 @@ class _MainDashboardState extends State<MainDashboard> {
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 5,
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 2,
+                          crossAxisSpacing: 2,
                         ),
-                        itemCount: 100,
+                        itemCount: imageData!.length,
                         itemBuilder: (context, index) {
                           return Container(
                             height: 100,
                             width: 100,
                             color: Colors.red,
+                            child: Text('${imageData![index]['image_path']}'),
                           );
                         }),
                   ),
@@ -133,12 +167,11 @@ class _MainDashboardState extends State<MainDashboard> {
             ),
             Expanded(
               child: Container(
-                height: MediaQuery.of(context).size.height - 220,
+                height: MediaQuery.of(context).size.height,
                 decoration:
                     BoxDecoration(border: Border.all(color: Colors.blue)),
                 child: DataTable(
-                    dataRowHeight:
-                        (MediaQuery.of(context).size.height - 220) / 8,
+                    dataRowHeight: (MediaQuery.of(context).size.height) / 10,
                     // dataRowColor:
                     //     MaterialStateColor.resolveWith((states) => Colors.black),
                     headingRowColor: MaterialStateColor.resolveWith(
@@ -176,7 +209,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${rbcProb == null ? 0 : rbcProb.toString()}',
+                              '${rbcProb == null ? 0 : double.parse(rbcProb.toString()).toStringAsFixed(2)}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -200,7 +233,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${plateletsProb == null ? 0 : plateletsProb.toString()}',
+                              '${plateletsProb == null ? 0 : double.parse(plateletsProb.toString()).toStringAsFixed(2)}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -220,11 +253,11 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '0',
+                              '${neutrophilNumber ?? 0}',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '0',
+                              '${neutrophilProbability == null ? 0 : neutrophilProbability}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -244,11 +277,11 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '0',
+                              '${eosinophilNumber ?? 0}',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '0',
+                              '${eosinophilProbability == null ? 0 : eosinophilProbability}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -268,11 +301,11 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '0',
+                              '${basophilNumber ?? 0}',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '0',
+                              '${basophilProbability == null ? 0 : basophilProbability}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -292,11 +325,11 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '0',
+                              '${lymphocyteNumber ?? 0}',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '0',
+                              '${lymphocyteProbability == null ? 0 : lymphocyteProbability}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -316,11 +349,11 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '0',
+                              '${monocyteNumber ?? 0}',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '0',
+                              '${monocyteProbability ?? 0}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ])

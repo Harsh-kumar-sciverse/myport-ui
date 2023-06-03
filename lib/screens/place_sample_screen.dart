@@ -5,11 +5,13 @@ import 'package:my_port/constants/app_dialogs.dart';
 import 'package:my_port/screens/show_gif_video.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../api/myport_api.dart';
 import '../constants/app_constants.dart';
 import '../widgets/navigation_bar-widget.dart';
 import 'home.dart';
 import 'login.dart';
 import 'package:http/http.dart' as http;
+import './error_screen.dart';
 
 class PlaceSample extends StatefulWidget {
   static const routeName = '/place-sample';
@@ -20,69 +22,25 @@ class PlaceSample extends StatefulWidget {
 }
 
 class _PlaceSampleState extends State<PlaceSample> {
-  bool isSending=false;
+  bool isSending = false;
 
-  Future<void> sendDataToEject() async {
-
-    var url = Uri.parse('http://192.168.1.101:8000/motor_control');
-
-    try {
-      var response = await http.post(url,
-        headers: <String, String>{
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{'action': 'eject'
-        }),
-      );
-      print('response ${response.statusCode}');
-      if (response.statusCode == 200) {
-        print('response 200');
-
-
-
-      } else {
-        print('failed');
-      }
-    } catch (e) {
-      print('error in initialization $e');
-    }
+  Future ejectApi() async {
+    MyPortApi.actionApi('eject').then((value) {}).catchError((error) {
+      Navigator.of(context).pushNamed(ErrorScreen.routeName);
+    });
   }
-  Future<void> sendDataToRetract() async {
 
-    var url = Uri.parse('http://192.168.1.101:8000/motor_control');
-
-    try {
-      var response = await http.post(url,
-        headers: <String, String>{
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{'action': 'retract'
-        }),
-      );
-      print('response ${response.statusCode}');
-      if (response.statusCode == 200) {
-        print('response 200');
-
-
-
-      } else {
-        print('failed');
-      }
-    } catch (e) {
-      print('error in initialization $e');
-    }
-  }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    sendDataToEject();
+    ejectApi();
   }
+
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-
   }
 
   @override
@@ -178,20 +136,31 @@ class _PlaceSampleState extends State<PlaceSample> {
                     child: Row(
                       children: [
                         Expanded(
-                          child:ElevatedButton(
+                          child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.all(20),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
                               AppDialogs.showAttentionDialog(
                                   context: context,
                                   content:
                                       'Have you put the cartridge on the tray?',
                                   title: 'Attention',
-                                  function: () async{
-                                    await sendDataToRetract();
-                                    Navigator.of(context)
-                                        .pushNamed(ShowGifVideo.routeName);
+                                  function: () {
+                                    Navigator.of(context).pop();
+                                    AppDialogs.showCircularDialog(
+                                        context: context);
+                                    MyPortApi.actionApi('retract')
+                                        .then((value) {
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context)
+                                          .pushNamed(ShowGifVideo.routeName);
+                                    }).catchError((error) {
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context)
+                                          .pushNamed(ErrorScreen.routeName);
+                                    });
+                                    // if(!mounted) return;
                                   });
                             },
                             child: const Text(

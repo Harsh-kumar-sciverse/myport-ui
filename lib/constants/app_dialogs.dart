@@ -53,7 +53,7 @@ class AppDialogs {
                 ),
                 Text(
                   title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w900,
                   ),
@@ -64,13 +64,6 @@ class AppDialogs {
             actionsAlignment: MainAxisAlignment.spaceBetween,
             actions: [
               TextButton(
-                onPressed: function,
-                child: const Text(
-                  'Yes',
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -79,7 +72,29 @@ class AppDialogs {
                   style: TextStyle(fontSize: 18),
                 ),
               ),
+              TextButton(
+                onPressed: function,
+                child: const Text(
+                  'Yes',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
             ],
+          );
+        });
+  }
+
+  static showCircularDialog({required BuildContext context}) {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return const AlertDialog(
+            contentPadding: EdgeInsets.all(20),
+            content: SizedBox(
+                height: 30,
+                width: 30,
+                child: Center(child: CircularProgressIndicator())),
           );
         });
   }

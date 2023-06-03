@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:my_port/constants/app_constants.dart';
 import 'package:my_port/screens/home.dart';
 import 'package:my_port/screens/login.dart';
+import '../api/myport_api.dart';
 import '../widgets/navigation_bar-widget.dart';
 import 'package:linear_timer/linear_timer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
+import './error_screen.dart';
 
 class InitializationScreen extends StatefulWidget {
   const InitializationScreen({Key? key}) : super(key: key);
@@ -32,47 +33,23 @@ class _InitializationScreenState extends State<InitializationScreen> {
     getSharedPreferences();
   }
 
-  Future<void> getData() async {
-    setState(() {
-      isInitializing = true;
-    });
-    var url = Uri.parse('http://192.168.1.101:8000/motor_control');
-
-    try {
-      var response = await http.post(url,
-        headers: <String, String>{
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{'action': 'initialization'
-        }),
-      );
-      print('response ${response.statusCode}');
-      if (response.statusCode == 200) {
-        print('response 200');
-
-        setState(() {
-          isInitializing = false;
-        });
-        if (isLoggedIn == null) {
-                Navigator.of(context).pushNamed(Login.routeName);
-              } else {
-                Navigator.of(context)
-                    .pushReplacementNamed(Home.routeName);
-              }
-
+  Future initialize() async {
+    MyPortApi.actionApi('initialization').then((value) {
+      if (isLoggedIn == null) {
+        Navigator.of(context).pushNamed(Login.routeName);
       } else {
-        print('failed');
+        Navigator.of(context).pushReplacementNamed(Home.routeName);
       }
-    } catch (e) {
-      print('error in initialization $e');
-    }
+    }).catchError((error) {
+      Navigator.of(context).pushNamed(ErrorScreen.routeName);
+    });
   }
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    getData();
+    await initialize();
   }
 
   @override
@@ -147,10 +124,10 @@ class _InitializationScreenState extends State<InitializationScreen> {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width / 2,
                 height: 30,
-                child: ClipRRect(
+                child: const ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     child: LinearProgressIndicator(
-                      color: const Color(AppConstants.primaryColor),
+                      color: Color(AppConstants.primaryColor),
                       backgroundColor: Colors.white,
                     )
                     // LinearTimer(
@@ -166,7 +143,7 @@ class _InitializationScreenState extends State<InitializationScreen> {
                     //     }
                     //   },
                     // ),
-                ),
+                    ),
               ),
             ),
           ],
