@@ -132,7 +132,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
     super.initState();
     // sendDataToScan();
     scanSample();
-    subscription = Directory('C:/Users/HARSH/my_folder')
+    subscription = Directory('/home/sci/Documents/ViewPort/app/temp')
         .watch(recursive: false, events: FileSystemEvent.create)
         .listen((event) {
       print('new path created ${event.path}');
