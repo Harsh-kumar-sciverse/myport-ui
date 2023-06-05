@@ -160,28 +160,13 @@ class _MainDashboardState extends State<MainDashboard> {
                               path + imageData![index]['image_path'];
                           final myFile = File(completePath);
                           print(path + completePath);
-                          // image = await myFile.readAsBytes();
 
-                          return FutureBuilder<Uint8List>(
-                              future: myFile.readAsBytes(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const SizedBox(
-                                    height: 100,
-                                    width: 100,
-                                    child: Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  );
-                                }
-                                return Container(
-                                  height: 100,
-                                  width: 100,
-                                  color: Colors.red,
-                                  child: Image.memory(snapshot.data!),
-                                );
-                              });
+                          return Container(
+                            height: 100,
+                            width: 100,
+                            color: Colors.red,
+                            child: Image.file(myFile),
+                          );
                         }),
                   ),
                 ],

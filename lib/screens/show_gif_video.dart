@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:linear_timer/linear_timer.dart';
@@ -39,6 +40,9 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
   String? lymphocyteProbability;
   String? monocyteNumber;
   String? monocyteProbability;
+  List<String> ls1 = [];
+  List<String> ls = [];
+  double value = 0;
 
   Future scanSample() async {
     MyPortApi.actionApi('scanslide').then((value) {
@@ -123,6 +127,15 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
     super.initState();
     // sendDataToScan();
     scanSample();
+    Directory('/home/sci/Documents/ViewPort/app/temp')
+        .watch(recursive: true, events: FileSystemEvent.create)
+        .listen((event) {
+      ls1.add(event.path);
+      print('length of paths ${ls1.length}');
+      ls = ls1.where((element) => element.endsWith('.jpg')).toList();
+      value = ls.length / 64;
+      setState(() {});
+    });
   }
 
   @override
@@ -156,12 +169,13 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                             mainAxisSpacing: 2,
                             crossAxisSpacing: 2,
                           ),
-                          itemCount: 100,
+                          itemCount: ls.length,
                           itemBuilder: (context, index) {
                             return Container(
                               height: 100,
                               width: 100,
                               color: Colors.red,
+                              child: Image.file(File(ls[index])),
                             );
                           }),
                     ),
@@ -198,11 +212,12 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width / 2,
                   height: 30,
-                  child: const ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
                     child: LinearProgressIndicator(
-                      color: Color(AppConstants.primaryColor),
+                      color: const Color(AppConstants.primaryColor),
                       backgroundColor: Colors.white,
+                      value: value,
                     ),
                     // child: LinearTimer(
                     //   color: const Color(AppConstants.primaryColor),
