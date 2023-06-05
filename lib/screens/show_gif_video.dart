@@ -135,6 +135,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
       ls = ls1.where((element) => element.endsWith('.jpg')).toList();
       value = ls.length / 64;
       setState(() {});
+      print('hii');
     });
   }
 
