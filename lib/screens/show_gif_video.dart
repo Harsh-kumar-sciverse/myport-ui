@@ -150,8 +150,139 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
   Widget build(BuildContext context) {
     if (newDirectory == null) {
       return Scaffold(
-        body: Container(),
-      );
+          body: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              decoration: const BoxDecoration(),
+              child: Stack(
+                children: [
+                  // Image.asset(
+                  //   'assets/video.gif',
+                  //   width: MediaQuery.of(context).size.width,
+                  //   height: MediaQuery.of(context).size.height,
+                  //   fit: BoxFit.fill,
+                  // ),
+                  Container(
+                    //  height: MediaQuery.of(context).size.height - 220,
+                    width: MediaQuery.of(context).size.width,
+                    decoration:
+                        BoxDecoration(border: Border.all(color: Colors.blue)),
+                  ),
+                  Positioned(
+                    bottom: 100,
+                    left: MediaQuery.of(context).size.width / 2 - 50,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: const Padding(
+                        padding: EdgeInsets.all(20.0),
+                        child: Text(
+                          'Abort',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 30,
+                    left: MediaQuery.of(context).size.width / 4,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width / 2,
+                      height: 30,
+                      child: ClipRRect(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                        child: LinearProgressIndicator(
+                          color: const Color(AppConstants.primaryColor),
+                          backgroundColor: Colors.white,
+                          value: 0,
+                        ),
+                        // child: LinearTimer(
+                        //   color: const Color(AppConstants.primaryColor),
+                        //   backgroundColor: Colors.white,
+                        //   duration: const Duration(minutes: 3),
+                        //   onTimerEnd: () {
+                        //     Navigator.of(context)
+                        //         .pushNamed(MainDashboard.routeName, arguments: {
+                        //       'platelets': platelets,
+                        //       'plateletsProb': plateletsProb,
+                        //       'rbc': rbc,
+                        //       'rbcProb': rbcProb,
+                        //     });
+                        //   },
+                        // ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                      top: 0,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          child: NavigationBarWidget(
+                              title: 'Processing',
+                              endWidget: Row(
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      SharedPreferences preferences =
+                                          await SharedPreferences.getInstance();
+                                      preferences.remove('isLoggedIn');
+
+                                      Navigator.of(context)
+                                          .pushNamedAndRemoveUntil(
+                                              Login.routeName,
+                                              (route) => false);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        shape: const CircleBorder(),
+                                        backgroundColor: Colors.white),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Icon(
+                                        Icons.logout,
+                                        color: Color(AppConstants.primaryColor),
+                                      ),
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      // Navigator.of(context).pushNamed(History.routeName);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        shape: const CircleBorder(),
+                                        backgroundColor: Colors.white),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Icon(
+                                        Icons.wifi,
+                                        color: Color(AppConstants.primaryColor),
+                                      ),
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      // Navigator.of(context).pop();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        shape: const CircleBorder(),
+                                        backgroundColor: Colors.white),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Icon(
+                                        Icons.power_settings_new,
+                                        color: Color(AppConstants.primaryColor),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              startWidget: Image.asset('assets/logo.png')),
+                        ),
+                      ))
+                ],
+              )));
     }
     return Scaffold(
       body: StreamBuilder<FileSystemEvent>(
@@ -167,6 +298,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                       element.endsWith('.jpg') &&
                       !regex.hasMatch(element.split(r"\").last))
                   .toList();
+              value = (1 / 64) * (ls.length);
               print(ls);
             }
             return Container(
