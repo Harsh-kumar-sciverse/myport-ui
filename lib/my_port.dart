@@ -35,7 +35,7 @@ class _MyPortState extends State<MyPort> {
           primarySwatch: AppConstants.primaryBlue,
           fontFamily: GoogleFonts.openSans().fontFamily,
         ),
-        home: const MainDashboard(),
+        home: const ShowGifVideo(),
         routes: {
           Login.routeName: (_) => const Login(),
           Home.routeName: (_) => const Home(),
