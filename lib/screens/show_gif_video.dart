@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -43,6 +44,10 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
   List<String> ls1 = [];
   List<String> ls = [];
   double value = 0;
+  String? newPath;
+  Directory? newDirectory;
+  RegExp regex = RegExp(r'^\d+_\d+\.jpg$');
+  late StreamSubscription<FileSystemEvent> subscription;
 
   Future scanSample() async {
     MyPortApi.actionApi('scanslide').then((value) {
@@ -127,183 +132,213 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
     super.initState();
     // sendDataToScan();
     scanSample();
-    Directory('/home/sci/Documents/ViewPort/app/temp')
-        .watch(recursive: true, events: FileSystemEvent.create)
+    subscription = Directory('C:/Users/HARSH/my_folder')
+        .watch(recursive: false, events: FileSystemEvent.create)
         .listen((event) {
-      ls1.add(event.path);
-      print('length of paths ${ls1.length}');
-      ls = ls1.where((element) => element.endsWith('.jpg')).toList();
-      value = ls.length / 64;
+      print('new path created ${event.path}');
+      newPath = event.path;
+      newDirectory = Directory(event.path);
+
       setState(() {});
-      print('hii');
+      subscription.cancel();
+
+      print(newPath);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (newDirectory == null) {
+      return Scaffold(
+        body: Container(),
+      );
+    }
     return Scaffold(
-      body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          decoration: const BoxDecoration(),
-          child: Stack(
-            children: [
-              // Image.asset(
-              //   'assets/video.gif',
-              //   width: MediaQuery.of(context).size.width,
-              //   height: MediaQuery.of(context).size.height,
-              //   fit: BoxFit.fill,
-              // ),
-              Container(
-                //  height: MediaQuery.of(context).size.height - 220,
+      body: StreamBuilder<FileSystemEvent>(
+          stream: newDirectory!
+              .watch(recursive: false, events: FileSystemEvent.create),
+          builder: (context, snapshot) {
+            if (snapshot.hasData && snapshot.data != null) {
+              //   print('new stream ${snapshot.data!.path}');
+              ls1.add(snapshot.data!.path);
+              print('new folder path ${snapshot.data!.path}');
+              ls = ls1
+                  .where((element) =>
+                      element.endsWith('.jpg') &&
+                      !regex.hasMatch(element.split(r"\").last))
+                  .toList();
+              print(ls);
+            }
+            return Container(
                 width: MediaQuery.of(context).size.width,
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.blue)),
-                child: Column(
+                height: MediaQuery.of(context).size.height,
+                decoration: const BoxDecoration(),
+                child: Stack(
                   children: [
-                    Expanded(
-                      child: GridView.builder(
-                          primary: false,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 5,
-                            mainAxisSpacing: 2,
-                            crossAxisSpacing: 2,
-                          ),
-                          itemCount: ls.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              height: 100,
-                              width: 100,
-                              color: Colors.red,
-                              child: Image.file(File(ls[index])),
-                            );
-                          }),
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                bottom: 100,
-                left: MediaQuery.of(context).size.width / 2 - 50,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // AppDialogs.showAttentionDialog(
-                    //     context: context,
-                    //     content: 'Processing will be aborted.',
-                    //     title: 'Are you sure?',
-                    //     function: () {
-                    //       Navigator.of(context).pushNamedAndRemoveUntil(
-                    //           Home.routeName, (route) => false);
-                    //     });
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.all(20.0),
-                    child: Text(
-                      'Abort',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 30,
-                left: MediaQuery.of(context).size.width / 4,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width / 2,
-                  height: 30,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    child: LinearProgressIndicator(
-                      color: const Color(AppConstants.primaryColor),
-                      backgroundColor: Colors.white,
-                      value: value,
-                    ),
-                    // child: LinearTimer(
-                    //   color: const Color(AppConstants.primaryColor),
-                    //   backgroundColor: Colors.white,
-                    //   duration: const Duration(minutes: 3),
-                    //   onTimerEnd: () {
-                    //     Navigator.of(context)
-                    //         .pushNamed(MainDashboard.routeName, arguments: {
-                    //       'platelets': platelets,
-                    //       'plateletsProb': plateletsProb,
-                    //       'rbc': rbc,
-                    //       'rbcProb': rbcProb,
-                    //     });
-                    //   },
+                    // Image.asset(
+                    //   'assets/video.gif',
+                    //   width: MediaQuery.of(context).size.width,
+                    //   height: MediaQuery.of(context).size.height,
+                    //   fit: BoxFit.fill,
                     // ),
-                  ),
-                ),
-              ),
-              Positioned(
-                  top: 0,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: NavigationBarWidget(
-                          title: 'Processing',
-                          endWidget: Row(
-                            children: [
-                              ElevatedButton(
-                                onPressed: () async {
-                                  SharedPreferences preferences =
-                                      await SharedPreferences.getInstance();
-                                  preferences.remove('isLoggedIn');
-
-                                  Navigator.of(context).pushNamedAndRemoveUntil(
-                                      Login.routeName, (route) => false);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    shape: const CircleBorder(),
-                                    backgroundColor: Colors.white),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Icon(
-                                    Icons.logout,
-                                    color: Color(AppConstants.primaryColor),
-                                  ),
+                    Container(
+                      //  height: MediaQuery.of(context).size.height - 220,
+                      width: MediaQuery.of(context).size.width,
+                      decoration:
+                          BoxDecoration(border: Border.all(color: Colors.blue)),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: GridView.builder(
+                                primary: false,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 5,
+                                  mainAxisSpacing: 2,
+                                  crossAxisSpacing: 2,
                                 ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  // Navigator.of(context).pushNamed(History.routeName);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    shape: const CircleBorder(),
-                                    backgroundColor: Colors.white),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Icon(
-                                    Icons.wifi,
-                                    color: Color(AppConstants.primaryColor),
-                                  ),
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  // Navigator.of(context).pop();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    shape: const CircleBorder(),
-                                    backgroundColor: Colors.white),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Icon(
-                                    Icons.power_settings_new,
-                                    color: Color(AppConstants.primaryColor),
-                                  ),
-                                ),
-                              ),
-                            ],
+                                itemCount: ls.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    height: 100,
+                                    width: 100,
+                                    color: Colors.red,
+                                    child: Image.file(File(ls[index])),
+                                  );
+                                }),
                           ),
-                          startWidget: Image.asset('assets/logo.png')),
+                        ],
+                      ),
                     ),
-                  ))
-            ],
-          )),
+                    Positioned(
+                      bottom: 100,
+                      left: MediaQuery.of(context).size.width / 2 - 50,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // AppDialogs.showAttentionDialog(
+                          //     context: context,
+                          //     content: 'Processing will be aborted.',
+                          //     title: 'Are you sure?',
+                          //     function: () {
+                          //       Navigator.of(context).pushNamedAndRemoveUntil(
+                          //           Home.routeName, (route) => false);
+                          //     });
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Text(
+                            'Abort',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 30,
+                      left: MediaQuery.of(context).size.width / 4,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 2,
+                        height: 30,
+                        child: ClipRRect(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          child: LinearProgressIndicator(
+                            color: const Color(AppConstants.primaryColor),
+                            backgroundColor: Colors.white,
+                            value: value,
+                          ),
+                          // child: LinearTimer(
+                          //   color: const Color(AppConstants.primaryColor),
+                          //   backgroundColor: Colors.white,
+                          //   duration: const Duration(minutes: 3),
+                          //   onTimerEnd: () {
+                          //     Navigator.of(context)
+                          //         .pushNamed(MainDashboard.routeName, arguments: {
+                          //       'platelets': platelets,
+                          //       'plateletsProb': plateletsProb,
+                          //       'rbc': rbc,
+                          //       'rbcProb': rbcProb,
+                          //     });
+                          //   },
+                          // ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                        top: 0,
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: NavigationBarWidget(
+                                title: 'Processing',
+                                endWidget: Row(
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        SharedPreferences preferences =
+                                            await SharedPreferences
+                                                .getInstance();
+                                        preferences.remove('isLoggedIn');
+
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                                Login.routeName,
+                                                (route) => false);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          shape: const CircleBorder(),
+                                          backgroundColor: Colors.white),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(10.0),
+                                        child: Icon(
+                                          Icons.logout,
+                                          color:
+                                              Color(AppConstants.primaryColor),
+                                        ),
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        // Navigator.of(context).pushNamed(History.routeName);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          shape: const CircleBorder(),
+                                          backgroundColor: Colors.white),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(10.0),
+                                        child: Icon(
+                                          Icons.wifi,
+                                          color:
+                                              Color(AppConstants.primaryColor),
+                                        ),
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        // Navigator.of(context).pop();
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          shape: const CircleBorder(),
+                                          backgroundColor: Colors.white),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(10.0),
+                                        child: Icon(
+                                          Icons.power_settings_new,
+                                          color:
+                                              Color(AppConstants.primaryColor),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                startWidget: Image.asset('assets/logo.png')),
+                          ),
+                        ))
+                  ],
+                ));
+          }),
     );
   }
 }
