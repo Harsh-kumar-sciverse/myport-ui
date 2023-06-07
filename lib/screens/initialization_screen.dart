@@ -40,6 +40,8 @@ class _InitializationScreenState extends State<InitializationScreen> {
         .then((value) {
       initializationName = 'Homing done.';
       progressValue = 0.25;
+      setState(() {});
+      initialize2();
     }).catchError((error) {
       print('error code in initialization screen $error');
 
@@ -53,6 +55,8 @@ class _InitializationScreenState extends State<InitializationScreen> {
         .then((value) {
       initializationName = 'Centering done.';
       progressValue = 0.50;
+      setState(() {});
+      initialize3();
     }).catchError((error) {
       print('error code in initialization screen $error');
 
@@ -66,6 +70,8 @@ class _InitializationScreenState extends State<InitializationScreen> {
         .then((value) {
       initializationName = 'Camera Check done.';
       progressValue = 0.75;
+      setState(() {});
+      initialize4();
     }).catchError((error) {
       print('error code in initialization screen $error');
 
@@ -80,6 +86,7 @@ class _InitializationScreenState extends State<InitializationScreen> {
         .then((value) {
       initializationName = 'Condenser Check done.';
       progressValue = 1;
+      setState(() {});
       if (isLoggedIn == null) {
         Navigator.of(context).pushNamed(Login.routeName);
       } else {
@@ -98,9 +105,9 @@ class _InitializationScreenState extends State<InitializationScreen> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     await initialize1();
-    await initialize2();
-    await initialize3();
-    await initialize4();
+    // await initialize2();
+    // await initialize3();
+    // await initialize4();
   }
 
   @override

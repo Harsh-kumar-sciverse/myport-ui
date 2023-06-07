@@ -34,13 +34,6 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
   String gettingWifiError = '';
   final wifiPasswordController = TextEditingController();
   bool passwordInputLoading = false;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getConnectedWifi();
-    getListOfWifi();
-  }
 
   getConnectedWifi() {
     MyPortApi.actionApi(actionName: 'wifi_status', endpoint: 'system')
@@ -114,18 +107,18 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
                 ),
               if (widget.showWifiListIcon)
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     // Navigator.of(context).pop();
-                    if (gettingWifiError.isNotEmpty) {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      getConnectedWifi();
-                      getListOfWifi();
-                      setState(() {
-                        isLoading = false;
-                      });
-                    }
+
+                    setState(() {
+                      isLoading = true;
+                    });
+                    await getConnectedWifi();
+                    await getListOfWifi();
+                    setState(() {
+                      isLoading = false;
+                    });
+
                     showDialog(
                         context: context,
                         builder: (context) {
