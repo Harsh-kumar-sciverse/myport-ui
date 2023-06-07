@@ -63,7 +63,6 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
         .then((value) async {
       Provider.of<SampleProvider>(context, listen: false)
           .saveScanImageResponse(value: value);
-      print('value of response $value');
       rbcNumber = value['data']['counts']['RBC'].toString();
       rbcProbability = value['data']['counts']['RBC_conf'].toString();
       plateletsNumber = value['data']['counts']['Pletelets'].toString();
@@ -84,47 +83,52 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
       monocyteProbability = value['data']['counts']['Monocyte_conf'].toString();
 
       String id = uuid.v4();
+      print(Provider.of<PatientDetailsProvider>(context).name!);
+      print(Provider.of<PatientDetailsProvider>(context).age!);
+
       await createItem({
         "name": Provider.of<PatientDetailsProvider>(context).name!,
         "age": Provider.of<PatientDetailsProvider>(context).age!,
         "id": id,
         "time": DateFormat('dd-MM-yyyy – kk:mm').format(DateTime.now()),
-        'platelets': plateletsNumber,
-        'plateletsProb': plateletsProbability,
-        'rbc': rbcNumber,
-        'rbcProb': rbcProbability,
-        'neutrophils': neutrophilNumber,
-        'neutrophilsProb': neutrophilProbability,
-        'eosinophils': eosinophilNumber,
-        'basophils': basophilNumber,
-        'basophilProb': basophilProbability,
-        'eosinophilProb': eosinophilProbability,
-        'lymphocyts': lymphocyteNumber,
-        'lymphocytProb': lymphocyteProbability,
-        'monocytes': monocyteNumber,
-        'monocyteProb': monocyteProbability,
+        'platelets': '$plateletsNumber',
+        'plateletsProb': '$plateletsProbability',
+        'rbc': '$rbcNumber',
+        'rbcProb': '$rbcProbability',
+        'neutrophils': '$neutrophilNumber',
+        'neutrophilsProb': '$neutrophilProbability',
+        'eosinophils': '$eosinophilNumber',
+        'basophils': '$basophilNumber',
+        'basophilProb': '$basophilProbability',
+        'eosinophilProb': '$eosinophilProbability',
+        'lymphocyts': '$lymphocyteNumber',
+        'lymphocytProb': '$lymphocyteProbability',
+        'monocytes': '$monocyteNumber',
+        'monocyteProb': '$monocyteProbability',
       });
 
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil(MainDashboard.routeName, (route) => false);
-      Navigator.of(context).pushNamed(MainDashboard.routeName, arguments: {
-        'response': value,
-        'platelets': plateletsNumber,
-        'plateletsProb': plateletsProbability,
-        'rbc': rbcNumber,
-        'rbcProb': rbcProbability,
-        'neutrophils': neutrophilNumber,
-        'neutrophilsProb': neutrophilProbability,
-        'eosinophils': eosinophilNumber,
-        'basophils': basophilNumber,
-        'basophilProb': basophilProbability,
-        'eosinophilProb': eosinophilProbability,
-        'lymphocyts': lymphocyteNumber,
-        'lymphocytProb': lymphocyteProbability,
-        'monocytes': monocyteNumber,
-        'monocyteProb': monocyteProbability,
-      });
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          MainDashboard.routeName,
+          arguments: {
+            'response': value,
+            'platelets': plateletsNumber,
+            'plateletsProb': plateletsProbability,
+            'rbc': rbcNumber,
+            'rbcProb': rbcProbability,
+            'neutrophils': neutrophilNumber,
+            'neutrophilsProb': neutrophilProbability,
+            'eosinophils': eosinophilNumber,
+            'basophils': basophilNumber,
+            'basophilProb': basophilProbability,
+            'eosinophilProb': eosinophilProbability,
+            'lymphocyts': lymphocyteNumber,
+            'lymphocytProb': lymphocyteProbability,
+            'monocytes': monocyteNumber,
+            'monocyteProb': monocyteProbability,
+          },
+          (route) => false);
     }).catchError((error) {
+      print('error in showgif $error');
       Navigator.of(context)
           .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
     });
