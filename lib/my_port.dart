@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:my_port/provider/patient_details_provider.dart';
 import 'package:my_port/screens/error_screen.dart';
 import 'package:my_port/screens/history.dart';
 import 'package:my_port/screens/home.dart';
@@ -28,6 +29,7 @@ class _MyPortState extends State<MyPort> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SampleProvider()),
+        ChangeNotifierProvider(create: (_) => PatientDetailsProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -35,7 +37,7 @@ class _MyPortState extends State<MyPort> {
           primarySwatch: AppConstants.primaryBlue,
           fontFamily: GoogleFonts.openSans().fontFamily,
         ),
-        home: const ShowGifVideo(),
+        home: const ViewDetails(),
         routes: {
           Login.routeName: (_) => const Login(),
           Home.routeName: (_) => const Home(),

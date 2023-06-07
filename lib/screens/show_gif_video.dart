@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:linear_timer/linear_timer.dart';
 import 'package:my_port/api/myport_api.dart';
 import 'package:my_port/constants/app_dialogs.dart';
+import 'package:my_port/provider/patient_details_provider.dart';
 import 'package:my_port/screens/main_dashboard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,6 +19,8 @@ import 'login.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import '../provider/sample_provider.dart';
+import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class ShowGifVideo extends StatefulWidget {
   static const routeName = '/processing';
@@ -48,9 +52,15 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
   Directory? newDirectory;
   RegExp regex = RegExp(r'^\d+_\d+\.jpg$');
   late StreamSubscription<FileSystemEvent> subscription;
+  final patientDetails = Hive.box('patients');
+  var uuid = const Uuid();
+  Future<void> createItem(Map<String, dynamic> newItem) async {
+    await patientDetails.add(newItem);
+  }
 
   Future scanSample() async {
-    MyPortApi.actionApi('scanslide').then((value) {
+    MyPortApi.actionApi(actionName: 'scanslide', endpoint: 'motor_control')
+        .then((value) async {
       Provider.of<SampleProvider>(context, listen: false)
           .saveScanImageResponse(value: value);
       print('value of response $value');
@@ -73,6 +83,28 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
       monocyteNumber = value['data']['counts']['Monocyte'].toString();
       monocyteProbability = value['data']['counts']['Monocyte_conf'].toString();
 
+      String id = uuid.v4();
+      await createItem({
+        "name": Provider.of<PatientDetailsProvider>(context).name!,
+        "age": Provider.of<PatientDetailsProvider>(context).age!,
+        "id": id,
+        "time": DateFormat('dd-MM-yyyy – kk:mm').format(DateTime.now()),
+        'platelets': plateletsNumber,
+        'plateletsProb': plateletsProbability,
+        'rbc': rbcNumber,
+        'rbcProb': rbcProbability,
+        'neutrophils': neutrophilNumber,
+        'neutrophilsProb': neutrophilProbability,
+        'eosinophils': eosinophilNumber,
+        'basophils': basophilNumber,
+        'basophilProb': basophilProbability,
+        'eosinophilProb': eosinophilProbability,
+        'lymphocyts': lymphocyteNumber,
+        'lymphocytProb': lymphocyteProbability,
+        'monocytes': monocyteNumber,
+        'monocyteProb': monocyteProbability,
+      });
+
       Navigator.of(context)
           .pushNamedAndRemoveUntil(MainDashboard.routeName, (route) => false);
       Navigator.of(context).pushNamed(MainDashboard.routeName, arguments: {
@@ -93,8 +125,8 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
         'monocyteProb': monocyteProbability,
       });
     }).catchError((error) {
-      print('error $error');
-      //  Navigator.of(context).pushNamed(ErrorScreen.routeName);
+      Navigator.of(context)
+          .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
     });
   }
 
@@ -189,11 +221,10 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width / 2,
                       height: 30,
-                      child: ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
+                      child: const ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
                         child: LinearProgressIndicator(
-                          color: const Color(AppConstants.primaryColor),
+                          color: Color(AppConstants.primaryColor),
                           backgroundColor: Colors.white,
                           value: 0,
                         ),
@@ -221,64 +252,12 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: NavigationBarWidget(
-                              title: 'Processing',
-                              endWidget: Row(
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () async {
-                                      SharedPreferences preferences =
-                                          await SharedPreferences.getInstance();
-                                      preferences.remove('isLoggedIn');
-
-                                      Navigator.of(context)
-                                          .pushNamedAndRemoveUntil(
-                                              Login.routeName,
-                                              (route) => false);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        shape: const CircleBorder(),
-                                        backgroundColor: Colors.white),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(10.0),
-                                      child: Icon(
-                                        Icons.logout,
-                                        color: Color(AppConstants.primaryColor),
-                                      ),
-                                    ),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      // Navigator.of(context).pushNamed(History.routeName);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        shape: const CircleBorder(),
-                                        backgroundColor: Colors.white),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(10.0),
-                                      child: Icon(
-                                        Icons.wifi,
-                                        color: Color(AppConstants.primaryColor),
-                                      ),
-                                    ),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      // Navigator.of(context).pop();
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        shape: const CircleBorder(),
-                                        backgroundColor: Colors.white),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(10.0),
-                                      child: Icon(
-                                        Icons.power_settings_new,
-                                        color: Color(AppConstants.primaryColor),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              startWidget: Image.asset('assets/logo.png')),
+                            title: 'Processing',
+                            showLogoutIcon: true,
+                            otherLastWidget: Container(),
+                            showPowerOffIcon: true,
+                            showWifiListIcon: true,
+                          ),
                         ),
                       ))
                 ],
@@ -334,7 +313,10 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                                   return Container(
                                     height: 100,
                                     width: 100,
-                                    color: Colors.red,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: const Color(
+                                                AppConstants.primaryColor))),
                                     child: Image.file(File(ls[index])),
                                   );
                                 }),
@@ -342,59 +324,67 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                         ],
                       ),
                     ),
-                    Positioned(
-                      bottom: 100,
-                      left: MediaQuery.of(context).size.width / 2 - 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // AppDialogs.showAttentionDialog(
-                          //     context: context,
-                          //     content: 'Processing will be aborted.',
-                          //     title: 'Are you sure?',
-                          //     function: () {
-                          //       Navigator.of(context).pushNamedAndRemoveUntil(
-                          //           Home.routeName, (route) => false);
-                          //     });
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.all(20.0),
-                          child: Text(
-                            'Abort',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
+                    Container(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.black.withOpacity(0.5),
                     ),
                     Positioned(
                       bottom: 30,
                       left: MediaQuery.of(context).size.width / 4,
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width / 2,
-                        height: 30,
-                        child: ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
-                          child: LinearProgressIndicator(
-                            color: const Color(AppConstants.primaryColor),
-                            backgroundColor: Colors.white,
-                            value: value,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 2,
+                            height: 30,
+                            child: ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              child: LinearProgressIndicator(
+                                color: const Color(AppConstants.primaryColor),
+                                backgroundColor: Colors.white,
+                                value: value,
+                              ),
+                              // child: LinearTimer(
+                              //   color: const Color(AppConstants.primaryColor),
+                              //   backgroundColor: Colors.white,
+                              //   duration: const Duration(minutes: 3),
+                              //   onTimerEnd: () {
+                              //     Navigator.of(context)
+                              //         .pushNamed(MainDashboard.routeName, arguments: {
+                              //       'platelets': platelets,
+                              //       'plateletsProb': plateletsProb,
+                              //       'rbc': rbc,
+                              //       'rbcProb': rbcProb,
+                              //     });
+                              //   },
+                              // ),
+                            ),
                           ),
-                          // child: LinearTimer(
-                          //   color: const Color(AppConstants.primaryColor),
-                          //   backgroundColor: Colors.white,
-                          //   duration: const Duration(minutes: 3),
-                          //   onTimerEnd: () {
-                          //     Navigator.of(context)
-                          //         .pushNamed(MainDashboard.routeName, arguments: {
-                          //       'platelets': platelets,
-                          //       'plateletsProb': plateletsProb,
-                          //       'rbc': rbc,
-                          //       'rbcProb': rbcProb,
-                          //     });
-                          //   },
-                          // ),
-                        ),
+                          const SizedBox(
+                            height: 40,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              // AppDialogs.showAttentionDialog(
+                              //     context: context,
+                              //     content: 'Processing will be aborted.',
+                              //     title: 'Are you sure?',
+                              //     function: () {
+                              //       Navigator.of(context).pushNamedAndRemoveUntil(
+                              //           Home.routeName, (route) => false);
+                              //     });
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.all(20.0),
+                              child: Text(
+                                'Abort',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     Positioned(
@@ -404,68 +394,12 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 20, right: 20),
                             child: NavigationBarWidget(
-                                title: 'Processing',
-                                endWidget: Row(
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: () async {
-                                        SharedPreferences preferences =
-                                            await SharedPreferences
-                                                .getInstance();
-                                        preferences.remove('isLoggedIn');
-
-                                        Navigator.of(context)
-                                            .pushNamedAndRemoveUntil(
-                                                Login.routeName,
-                                                (route) => false);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          shape: const CircleBorder(),
-                                          backgroundColor: Colors.white),
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(10.0),
-                                        child: Icon(
-                                          Icons.logout,
-                                          color:
-                                              Color(AppConstants.primaryColor),
-                                        ),
-                                      ),
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        // Navigator.of(context).pushNamed(History.routeName);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          shape: const CircleBorder(),
-                                          backgroundColor: Colors.white),
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(10.0),
-                                        child: Icon(
-                                          Icons.wifi,
-                                          color:
-                                              Color(AppConstants.primaryColor),
-                                        ),
-                                      ),
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        // Navigator.of(context).pop();
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          shape: const CircleBorder(),
-                                          backgroundColor: Colors.white),
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(10.0),
-                                        child: Icon(
-                                          Icons.power_settings_new,
-                                          color:
-                                              Color(AppConstants.primaryColor),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                startWidget: Image.asset('assets/logo.png')),
+                              title: 'Processing',
+                              showLogoutIcon: true,
+                              otherLastWidget: Container(),
+                              showPowerOffIcon: true,
+                              showWifiListIcon: true,
+                            ),
                           ),
                         ))
                   ],

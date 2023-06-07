@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:my_port/provider/sample_provider.dart';
+import 'package:my_port/screens/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/app_constants.dart';
@@ -77,60 +78,32 @@ class _MainDashboardState extends State<MainDashboard> {
         child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: NavigationBarWidget(
-              title: 'Result',
-              endWidget: Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.print,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      SharedPreferences preferences =
-                          await SharedPreferences.getInstance();
-                      preferences.remove('isLoggedIn');
+              title: 'Result', showLogoutIcon: true, otherLastWidget: Container(), showPowerOffIcon: true, showWifiListIcon: true,
 
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          Login.routeName, (route) => false);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.logout,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.power_settings_new,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                ],
+          ),
+        ),
+      ),
+      bottomSheet: Padding(
+        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacementNamed(Home.routeName);
+              },
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
               ),
-              startWidget: Image.asset('assets/logo.png')),
+              child: const Padding(
+                padding: EdgeInsets.all(15.0),
+                child: Icon(
+                  Icons.home,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       body: Padding(
@@ -164,7 +137,9 @@ class _MainDashboardState extends State<MainDashboard> {
                           return Container(
                             height: 100,
                             width: 100,
-                            color: Colors.red,
+                            decoration: BoxDecoration(
+                              border: Border.all(color:const Color(AppConstants.primaryColor))
+                            ),
                             child: Image.file(myFile),
                           );
                         }),

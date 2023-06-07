@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:my_port/constants/app_constants.dart';
 import 'package:my_port/screens/view_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,16 +17,86 @@ class History extends StatefulWidget {
 }
 
 class _HistoryState extends State<History> {
+  final patients = Hive.box('patients');
+  List<Map<String, dynamic>> _items = [];
+
+  void refreshData() {
+    final data = patients.keys.map((key) {
+      final item = patients.get(key);
+      return {
+        "key": key,
+        "name": item['name'],
+        "age": item['age'],
+        "id": item['id'],
+        "time": item['time'],
+        "rbcNumber": 'rbcNumber',
+        "rbcProbability": 'rbcProbability',
+        "plateletsNumber": 'plateletsNumber',
+        "plateletsProbability": 'plateletsProbability',
+        "neutrophilNumber": 'neutrophilNumber',
+        "neutrophilProbability": 'neutrophilProbability',
+        "eosinophilNumber": 'eosinophilNumber',
+        "eosinophilProbability": 'eosinophilProbability',
+        "basophilNumber": 'basophilNumber',
+        "basophilProbability": 'basophilProbability',
+        "lymphocyteNumber": 'lymphocyteNumber',
+        "lymphocyteProbability": 'lymphocyteProbability',
+        "monocyteNumber": 'monocyteNumber',
+        "monocyteProbability": 'monocyteProbability',
+      };
+    }).toList();
+    setState(() {
+      _items = data.reversed.toList();
+      print('length ${_items.length}');
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    refreshData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    //timesList
-    //       .map((times) => DataRow(cells: [
-    //          DataCell(
-    //            Text(times.toString(), textAlign: TextAlign.center),
-    //          ),
-    //       ]),
-    //     )
-    //     .toList(),
+    List<DataRow> rows = _items
+        .map((patient) => DataRow(
+                // color: MaterialStateColor.resolveWith((states) =>
+                //     const Color(AppConstants.primaryColor)
+                //         .withOpacity(0.8)),
+                cells: [
+                  DataCell(Text(
+                    '${patient['key']}',
+                    style: AppConstants.tableRowStyle,
+                  )),
+                  DataCell(Text(
+                    '${patient['time']}',
+                    style: AppConstants.tableRowStyle,
+                  )),
+                  DataCell(Text(
+                    '${patient['name']}',
+                    style: AppConstants.tableRowStyle,
+                  )),
+                  DataCell(Text(
+                    '${patient['age']}',
+                    style: AppConstants.tableRowStyle,
+                  )),
+                  DataCell(Text(
+                    '${patient['id'].toString().substring(1, 6)}',
+                    style: AppConstants.tableRowStyle,
+                  )),
+                  DataCell(ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(ViewDetails.routeName,
+                          arguments: {'key': patient['key']});
+                    },
+                    style:
+                        ElevatedButton.styleFrom(shape: const StadiumBorder()),
+                    child: const Text('View'),
+                  )),
+                ]))
+        .toList();
 
     return Scaffold(
       appBar: PreferredSize(
@@ -33,62 +104,10 @@ class _HistoryState extends State<History> {
         child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: NavigationBarWidget(
-              title: 'History',
-              endWidget: Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      SharedPreferences preferences =
-                          await SharedPreferences.getInstance();
-                      preferences.remove('isLoggedIn');
 
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          Login.routeName, (route) => false);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.logout,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigator.of(context).pushNamed(History.routeName);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.wifi,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.power_settings_new,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                ],
+              title: 'History',
+            showLogoutIcon: true, otherLastWidget: Container(), showPowerOffIcon: true, showWifiListIcon: true,
               ),
-              startWidget: Image.asset('assets/logo.png')),
         ),
       ),
       body: Padding(
@@ -127,43 +146,7 @@ class _HistoryState extends State<History> {
                             label: Text('Action',
                                 style: AppConstants.tableColumnStyle))
                       ],
-                      rows: [
-                        DataRow(
-                            // color: MaterialStateColor.resolveWith((states) =>
-                            //     const Color(AppConstants.primaryColor)
-                            //         .withOpacity(0.8)),
-                            cells: [
-                              DataCell(Text(
-                                '1',
-                                style: AppConstants.tableRowStyle,
-                              )),
-                              DataCell(Text(
-                                'Today 12:56 PM',
-                                style: AppConstants.tableRowStyle,
-                              )),
-                              DataCell(Text(
-                                'Rohit',
-                                style: AppConstants.tableRowStyle,
-                              )),
-                              DataCell(Text(
-                                '23',
-                                style: AppConstants.tableRowStyle,
-                              )),
-                              DataCell(Text(
-                                '1245289',
-                                style: AppConstants.tableRowStyle,
-                              )),
-                              DataCell(ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pushNamed(ViewDetails.routeName);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    shape: const StadiumBorder()),
-                                child: const Text('View'),
-                              )),
-                            ])
-                      ]),
+                      rows: rows),
                 ),
               ],
             ),

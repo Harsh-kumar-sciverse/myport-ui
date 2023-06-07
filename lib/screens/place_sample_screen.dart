@@ -25,8 +25,9 @@ class _PlaceSampleState extends State<PlaceSample> {
   bool isSending = false;
 
   Future ejectApi() async {
-    MyPortApi.actionApi('eject').then((value) {}).catchError((error) {
-      Navigator.of(context).pushNamed(ErrorScreen.routeName);
+    MyPortApi.actionApi(actionName: 'eject',endpoint: 'motor_control').then((value) {}).catchError((error) {
+      Navigator.of(context)
+          .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
     });
   }
 
@@ -51,62 +52,8 @@ class _PlaceSampleState extends State<PlaceSample> {
         child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: NavigationBarWidget(
-              title: 'Start Test',
-              endWidget: Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      SharedPreferences preferences =
-                          await SharedPreferences.getInstance();
-                      preferences.remove('isLoggedIn');
-
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          Login.routeName, (route) => false);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.logout,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigator.of(context).pushNamed(History.routeName);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.wifi,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.power_settings_new,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              startWidget: Image.asset('assets/logo.png')),
+              title: 'Start Test', showLogoutIcon: true, otherLastWidget: Container(), showPowerOffIcon: true, showWifiListIcon: true,
+          ),
         ),
       ),
       body: Align(
@@ -150,7 +97,7 @@ class _PlaceSampleState extends State<PlaceSample> {
                                     Navigator.of(context).pop();
                                     AppDialogs.showCircularDialog(
                                         context: context);
-                                    MyPortApi.actionApi('retract')
+                                    MyPortApi.actionApi(actionName: 'retract',endpoint: 'motor_control')
                                         .then((value) {
                                       Navigator.of(context).pop();
                                       Navigator.of(context)
@@ -158,7 +105,7 @@ class _PlaceSampleState extends State<PlaceSample> {
                                     }).catchError((error) {
                                       Navigator.of(context).pop();
                                       Navigator.of(context)
-                                          .pushNamed(ErrorScreen.routeName);
+                                          .pushNamed(ErrorScreen.routeName,arguments: {'errorCode': error});
                                     });
                                     // if(!mounted) return;
                                   });

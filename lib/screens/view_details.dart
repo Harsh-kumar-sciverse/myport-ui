@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/app_constants.dart';
@@ -16,6 +17,46 @@ class ViewDetails extends StatefulWidget {
 }
 
 class _ViewDetailsState extends State<ViewDetails> {
+  final patients = Hive.box('patients');
+  String? platelets;
+  String? plateletsProb;
+  String? rbc;
+  String? rbcProb;
+  String? neutrophilNumber;
+  String? neutrophilProbability;
+  String? eosinophilNumber;
+  String? eosinophilProbability;
+  String? basophilNumber;
+  String? basophilProbability;
+  String? lymphocyteNumber;
+  String? lymphocyteProbability;
+  String? monocyteNumber;
+  String? monocyteProbability;
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    // final arguments1 = (ModalRoute.of(context)?.settings.arguments ??
+    //     <String, dynamic>{}) as Map;
+    // final key = arguments1['key'];
+    // final arguments = patients.get(key);
+    // platelets = (arguments['platelets']);
+    // plateletsProb = arguments['plateletsProb'];
+    // rbc = arguments['rbc'];
+    // rbcProb = arguments['rbcProb'];
+    // neutrophilNumber = arguments['neutrophils'];
+    // neutrophilProbability = arguments['neutrophilsProb'];
+    // eosinophilNumber = arguments['eosinophils'];
+    // eosinophilProbability = arguments['eosinophilProb'];
+    // basophilNumber = arguments['basophils'];
+    // basophilProbability = arguments['basophilProb'];
+    // lymphocyteNumber = arguments['lymphocyts'];
+    // lymphocyteProbability = arguments['lymphocytProb'];
+    // monocyteNumber = arguments['monocytes'];
+    // monocyteProbability = arguments['monocyteProb'];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,77 +65,23 @@ class _ViewDetailsState extends State<ViewDetails> {
         child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: NavigationBarWidget(
-              title: 'Final Report',
-              endWidget: Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.print,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      SharedPreferences preferences =
-                          await SharedPreferences.getInstance();
-                      preferences.remove('isLoggedIn');
-
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          Login.routeName, (route) => false);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.logout,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.power_settings_new,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      // Navigator.of(context).pop();
-                      await Share.share(
-                          'check out my website https://example.com');
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.share,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                ],
+            title: 'Final Report',
+            showLogoutIcon: true,
+            otherLastWidget: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(), backgroundColor: Colors.white),
+              child: const Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Icon(
+                  Icons.share,
+                  color: Color(AppConstants.primaryColor),
+                ),
               ),
-              startWidget: Image.asset('assets/logo.png')),
+            ),
+            showPowerOffIcon: true,
+            showWifiListIcon: true,
+          ),
         ),
       ),
       body: Padding(
@@ -125,60 +112,104 @@ class _ViewDetailsState extends State<ViewDetails> {
                                 style: AppConstants.tableColumnStyle)),
                       ],
                       rows: [
-                        DataRow(
-                            // color: MaterialStateColor.resolveWith((states) =>
-                            //     const Color(AppConstants.primaryColor)
-                            //         .withOpacity(0.8)),
-                            cells: [
-                              DataCell(Text(
-                                'Platelets',
-                                style: AppConstants.tableRowStyle,
-                              )),
-                              DataCell(Text(
-                                '0',
-                                style: AppConstants.tableRowStyle,
-                              )),
-                              DataCell(Text(
-                                '0',
-                                style: AppConstants.tableRowStyle,
-                              )),
-                            ]),
-                        DataRow(
-                            // color: MaterialStateColor.resolveWith((states) =>
-                            //     const Color(AppConstants.primaryColor)
-                            //         .withOpacity(0.8)),
-                            cells: [
-                              DataCell(Text(
-                                'RBC',
-                                style: AppConstants.tableRowStyle,
-                              )),
-                              DataCell(Text(
-                                '0',
-                                style: AppConstants.tableRowStyle,
-                              )),
-                              DataCell(Text(
-                                '0',
-                                style: AppConstants.tableRowStyle,
-                              )),
-                            ]),
-                        DataRow(
-                            // color: MaterialStateColor.resolveWith((states) =>
-                            //     const Color(AppConstants.primaryColor)
-                            //         .withOpacity(0.8)),
-                            cells: [
-                              DataCell(Text(
-                                'Platelets',
-                                style: AppConstants.tableRowStyle,
-                              )),
-                              DataCell(Text(
-                                '0',
-                                style: AppConstants.tableRowStyle,
-                              )),
-                              DataCell(Text(
-                                '0',
-                                style: AppConstants.tableRowStyle,
-                              )),
-                            ]),
+                        DataRow(cells: [
+                          DataCell(Text(
+                            'RBC',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                          DataCell(Text(
+                            '${rbc == null ? 0 : rbc.toString()}',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                          DataCell(Text(
+                            '${rbcProb == null ? 0 : double.parse(rbcProb.toString()).toStringAsFixed(2)}',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                        ]),
+                        DataRow(cells: [
+                          DataCell(Text(
+                            'Platelets',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                          DataCell(Text(
+                            '${platelets == null ? 0 : platelets.toString()}',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                          DataCell(Text(
+                            '${plateletsProb == null ? 0 : double.parse(plateletsProb.toString()).toStringAsFixed(2)}',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                        ]),
+                        DataRow(cells: [
+                          DataCell(Text(
+                            'Neutrophil',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                          DataCell(Text(
+                            '${neutrophilNumber ?? 0}',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                          DataCell(Text(
+                            '${neutrophilProbability == null ? 0 : neutrophilProbability}',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                        ]),
+                        DataRow(cells: [
+                          DataCell(Text(
+                            'Eosinophil',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                          DataCell(Text(
+                            '${eosinophilNumber ?? 0}',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                          DataCell(Text(
+                            '${eosinophilProbability == null ? 0 : eosinophilProbability}',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                        ]),
+                        DataRow(cells: [
+                          DataCell(Text(
+                            'Basophil',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                          DataCell(Text(
+                            '${basophilNumber ?? 0}',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                          DataCell(Text(
+                            '${basophilProbability == null ? 0 : basophilProbability}',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                        ]),
+                        DataRow(cells: [
+                          DataCell(Text(
+                            'Lymphocyte',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                          DataCell(Text(
+                            '${lymphocyteNumber ?? 0}',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                          DataCell(Text(
+                            '${lymphocyteProbability == null ? 0 : lymphocyteProbability}',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                        ]),
+                        DataRow(cells: [
+                          DataCell(Text(
+                            'Monocyte',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                          DataCell(Text(
+                            '${monocyteNumber ?? 0}',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                          DataCell(Text(
+                            '${monocyteProbability ?? 0}',
+                            style: AppConstants.tableRowStyle,
+                          )),
+                        ])
                       ]),
                 ),
               ],

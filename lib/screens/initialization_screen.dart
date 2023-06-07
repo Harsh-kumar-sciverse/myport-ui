@@ -20,6 +20,8 @@ class InitializationScreen extends StatefulWidget {
 class _InitializationScreenState extends State<InitializationScreen> {
   bool? isLoggedIn;
   late bool isInitializing;
+  String initializationName = 'Initializing';
+  double progressValue = 0;
 
   getSharedPreferences() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -33,15 +35,61 @@ class _InitializationScreenState extends State<InitializationScreen> {
     getSharedPreferences();
   }
 
-  Future initialize() async {
-    MyPortApi.actionApi('initialization').then((value) {
+  Future initialize1() async {
+    MyPortApi.actionApi(actionName: 'homing', endpoint: 'motor_control')
+        .then((value) {
+      initializationName = 'Homing done.';
+      progressValue = 0.25;
+    }).catchError((error) {
+      print('error code in initialization screen $error');
+
+      Navigator.of(context)
+          .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
+    });
+  }
+
+  Future initialize2() async {
+    MyPortApi.actionApi(actionName: 'center', endpoint: 'motor_control')
+        .then((value) {
+      initializationName = 'Centering done.';
+      progressValue = 0.50;
+    }).catchError((error) {
+      print('error code in initialization screen $error');
+
+      Navigator.of(context)
+          .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
+    });
+  }
+
+  Future initialize3() async {
+    MyPortApi.actionApi(actionName: 'camera_check', endpoint: 'motor_control')
+        .then((value) {
+      initializationName = 'Camera Check done.';
+      progressValue = 0.75;
+    }).catchError((error) {
+      print('error code in initialization screen $error');
+
+      Navigator.of(context)
+          .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
+    });
+  }
+
+  Future initialize4() async {
+    MyPortApi.actionApi(
+            actionName: 'condenser_check', endpoint: 'motor_control')
+        .then((value) {
+      initializationName = 'Condenser Check done.';
+      progressValue = 1;
       if (isLoggedIn == null) {
         Navigator.of(context).pushNamed(Login.routeName);
       } else {
         Navigator.of(context).pushReplacementNamed(Home.routeName);
       }
     }).catchError((error) {
-      Navigator.of(context).pushNamed(ErrorScreen.routeName);
+      print('error code in initialization screen $error');
+
+      Navigator.of(context)
+          .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
     });
   }
 
@@ -49,7 +97,10 @@ class _InitializationScreenState extends State<InitializationScreen> {
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    await initialize();
+    await initialize1();
+    await initialize2();
+    await initialize3();
+    await initialize4();
   }
 
   @override
@@ -60,47 +111,12 @@ class _InitializationScreenState extends State<InitializationScreen> {
         child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: NavigationBarWidget(
-              title: 'Initialization',
-              endWidget: Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      SharedPreferences preferences =
-                          await SharedPreferences.getInstance();
-                      preferences.remove('isLoggedIn');
-
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          Login.routeName, (route) => false);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.wifi,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.power_settings_new,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              startWidget: Image.asset('assets/logo.png')),
+            title: 'Initialization',
+            showLogoutIcon: false,
+            otherLastWidget: Container(),
+            showPowerOffIcon: true,
+            showWifiListIcon: true,
+          ),
         ),
       ),
       body: Padding(
@@ -109,9 +125,9 @@ class _InitializationScreenState extends State<InitializationScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              'Checking all validations',
-              style: TextStyle(
+            Text(
+              initializationName,
+              style: const TextStyle(
                 fontWeight: FontWeight.w900,
                 fontSize: 20,
               ),
@@ -124,11 +140,12 @@ class _InitializationScreenState extends State<InitializationScreen> {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width / 2,
                 height: 30,
-                child: const ClipRRect(
+                child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     child: LinearProgressIndicator(
-                      color: Color(AppConstants.primaryColor),
+                      color: const Color(AppConstants.primaryColor),
                       backgroundColor: Colors.white,
+                      value: progressValue,
                     )
                     // LinearTimer(
                     //   color: const Color(AppConstants.primaryColor),

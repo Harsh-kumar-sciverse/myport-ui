@@ -28,42 +28,12 @@ class _LoginState extends State<Login> {
         child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: NavigationBarWidget(
-              title: 'Login',
-              endWidget: Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigator.of(context).pushNamed(History.routeName);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.wifi,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.power_settings_new,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              startWidget: Image.asset('assets/logo.png')),
+            title: 'Login',
+            showLogoutIcon: false,
+            otherLastWidget: Container(),
+            showPowerOffIcon: true,
+            showWifiListIcon: true,
+          ),
         ),
       ),
       body: Form(

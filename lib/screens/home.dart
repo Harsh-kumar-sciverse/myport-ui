@@ -24,65 +24,8 @@ class _HomeState extends State<Home> {
         child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: NavigationBarWidget(
-            title: 'Home',
-            endWidget: Row(
-              children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    // Navigator.of(context).pushNamed(History.routeName);
-                    SharedPreferences preferences =
-                        await SharedPreferences.getInstance();
-                    preferences.remove('isLoggedIn');
+            title: 'Home', showLogoutIcon: true, otherLastWidget: Container(), showPowerOffIcon: true, showWifiListIcon: true,
 
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        Login.routeName, (route) => false);
-                  },
-                  style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      backgroundColor: Colors.white),
-                  child: const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.logout,
-                      color: Color(AppConstants.primaryColor),
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Navigator.of(context).pushNamed(History.routeName);
-                  },
-                  style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      backgroundColor: Colors.white),
-                  child: const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.wifi,
-                      color: Color(AppConstants.primaryColor),
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Navigator.of(context).pop();
-                  },
-                  style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      backgroundColor: Colors.white),
-                  child: const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.power_settings_new,
-                      color: Color(AppConstants.primaryColor),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            startWidget: Image.asset(
-              'assets/logo.png',
-            ),
           ),
         ),
       ),

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 import 'package:my_port/constants/app_constants.dart';
 import 'package:my_port/screens/home.dart';
 import 'package:my_port/screens/place_sample_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../provider/patient_details_provider.dart';
 import '../widgets/navigation_bar-widget.dart';
 import 'login.dart';
+import 'package:provider/provider.dart';
 
 enum gender { Male, Female, Other }
 
@@ -33,62 +36,8 @@ class _PatientDetailsState extends State<PatientDetails> {
         child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: NavigationBarWidget(
-              title: 'Add Details',
-              endWidget: Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      SharedPreferences preferences =
-                          await SharedPreferences.getInstance();
-                      preferences.remove('isLoggedIn');
-
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          Login.routeName, (route) => false);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.logout,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.wifi,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.power_settings_new,
-                        color: Color(AppConstants.primaryColor),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              startWidget: Image.asset('assets/logo.png')),
+              title: 'Add Details', showLogoutIcon: true, otherLastWidget: Container(), showPowerOffIcon: true, showWifiListIcon: true,
+            ),
         ),
       ),
       body: Column(
@@ -263,6 +212,13 @@ class _PatientDetailsState extends State<PatientDetails> {
                                       onPressed: () async {
                                         if (formKey.currentState!.validate()) {
                                           formKey.currentState!.save();
+                                          Provider.of<PatientDetailsProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .setPatient(
+                                                  pName: nameController.text,
+                                                  pAge: ageController.text,
+                                                  pGender: selectedGender.name);
                                           Navigator.of(context)
                                               .pushNamed(PlaceSample.routeName);
                                         }
