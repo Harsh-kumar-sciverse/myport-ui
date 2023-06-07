@@ -83,12 +83,13 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
       monocyteProbability = value['data']['counts']['Monocyte_conf'].toString();
 
       String id = uuid.v4();
-      print(Provider.of<PatientDetailsProvider>(context).name!);
-      print(Provider.of<PatientDetailsProvider>(context).age!);
+      print(Provider.of<PatientDetailsProvider>(context, listen: false).name!);
+      print(Provider.of<PatientDetailsProvider>(context, listen: false).age!);
 
       await createItem({
-        "name": Provider.of<PatientDetailsProvider>(context).name!,
-        "age": Provider.of<PatientDetailsProvider>(context).age!,
+        "name":
+            Provider.of<PatientDetailsProvider>(context, listen: false).name!,
+        "age": Provider.of<PatientDetailsProvider>(context, listen: false).age!,
         "id": id,
         "time": DateFormat('dd-MM-yyyy – kk:mm').format(DateTime.now()),
         'platelets': '$plateletsNumber',
