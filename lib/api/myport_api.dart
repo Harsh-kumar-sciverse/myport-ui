@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class MyPortApi {
-  static Future actionApi({required String actionName,required String endpoint}) async {
-    var url = Uri.parse('http://192.168.1.104:8000/$endpoint');
+  static Future actionApi(
+      {required String actionName, required String endpoint}) async {
+    var url = Uri.parse('http://192.168.1.103:8000/$endpoint');
     var response = await http.post(
       url,
       headers: <String, String>{
@@ -18,5 +19,4 @@ class MyPortApi {
       throw response.statusCode;
     }
   }
-
 }
