@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:my_port/provider/patient_details_provider.dart';
+import 'package:my_port/screens/calibration.dart';
 import 'package:my_port/screens/error_screen.dart';
 import 'package:my_port/screens/history.dart';
 import 'package:my_port/screens/home.dart';
@@ -48,6 +49,7 @@ class _MyPortState extends State<MyPort> {
           MainDashboard.routeName: (_) => const MainDashboard(),
           ErrorScreen.routeName: (_) => const ErrorScreen(),
           ViewDetails.routeName: (_) => const ViewDetails(),
+          Calibration.routeName: (_) => const Calibration(),
         },
       ),
     );

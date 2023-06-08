@@ -7,6 +7,10 @@ import '../widgets/navigation_bar-widget.dart';
 import 'home.dart';
 import 'login.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 class ViewDetails extends StatefulWidget {
   static const routeName = 'view-details';
@@ -32,29 +36,30 @@ class _ViewDetailsState extends State<ViewDetails> {
   String? lymphocyteProbability;
   String? monocyteNumber;
   String? monocyteProbability;
+  final pdf = pw.Document();
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    final arguments1 = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
-    final key = arguments1['key'];
-    final arguments = patients.get(key);
-    platelets = (arguments['platelets']);
-    plateletsProb = arguments['plateletsProb'];
-    rbc = arguments['rbc'];
-    rbcProb = arguments['rbcProb'];
-    neutrophilNumber = arguments['neutrophils'];
-    neutrophilProbability = arguments['neutrophilsProb'];
-    eosinophilNumber = arguments['eosinophils'];
-    eosinophilProbability = arguments['eosinophilProb'];
-    basophilNumber = arguments['basophils'];
-    basophilProbability = arguments['basophilProb'];
-    lymphocyteNumber = arguments['lymphocyts'];
-    lymphocyteProbability = arguments['lymphocytProb'];
-    monocyteNumber = arguments['monocytes'];
-    monocyteProbability = arguments['monocyteProb'];
+    // final arguments1 = (ModalRoute.of(context)?.settings.arguments ??
+    //     <String, dynamic>{}) as Map;
+    // final key = arguments1['key'];
+    // final arguments = patients.get(key);
+    // platelets = (arguments['platelets']);
+    // plateletsProb = arguments['plateletsProb'];
+    // rbc = arguments['rbc'];
+    // rbcProb = arguments['rbcProb'];
+    // neutrophilNumber = arguments['neutrophils'];
+    // neutrophilProbability = arguments['neutrophilsProb'];
+    // eosinophilNumber = arguments['eosinophils'];
+    // eosinophilProbability = arguments['eosinophilProb'];
+    // basophilNumber = arguments['basophils'];
+    // basophilProbability = arguments['basophilProb'];
+    // lymphocyteNumber = arguments['lymphocyts'];
+    // lymphocyteProbability = arguments['lymphocytProb'];
+    // monocyteNumber = arguments['monocytes'];
+    // monocyteProbability = arguments['monocyteProb'];
   }
 
   @override
@@ -68,7 +73,21 @@ class _ViewDetailsState extends State<ViewDetails> {
             title: 'Final Report',
             showLogoutIcon: true,
             otherLastWidget: ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                // pdf.addPage(pw.Page(
+                //     pageFormat: PdfPageFormat.a4,
+                //     build: (pw.Context context) {
+                //       return pw.Center(
+                //         child: pw.Text("Hello World"),
+                //       ); // Center
+                //     }));
+                final file = File('C:/Users/HARSH/my_folder/example.pdf');
+                XFile file2 = XFile(file.path);
+                // await file.writeAsBytes(await pdf.save());
+                Share.shareXFiles([file2], subject: 'wedwwedw');
+
+                // On Flutter, use the [path_provider](https://pub.dev/packages/path_provider) library:
+              },
               style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(), backgroundColor: Colors.white),
               child: const Padding(

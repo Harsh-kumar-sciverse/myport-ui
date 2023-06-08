@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_port/screens/calibration.dart';
 import 'package:my_port/screens/history.dart';
 import 'package:my_port/screens/login.dart';
 import 'package:my_port/screens/patient_details.dart';
@@ -24,8 +25,11 @@ class _HomeState extends State<Home> {
         child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: NavigationBarWidget(
-            title: 'Home', showLogoutIcon: true, otherLastWidget: Container(), showPowerOffIcon: true, showWifiListIcon: true,
-
+            title: 'Home',
+            showLogoutIcon: true,
+            otherLastWidget: Container(),
+            showPowerOffIcon: true,
+            showWifiListIcon: true,
           ),
         ),
       ),
@@ -37,20 +41,7 @@ class _HomeState extends State<Home> {
           children: [
             InkWell(
               onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    backgroundColor: Color(AppConstants.primaryColor),
-                    content: Text(
-                      'Already calibrated.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                );
+                Navigator.of(context).pushNamed(Calibration.routeName);
               },
               child: Container(
                 height: 100,

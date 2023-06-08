@@ -53,26 +53,26 @@ class _MainDashboardState extends State<MainDashboard> {
     print('response in main dash ${arguments['response']}');
     imageData = arguments['response']['data']['predictions'];
     print('image data $imageData');
-    platelets = (arguments['platelets']);
-    plateletsProb = arguments['plateletsProb'];
-    rbc = arguments['rbc'];
-    rbcProb = arguments['rbcProb'];
-    neutrophilNumber = arguments['neutrophils'];
-    neutrophilProbability = arguments['neutrophilsProb'];
-    eosinophilNumber = arguments['eosinophils'];
-    eosinophilProbability = arguments['eosinophilProb'];
-    basophilNumber = arguments['basophils'];
-    basophilProbability = arguments['basophilProb'];
-    lymphocyteNumber = arguments['lymphocyts'];
-    lymphocyteProbability = arguments['lymphocytProb'];
-    monocyteNumber = arguments['monocytes'];
-    monocyteProbability = arguments['monocyteProb'];
+    platelets = (arguments['platelets']).toString();
+    plateletsProb = arguments['plateletsProb'].toString();
+    rbc = arguments['rbc'].toString();
+    rbcProb = arguments['rbcProb'].toString();
+    neutrophilNumber = arguments['neutrophils'].toString();
+    neutrophilProbability = arguments['neutrophilsProb'].toString();
+    eosinophilNumber = arguments['eosinophils'].toString();
+    eosinophilProbability = arguments['eosinophilProb'].toString();
+    basophilNumber = arguments['basophils'].toString();
+    basophilProbability = arguments['basophilProb'].toString();
+    lymphocyteNumber = arguments['lymphocyts'].toString();
+    lymphocyteProbability = arguments['lymphocytProb'].toString();
+    monocyteNumber = arguments['monocytes'].toString();
+    monocyteProbability = arguments['monocyteProb'].toString();
     print('data after navigate from showgif $arguments');
     print('data after navigate from showgif $arguments');
     cells = imageData!
         .map((data) => CellModel(
-            cellName: data['tag_name'],
-            probability: data['probability'],
+            cellName: data['tag_name'].toString(),
+            probability: data['probability'].toString(),
             cellPath: 'image_path'))
         .toList();
   }
@@ -410,57 +410,59 @@ class _MainDashboardState extends State<MainDashboard> {
               child: Column(
                 children: [
                   Expanded(
-                    child: queryCells==null? GridView.builder(
-                        primary: false,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 5,
-                          mainAxisSpacing: 2,
-                          crossAxisSpacing: 2,
-                        ),
-                        itemCount: cells.length,
-                        itemBuilder: (context, index) {
-                          String path = '/home/sci/Documents/ViewPort/app/';
-                          final completePath = path + cells![index].cellPath;
-                          final myFile = File(completePath);
-                          print(path + completePath);
+                    child: queryCells == null
+                        ? GridView.builder(
+                            primary: false,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 5,
+                              mainAxisSpacing: 2,
+                              crossAxisSpacing: 2,
+                            ),
+                            itemCount: cells.length,
+                            itemBuilder: (context, index) {
+                              String path = '/home/sci/Documents/ViewPort/app/';
+                              final completePath =
+                                  path + cells![index].cellPath;
+                              final myFile = File(completePath);
+                              print(path + completePath);
 
-                          return Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: const Color(
-                                        AppConstants.primaryColor))),
-                            child: Image.file(myFile),
-                          );
-                        }):
-                    GridView.builder(
-                        primary: false,
-                        gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 5,
-                          mainAxisSpacing: 2,
-                          crossAxisSpacing: 2,
-                        ),
-                        itemCount: queryCells!.length,
-                        itemBuilder: (context, index) {
-                          String path = '/home/sci/Documents/ViewPort/app/';
-                          final completePath = path + queryCells![index].cellPath;
-                          final myFile = File(completePath);
-                          print(path + completePath);
+                              return Container(
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: const Color(
+                                            AppConstants.primaryColor))),
+                                child: Image.file(myFile),
+                              );
+                            })
+                        : GridView.builder(
+                            primary: false,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 5,
+                              mainAxisSpacing: 2,
+                              crossAxisSpacing: 2,
+                            ),
+                            itemCount: queryCells!.length,
+                            itemBuilder: (context, index) {
+                              String path = '/home/sci/Documents/ViewPort/app/';
+                              final completePath =
+                                  path + queryCells![index].cellPath;
+                              final myFile = File(completePath);
+                              print(path + completePath);
 
-                          return Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: const Color(
-                                        AppConstants.primaryColor))),
-                            child: Image.file(myFile),
-                          );
-                        })
-                    ,
+                              return Container(
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: const Color(
+                                            AppConstants.primaryColor))),
+                                child: Image.file(myFile),
+                              );
+                            }),
                   ),
                 ],
               ),
@@ -498,7 +500,9 @@ class _MainDashboardState extends State<MainDashboard> {
                           //     const Color(AppConstants.primaryColor)
                           //         .withOpacity(0.8)),
                           onSelectChanged: (val) {
-                            queryCells=cells.where((cell) => cell.cellName.contains('RBC')).toList();
+                            queryCells = cells
+                                .where((cell) => cell.cellName.contains('RBC'))
+                                .toList();
                             setState(() {
                               selectedIndex = 0;
                             });
@@ -523,7 +527,10 @@ class _MainDashboardState extends State<MainDashboard> {
                           //     const Color(AppConstants.primaryColor)
                           //         .withOpacity(0.8)),
                           onSelectChanged: (val) {
-                            queryCells=cells.where((cell) => cell.cellName.contains('Pletelets')).toList();
+                            queryCells = cells
+                                .where((cell) =>
+                                    cell.cellName.contains('Pletelets'))
+                                .toList();
                             setState(() {
                               selectedIndex = 1;
                             });
@@ -548,7 +555,10 @@ class _MainDashboardState extends State<MainDashboard> {
                           //     const Color(AppConstants.primaryColor)
                           //         .withOpacity(0.8)),
                           onSelectChanged: (val) {
-                            queryCells=cells.where((cell) => cell.cellName.contains('Neutrophil')).toList();
+                            queryCells = cells
+                                .where((cell) =>
+                                    cell.cellName.contains('Neutrophil'))
+                                .toList();
                             setState(() {
                               selectedIndex = 2;
                             });
@@ -573,7 +583,10 @@ class _MainDashboardState extends State<MainDashboard> {
                           //     const Color(AppConstants.primaryColor)
                           //         .withOpacity(0.8)),
                           onSelectChanged: (val) {
-                            queryCells=cells.where((cell) => cell.cellName.contains('Eosinophil')).toList();
+                            queryCells = cells
+                                .where((cell) =>
+                                    cell.cellName.contains('Eosinophil'))
+                                .toList();
                             setState(() {
                               selectedIndex = 3;
                             });
@@ -598,7 +611,10 @@ class _MainDashboardState extends State<MainDashboard> {
                           //     const Color(AppConstants.primaryColor)
                           //         .withOpacity(0.8)),
                           onSelectChanged: (val) {
-                            queryCells=cells.where((cell) => cell.cellName.contains('Basophil')).toList();
+                            queryCells = cells
+                                .where((cell) =>
+                                    cell.cellName.contains('Basophil'))
+                                .toList();
                             setState(() {
                               selectedIndex = 4;
                             });
@@ -623,7 +639,10 @@ class _MainDashboardState extends State<MainDashboard> {
                           //     const Color(AppConstants.primaryColor)
                           //         .withOpacity(0.8)),
                           onSelectChanged: (val) {
-                            queryCells=cells.where((cell) => cell.cellName.contains('Lymphocyte')).toList();
+                            queryCells = cells
+                                .where((cell) =>
+                                    cell.cellName.contains('Lymphocyte'))
+                                .toList();
                             setState(() {
                               selectedIndex = 5;
                             });
@@ -648,7 +667,10 @@ class _MainDashboardState extends State<MainDashboard> {
                           //     const Color(AppConstants.primaryColor)
                           //         .withOpacity(0.8)),
                           onSelectChanged: (val) {
-                            queryCells=cells.where((cell) => cell.cellName.contains('Monocyte')).toList();
+                            queryCells = cells
+                                .where((cell) =>
+                                    cell.cellName.contains('Monocyte'))
+                                .toList();
                             setState(() {
                               selectedIndex = 6;
                             });
@@ -673,7 +695,7 @@ class _MainDashboardState extends State<MainDashboard> {
                           //     const Color(AppConstants.primaryColor)
                           //         .withOpacity(0.8)),
                           onSelectChanged: (val) {
-                            queryCells=null;
+                            queryCells = null;
                             setState(() {
                               selectedIndex = 6;
                             });
