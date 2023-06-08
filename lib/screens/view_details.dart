@@ -42,24 +42,24 @@ class _ViewDetailsState extends State<ViewDetails> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    // final arguments1 = (ModalRoute.of(context)?.settings.arguments ??
-    //     <String, dynamic>{}) as Map;
-    // final key = arguments1['key'];
-    // final arguments = patients.get(key);
-    // platelets = (arguments['platelets']);
-    // plateletsProb = arguments['plateletsProb'];
-    // rbc = arguments['rbc'];
-    // rbcProb = arguments['rbcProb'];
-    // neutrophilNumber = arguments['neutrophils'];
-    // neutrophilProbability = arguments['neutrophilsProb'];
-    // eosinophilNumber = arguments['eosinophils'];
-    // eosinophilProbability = arguments['eosinophilProb'];
-    // basophilNumber = arguments['basophils'];
-    // basophilProbability = arguments['basophilProb'];
-    // lymphocyteNumber = arguments['lymphocyts'];
-    // lymphocyteProbability = arguments['lymphocytProb'];
-    // monocyteNumber = arguments['monocytes'];
-    // monocyteProbability = arguments['monocyteProb'];
+    final arguments1 = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
+    final key = arguments1['key'];
+    final arguments = patients.get(key);
+    platelets = (arguments['platelets']);
+    plateletsProb = arguments['plateletsProb'];
+    rbc = arguments['rbc'];
+    rbcProb = arguments['rbcProb'];
+    neutrophilNumber = arguments['neutrophils'];
+    neutrophilProbability = arguments['neutrophilsProb'];
+    eosinophilNumber = arguments['eosinophils'];
+    eosinophilProbability = arguments['eosinophilProb'];
+    basophilNumber = arguments['basophils'];
+    basophilProbability = arguments['basophilProb'];
+    lymphocyteNumber = arguments['lymphocyts'];
+    lymphocyteProbability = arguments['lymphocytProb'];
+    monocyteNumber = arguments['monocytes'];
+    monocyteProbability = arguments['monocyteProb'];
   }
 
   @override
