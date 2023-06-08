@@ -1,33 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:my_port/constants/app_constants.dart';
 
 class AppDialogs {
   static showErrorDialog({
     required BuildContext context,
     required String content,
+    required Image image,
   }) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Row(
-              children: const [
-                Icon(
-                  Icons.error,
-                  color: Colors.red,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
+            actionsPadding:
+                const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  content,
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color(AppConstants.primaryColor)),
                 ),
-                SizedBox(
-                  width: 10,
+                const SizedBox(
+                  height: 20,
                 ),
-                Text('Error occurred !'),
+                image
               ],
             ),
-            content: Text(content),
+            actionsAlignment: MainAxisAlignment.center,
             actions: [
-              TextButton(
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  )),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text('Ok'))
+                  child: const Padding(
+                    padding:
+                        EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
+                    child: Text('Ok'),
+                  )),
             ],
           );
         });
@@ -36,49 +54,58 @@ class AppDialogs {
   static showAttentionDialog(
       {required BuildContext context,
       required String content,
-      required String title,
+      required Image image,
       required VoidCallback function}) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Row(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
+            actionsPadding:
+                const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(
-                  Icons.error,
-                  color: Colors.red,
+                Text(
+                  content,
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color(AppConstants.primaryColor)),
                 ),
                 const SizedBox(
-                  width: 10,
+                  height: 20,
                 ),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
+                image
               ],
             ),
-            content: Text(content),
             actionsAlignment: MainAxisAlignment.spaceBetween,
             actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text(
-                  'No',
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              TextButton(
-                onPressed: function,
-                child: const Text(
-                  'Yes',
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  )),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Padding(
+                    padding:
+                        EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
+                    child: Text('No'),
+                  )),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  )),
+                  onPressed: function,
+                  child: const Padding(
+                    padding:
+                        EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
+                    child: Text('Yes'),
+                  )),
             ],
           );
         });
@@ -89,12 +116,29 @@ class AppDialogs {
         barrierDismissible: false,
         context: context,
         builder: (context) {
-          return const AlertDialog(
-            contentPadding: EdgeInsets.all(20),
-            content: SizedBox(
-                height: 30,
-                width: 30,
-                child: Center(child: CircularProgressIndicator())),
+          return AlertDialog(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
+            contentPadding: const EdgeInsets.all(20),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                Text(
+                  'Please wait...',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color(AppConstants.primaryColor)),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: Center(child: CircularProgressIndicator())),
+              ],
+            ),
           );
         });
   }

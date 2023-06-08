@@ -34,9 +34,9 @@ class _MyPortState extends State<MyPort> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: AppConstants.primaryBlue,
-          fontFamily: GoogleFonts.openSans().fontFamily,
-        ),
+            primarySwatch: AppConstants.primaryBlue,
+            fontFamily: GoogleFonts.openSans().fontFamily,
+            dividerColor: Colors.transparent),
         home: const InitializationScreen(),
         routes: {
           Login.routeName: (_) => const Login(),

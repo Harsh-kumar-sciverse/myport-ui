@@ -134,7 +134,9 @@ class _LoginState extends State<Login> {
                                         AppDialogs.showErrorDialog(
                                             context: context,
                                             content:
-                                                'Id password didn\'t match.');
+                                                'Id password didn\'t match.',
+                                            image: Image.asset(
+                                                'assets/error.png'));
                                         return;
                                       }
                                     }

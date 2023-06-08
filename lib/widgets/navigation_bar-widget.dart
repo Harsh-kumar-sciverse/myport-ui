@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:my_port/api/myport_api.dart';
 import 'package:my_port/constants/app_dialogs.dart';
@@ -28,41 +30,70 @@ class NavigationBarWidget extends StatefulWidget {
 }
 
 class _NavigationBarWidgetState extends State<NavigationBarWidget> {
-  List<String> wifiList = [];
+  List<dynamic> wifiList = [];
   bool isLoading = false;
   String connectedWifi = '';
   String gettingWifiError = '';
   final wifiPasswordController = TextEditingController();
   bool passwordInputLoading = false;
+  Timer? timer;
 
   getConnectedWifi() {
+    setState(() {
+      isLoading = true;
+    });
     MyPortApi.actionApi(actionName: 'wifi_status', endpoint: 'system')
         .then((value) {
-      print(value['message']);
+      setState(() {
+        isLoading = false;
+      });
+
       connectedWifi = value['message'];
+      getListOfWifi();
     }).catchError((error) {
+      setState(() {
+        isLoading = false;
+      });
       print('error getting connected wifi $error');
     });
   }
 
   getListOfWifi() {
-    isLoading = true;
-
+    setState(() {
+      isLoading = true;
+    });
     MyPortApi.actionApi(actionName: 'wifi_list', endpoint: 'system')
         .then((value) {
-      isLoading = false;
+      wifiList = [];
+      wifiList.addAll(value['message']);
+      wifiList.remove(connectedWifi);
 
-      wifiList.add(value['wifi_list']);
+      setState(() {
+        isLoading = false;
+      });
+
+      print('wifi ls $value');
     }).catchError((error) {
       print('error getting list of wifi $error');
-
       gettingWifiError = 'Unable to get nearby wifi';
-      isLoading = false;
+      setState(() {
+        isLoading = false;
+      });
     });
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    if (timer != null) {
+      timer!.cancel();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print(isLoading);
     return Container(
       height: 100,
       padding: const EdgeInsets.all(20),
@@ -107,73 +138,134 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
                 ),
               if (widget.showWifiListIcon)
                 ElevatedButton(
-                  onPressed: () async {
+                  onPressed: () {
                     // Navigator.of(context).pop();
-
-                    setState(() {
-                      isLoading = true;
-                    });
-                    await getConnectedWifi();
-                    await getListOfWifi();
-                    setState(() {
-                      isLoading = false;
-                    });
-
+                    getConnectedWifi();
                     showDialog(
                         context: context,
                         builder: (context) {
                           return StatefulBuilder(builder: (context, setState) {
+                            print('isLoading in dialog $isLoading');
+
+                            timer = Timer.periodic(const Duration(seconds: 2),
+                                (Timer t) {
+                              if (!mounted) return;
+                              setState(() {});
+                            });
                             return AlertDialog(
-                              title: Text('Wi-Fi Networks'),
+                              title: const Text('Wi-Fi Networks'),
                               alignment: Alignment.topRight,
-                              content: Container(
-                                  child: isLoading
-                                      ? const SizedBox(
-                                          height: 30,
-                                          width: 30,
-                                          child: Center(
-                                              child:
-                                                  CircularProgressIndicator()))
-                                      : wifiList.isEmpty
-                                          ? gettingWifiError.isEmpty
-                                              ? const Text('No wifi available')
-                                              : Text(gettingWifiError)
-                                          : ListView.builder(
-                                              shrinkWrap: true,
-                                              itemCount: wifiList.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                return ExpansionTile(
-                                                  title: Text(wifiList[index] ==
-                                                          connectedWifi
-                                                      ? '${wifiList[index]} (Connected)'
-                                                      : wifiList[index]),
-                                                  children: [
-                                                    const Text(
-                                                        'Enter password for the wifi'),
-                                                    const SizedBox(
-                                                      height: 3,
-                                                    ),
-                                                    TextFormField(
-                                                      controller:
-                                                          wifiPasswordController,
-                                                    ),
-                                                    passwordInputLoading
-                                                        ? const CircularProgressIndicator()
-                                                        : ElevatedButton(
-                                                            onPressed: () {
-                                                              setState(() {
-                                                                passwordInputLoading =
-                                                                    true;
-                                                              });
-                                                            },
-                                                            child: const Text(
-                                                                'Submit'))
-                                                  ],
-                                                );
-                                              },
-                                            )),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  if (connectedWifi.isNotEmpty)
+                                    Text(
+                                      'Connected to $connectedWifi',
+                                      style: const TextStyle(
+                                        color: Colors.green,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                      child: isLoading
+                                          ? const SizedBox(
+                                              height: 30,
+                                              width: 30,
+                                              child: Center(
+                                                  child:
+                                                      CircularProgressIndicator()))
+                                          : wifiList.isEmpty
+                                              ? gettingWifiError.isEmpty
+                                                  ? const Text(
+                                                      'No wifi available')
+                                                  : Text(gettingWifiError)
+                                              : SizedBox(
+                                                  width: 300,
+                                                  height: 300,
+                                                  child: ListView.builder(
+                                                    shrinkWrap: true,
+                                                    itemCount: wifiList.length,
+                                                    itemBuilder:
+                                                        (BuildContext context,
+                                                            int index) {
+                                                      return ExpansionTile(
+                                                        expandedCrossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        title: Text(
+                                                            wifiList[index]
+                                                                .toString()),
+                                                        children: [
+                                                          const Text(
+                                                              'Enter password for the wifi'),
+                                                          const SizedBox(
+                                                            height: 3,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                wifiPasswordController,
+                                                            decoration:
+                                                                const InputDecoration(
+                                                                    border:
+                                                                        OutlineInputBorder()),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 3,
+                                                          ),
+                                                          passwordInputLoading
+                                                              ? const CircularProgressIndicator()
+                                                              : ElevatedButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    setState(
+                                                                        () {
+                                                                      passwordInputLoading =
+                                                                          true;
+                                                                    });
+                                                                    MyPortApi.sendRequestToConnectWifi(
+                                                                            ssid: wifiList[index]
+                                                                                .toString(),
+                                                                            password: wifiPasswordController
+                                                                                .text)
+                                                                        .then(
+                                                                            (value) {
+                                                                      setState(
+                                                                          () {
+                                                                        passwordInputLoading =
+                                                                            false;
+                                                                      });
+                                                                      wifiPasswordController
+                                                                          .text = '';
+                                                                      print(
+                                                                          'response in connecting new wifi $value');
+                                                                      getConnectedWifi();
+                                                                    }).catchError(
+                                                                            (error) {
+                                                                      wifiPasswordController
+                                                                          .text = '';
+                                                                      print(
+                                                                          'error connecting new wifi $error');
+                                                                      setState(
+                                                                          () {
+                                                                        passwordInputLoading =
+                                                                            false;
+                                                                      });
+                                                                    });
+                                                                  },
+                                                                  child: const Text(
+                                                                      'Submit'))
+                                                        ],
+                                                      );
+                                                    },
+                                                  ),
+                                                )),
+                                ],
+                              ),
                             );
                           });
                         });
@@ -195,8 +287,7 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
                     // Navigator.of(context).pop();
                     AppDialogs.showAttentionDialog(
                         context: context,
-                        content: 'System will shutdown.',
-                        title: 'Are you sure?',
+                        content: 'Are you sure?\nSystem will shutdown.',
                         function: () {
                           Navigator.of(context).pop();
                           AppDialogs.showCircularDialog(context: context);
@@ -208,7 +299,8 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
                                 ErrorScreen.routeName,
                                 arguments: {'errorCode': error});
                           });
-                        });
+                        },
+                        image: Image.asset('assets/power.png'));
                   },
                   style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),

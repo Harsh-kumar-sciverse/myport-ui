@@ -23,9 +23,15 @@ class PlaceSample extends StatefulWidget {
 
 class _PlaceSampleState extends State<PlaceSample> {
   bool isSending = false;
+  bool isVisible = false;
 
   Future ejectApi() async {
-    MyPortApi.actionApi(actionName: 'eject',endpoint: 'motor_control').then((value) {}).catchError((error) {
+    MyPortApi.actionApi(actionName: 'eject', endpoint: 'motor_control')
+        .then((value) {
+      setState(() {
+        isVisible = true;
+      });
+    }).catchError((error) {
       Navigator.of(context)
           .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
     });
@@ -52,7 +58,11 @@ class _PlaceSampleState extends State<PlaceSample> {
         child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: NavigationBarWidget(
-              title: 'Start Test', showLogoutIcon: true, otherLastWidget: Container(), showPowerOffIcon: true, showWifiListIcon: true,
+            title: 'Start Test',
+            showLogoutIcon: true,
+            otherLastWidget: Container(),
+            showPowerOffIcon: true,
+            showWifiListIcon: true,
           ),
         ),
       ),
@@ -78,47 +88,51 @@ class _PlaceSampleState extends State<PlaceSample> {
                   const SizedBox(
                     height: 40,
                   ),
-                  SizedBox(
-                    width: 400,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.all(20),
-                            ),
-                            onPressed: () async {
-                              AppDialogs.showAttentionDialog(
-                                  context: context,
-                                  content:
-                                      'Have you put the cartridge on the tray?',
-                                  title: 'Attention',
-                                  function: () {
-                                    Navigator.of(context).pop();
-                                    AppDialogs.showCircularDialog(
-                                        context: context);
-                                    MyPortApi.actionApi(actionName: 'retract',endpoint: 'motor_control')
-                                        .then((value) {
+                  if (isVisible)
+                    SizedBox(
+                      width: 460,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.all(20),
+                              ),
+                              onPressed: () async {
+                                AppDialogs.showAttentionDialog(
+                                    context: context,
+                                    image: Image.asset('assets/cartridge.png'),
+                                    content:
+                                        'Have you put\nthe cartridge on the tray?',
+                                    function: () {
                                       Navigator.of(context).pop();
-                                      Navigator.of(context)
-                                          .pushNamed(ShowGifVideo.routeName);
-                                    }).catchError((error) {
-                                      Navigator.of(context).pop();
-                                      Navigator.of(context)
-                                          .pushNamed(ErrorScreen.routeName,arguments: {'errorCode': error});
+                                      AppDialogs.showCircularDialog(
+                                          context: context);
+                                      MyPortApi.actionApi(
+                                              actionName: 'retract',
+                                              endpoint: 'motor_control')
+                                          .then((value) {
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context)
+                                            .pushNamed(ShowGifVideo.routeName);
+                                      }).catchError((error) {
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pushNamed(
+                                            ErrorScreen.routeName,
+                                            arguments: {'errorCode': error});
+                                      });
+                                      // if(!mounted) return;
                                     });
-                                    // if(!mounted) return;
-                                  });
-                            },
-                            child: const Text(
-                              'Start Test',
-                              style: TextStyle(fontSize: 20),
+                              },
+                              child: const Text(
+                                'Start Test',
+                                style: TextStyle(fontSize: 20),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),

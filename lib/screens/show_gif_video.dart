@@ -167,7 +167,6 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // sendDataToScan();
     scanSample();
     subscription = Directory('/home/sci/Documents/ViewPort/app/temp')
         .watch(recursive: false, events: FileSystemEvent.create)
@@ -185,6 +184,26 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
 
   @override
   Widget build(BuildContext context) {
+    // List<String> imagePathList = [
+    //   '/home/sci/Documents/ViewPort/app/temp/1_1.jpg',
+    //   '/home/sci/Documents/ViewPort/app/temp/2_2.jpg',
+    //   '/home/sci/Documents/ViewPort/app/temp/3_3.jpg',
+    //   '/home/sci/Documents/ViewPort/app/temp/4_4.png',
+    //   '/home/sci/Documents/ViewPort/app/temp/5_5.jpg',
+    //   '/home/sci/Documents/ViewPort/app/temp/6_6.jpg',
+    //   '/home/sci/Documents/ViewPort/app/temp/7.jpg',
+    //   '/home/sci/Documents/ViewPort/app/temp/8_8.jpg',
+    //   '/home/sci/Documents/ViewPort/app/temp/9.jpg',
+    //   '/home/sci/Documents/ViewPort/app/temp/10_10.jpg',
+    //   '/home/sci/Documents/ViewPort/app/temp/123_456.jpg',
+    // ];
+    //
+    // List<String> filteredImages = imagePathList
+    //     .where((path) => RegExp(r'\d+_\d+\.jpg$').hasMatch(path))
+    //     .toList();
+    //
+    // print(filteredImages);
+
     if (newDirectory == null) {
       return Scaffold(
           body: Container(
@@ -206,48 +225,49 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                         BoxDecoration(border: Border.all(color: Colors.blue)),
                   ),
                   Positioned(
-                    bottom: 100,
-                    left: MediaQuery.of(context).size.width / 2 - 50,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: const Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Text(
-                          'Abort',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 30,
                     left: MediaQuery.of(context).size.width / 4,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width / 2,
-                      height: 30,
-                      child: const ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        child: LinearProgressIndicator(
-                          color: Color(AppConstants.primaryColor),
-                          backgroundColor: Colors.white,
-                          value: 0,
+                    top: MediaQuery.of(context).size.height / 2,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 2,
+                          height: 30,
+                          child: const ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            child: LinearProgressIndicator(
+                              color: Color(AppConstants.primaryColor),
+                              backgroundColor: Colors.white,
+                              value: 0,
+                            ),
+                          ),
                         ),
-                        // child: LinearTimer(
-                        //   color: const Color(AppConstants.primaryColor),
-                        //   backgroundColor: Colors.white,
-                        //   duration: const Duration(minutes: 3),
-                        //   onTimerEnd: () {
-                        //     Navigator.of(context)
-                        //         .pushNamed(MainDashboard.routeName, arguments: {
-                        //       'platelets': platelets,
-                        //       'plateletsProb': plateletsProb,
-                        //       'rbc': rbc,
-                        //       'rbcProb': rbcProb,
-                        //     });
-                        //   },
-                        // ),
-                      ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red),
+                          onPressed: () {
+                            AppDialogs.showAttentionDialog(
+                                context: context,
+                                content:
+                                    'Are you sure?\nProcessing will be aborted.',
+                                function: () {
+                                  Navigator.of(context).pushNamedAndRemoveUntil(
+                                      Home.routeName, (route) => false);
+                                },
+                                image: Image.asset('assets/error.png'));
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.all(20.0),
+                            child: Text(
+                              'Abort',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Positioned(
@@ -278,9 +298,8 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
               ls1.add(snapshot.data!.path);
               print('new folder path ${snapshot.data!.path}');
               ls = ls1
-                  .where((element) =>
-                      element.endsWith('.jpg') &&
-                      !regex.hasMatch(element.split(r"\").last))
+                  .where(
+                      (element) => RegExp(r'\d+_\d+\.jpg$').hasMatch(element))
                   .toList();
               value = (1 / 64) * (ls.length);
               print(ls);
@@ -335,8 +354,8 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                       color: Colors.black.withOpacity(0.5),
                     ),
                     Positioned(
-                      bottom: 30,
                       left: MediaQuery.of(context).size.width / 4,
+                      top: MediaQuery.of(context).size.height / 2,
                       child: Column(
                         children: [
                           SizedBox(
@@ -350,35 +369,26 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                                 backgroundColor: Colors.white,
                                 value: value,
                               ),
-                              // child: LinearTimer(
-                              //   color: const Color(AppConstants.primaryColor),
-                              //   backgroundColor: Colors.white,
-                              //   duration: const Duration(minutes: 3),
-                              //   onTimerEnd: () {
-                              //     Navigator.of(context)
-                              //         .pushNamed(MainDashboard.routeName, arguments: {
-                              //       'platelets': platelets,
-                              //       'plateletsProb': plateletsProb,
-                              //       'rbc': rbc,
-                              //       'rbcProb': rbcProb,
-                              //     });
-                              //   },
-                              // ),
                             ),
                           ),
                           const SizedBox(
                             height: 40,
                           ),
                           ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
                             onPressed: () {
-                              // AppDialogs.showAttentionDialog(
-                              //     context: context,
-                              //     content: 'Processing will be aborted.',
-                              //     title: 'Are you sure?',
-                              //     function: () {
-                              //       Navigator.of(context).pushNamedAndRemoveUntil(
-                              //           Home.routeName, (route) => false);
-                              //     });
+                              AppDialogs.showAttentionDialog(
+                                  context: context,
+                                  content:
+                                      'Are you sure?\nProcessing will be aborted.',
+                                  function: () {
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                            Home.routeName, (route) => false);
+                                  },
+                                  image: Image.asset('assets/error.png'));
                             },
                             child: const Padding(
                               padding: EdgeInsets.all(20.0),
