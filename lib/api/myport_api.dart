@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 class MyPortApi {
   static Future actionApi(
       {required String actionName, required String endpoint}) async {
-    var url = Uri.parse('http://192.168.1.106:8000/$endpoint');
+    var url = Uri.parse('http://127.0.0.1:8000/$endpoint');
     var response = await http.post(
       url,
       headers: <String, String>{
@@ -22,7 +22,7 @@ class MyPortApi {
 
   static Future sendRequestToConnectWifi(
       {required String ssid, required String password}) async {
-    var url = Uri.parse('http://192.168.1.106:8000/system');
+    var url = Uri.parse('http://127.0.0.1:8000/system');
     var response = await http.post(
       url,
       headers: <String, String>{
