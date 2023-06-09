@@ -73,7 +73,7 @@ class _MainDashboardState extends State<MainDashboard> {
         .map((data) => CellModel(
             cellName: data['tag_name'].toString(),
             probability: data['probability'].toString(),
-            cellPath: 'image_path'))
+            cellPath: data['image_path']))
         .toList();
   }
 
@@ -425,6 +425,8 @@ class _MainDashboardState extends State<MainDashboard> {
                               final completePath =
                                   path + cells![index].cellPath;
                               final myFile = File(completePath);
+                              print(
+                                  'single cell path ${cells![index].cellPath}');
                               print(path + completePath);
 
                               return Container(
@@ -517,7 +519,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${rbcProb == null ? 0 : double.parse(rbcProb.toString()).toStringAsFixed(2)}',
+                              '${rbcProb ?? 0}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -545,7 +547,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${plateletsProb == null ? 0 : double.parse(plateletsProb.toString()).toStringAsFixed(2)}',
+                              '${plateletsProb ?? 0}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -573,7 +575,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${neutrophilProbability == null ? 0 : neutrophilProbability}',
+                              '${neutrophilProbability ?? 0}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -601,7 +603,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${eosinophilProbability == null ? 0 : eosinophilProbability}',
+                              '${eosinophilProbability ?? 0}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -629,7 +631,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${basophilProbability == null ? 0 : basophilProbability}',
+                              '${basophilProbability ?? 0}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -657,7 +659,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${lymphocyteProbability == null ? 0 : lymphocyteProbability}',
+                              '${lymphocyteProbability ?? 0}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
