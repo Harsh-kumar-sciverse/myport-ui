@@ -71,7 +71,6 @@ class _ViewDetailsState extends State<ViewDetails> {
     lymphocyteProbability = arguments['lymphocytProb'];
     monocyteNumber = arguments['monocytes'];
     monocyteProbability = arguments['monocyteProb'];
-    print('hi');
   }
 
   @override
