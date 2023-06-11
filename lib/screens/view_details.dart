@@ -170,7 +170,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                         ])
                       ]);
                     }));
-                const path = 'C:/Users/HARSH/patient reports';
+                const path = '/home/sci/Documents/Patient Reports';
                 await Directory(path).create(recursive: true);
                 String fileName = uuid.v4();
                 final file = File('$path/$fileName.pdf');
