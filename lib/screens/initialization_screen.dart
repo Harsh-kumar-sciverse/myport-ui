@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class _InitializationScreenState extends State<InitializationScreen> {
   late bool isInitializing;
   String initializationName = 'Initializing';
   double progressValue = 0;
+  late Timer timer;
 
   getSharedPreferences() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -33,6 +35,25 @@ class _InitializationScreenState extends State<InitializationScreen> {
     // TODO: implement initState
     super.initState();
     getSharedPreferences();
+  }
+
+  increaseProgressValue() {
+    timer = Timer(const Duration(seconds: 4), () {
+      if (progressValue == 1) {
+        timer.cancel();
+      } else {
+        setState(() {
+          progressValue = progressValue + 0.05;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    timer.cancel();
   }
 
   Future initialize1() async {
@@ -121,7 +142,7 @@ class _InitializationScreenState extends State<InitializationScreen> {
             title: 'Initialization',
             showLogoutIcon: false,
             otherLastWidget: Container(),
-            showPowerOffIcon: true,
+            showPowerOffIcon: false,
             showWifiListIcon: true,
           ),
         ),

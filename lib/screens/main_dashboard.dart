@@ -1,16 +1,9 @@
 import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:my_port/provider/sample_provider.dart';
 import 'package:my_port/screens/home.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../constants/app_constants.dart';
 import '../models/cell_model.dart';
 import '../widgets/navigation_bar-widget.dart';
-import 'login.dart';
-import 'package:provider/provider.dart';
 
 class MainDashboard extends StatefulWidget {
   static const routeName = '/final-report';
@@ -50,9 +43,7 @@ class _MainDashboardState extends State<MainDashboard> {
 
     // Map<String, String?> data =
     //     ModalRoute.of(context)!.settings!.arguments as Map<String, String>;
-    print('response in main dash ${arguments['response']}');
     imageData = arguments['response']['data']['predictions'];
-    print('image data $imageData');
     platelets = (arguments['platelets']).toString();
     plateletsProb = arguments['plateletsProb'].toString();
     rbc = arguments['rbc'].toString();
@@ -67,8 +58,7 @@ class _MainDashboardState extends State<MainDashboard> {
     lymphocyteProbability = arguments['lymphocytProb'].toString();
     monocyteNumber = arguments['monocytes'].toString();
     monocyteProbability = arguments['monocyteProb'].toString();
-    print('data after navigate from showgif $arguments');
-    print('data after navigate from showgif $arguments');
+
     cells = imageData!
         .map((data) => CellModel(
             cellName: data['tag_name'].toString(),
@@ -369,7 +359,7 @@ class _MainDashboardState extends State<MainDashboard> {
             title: 'Result',
             showLogoutIcon: true,
             otherLastWidget: Container(),
-            showPowerOffIcon: true,
+            showPowerOffIcon: false,
             showWifiListIcon: true,
           ),
         ),
@@ -422,12 +412,8 @@ class _MainDashboardState extends State<MainDashboard> {
                             itemCount: cells.length,
                             itemBuilder: (context, index) {
                               String path = '/home/sci/Documents/ViewPort/app/';
-                              final completePath =
-                                  path + cells![index].cellPath;
+                              final completePath = path + cells[index].cellPath;
                               final myFile = File(completePath);
-                              print(
-                                  'single cell path ${cells![index].cellPath}');
-                              print(path + completePath);
 
                               return Container(
                                 height: 100,
@@ -453,7 +439,6 @@ class _MainDashboardState extends State<MainDashboard> {
                               final completePath =
                                   path + queryCells![index].cellPath;
                               final myFile = File(completePath);
-                              print(path + completePath);
 
                               return Container(
                                 height: 100,

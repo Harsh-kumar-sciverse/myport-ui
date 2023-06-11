@@ -300,7 +300,12 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
                                 arguments: {'errorCode': error});
                           });
                         },
-                        image: Image.asset('assets/power.png'));
+                        image:const Icon(
+                          Icons.power_settings_new,
+                          size: 80,
+                          color: Color(
+                              AppConstants.primaryColor),
+                        ));
                   },
                   style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),

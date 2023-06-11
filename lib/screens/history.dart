@@ -67,7 +67,7 @@ class _HistoryState extends State<History> {
                 //         .withOpacity(0.8)),
                 cells: [
                   DataCell(Text(
-                    '${patient['key']}',
+                    '${_items.indexOf(patient) + 1}',
                     style: AppConstants.tableRowStyle,
                   )),
                   DataCell(Text(
@@ -104,10 +104,12 @@ class _HistoryState extends State<History> {
         child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: NavigationBarWidget(
-
-              title: 'History',
-            showLogoutIcon: true, otherLastWidget: Container(), showPowerOffIcon: true, showWifiListIcon: true,
-              ),
+            title: 'History',
+            showLogoutIcon: true,
+            otherLastWidget: Container(),
+            showPowerOffIcon: false,
+            showWifiListIcon: true,
+          ),
         ),
       ),
       body: Padding(
@@ -118,39 +120,44 @@ class _HistoryState extends State<History> {
             const SizedBox(
               height: 20,
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: DataTable(
-                      // dataRowColor:
-                      //     MaterialStateColor.resolveWith((states) => Colors.black),
-                      headingRowColor: MaterialStateColor.resolveWith(
-                          (states) => const Color(AppConstants.primaryColor)),
-                      columns: [
-                        DataColumn(
-                            label: Text('Index',
-                                style: AppConstants.tableColumnStyle)),
-                        DataColumn(
-                            label: Text('Date & Time',
-                                style: AppConstants.tableColumnStyle)),
-                        DataColumn(
-                            label: Text('Patient Name',
-                                style: AppConstants.tableColumnStyle)),
-                        DataColumn(
-                            label: Text('Age',
-                                style: AppConstants.tableColumnStyle)),
-                        DataColumn(
-                            label: Text('Cassette ID',
-                                style: AppConstants.tableColumnStyle)),
-                        DataColumn(
-                            label: Text('Action',
-                                style: AppConstants.tableColumnStyle))
-                      ],
-                      rows: rows),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: DataTable(
+                          // dataRowColor:
+                          //     MaterialStateColor.resolveWith((states) => Colors.black),
+                          headingRowColor: MaterialStateColor.resolveWith(
+                              (states) =>
+                                  const Color(AppConstants.primaryColor)),
+                          columns: [
+                            DataColumn(
+                                label: Text('Index',
+                                    style: AppConstants.tableColumnStyle)),
+                            DataColumn(
+                                label: Text('Date & Time',
+                                    style: AppConstants.tableColumnStyle)),
+                            DataColumn(
+                                label: Text('Patient Name',
+                                    style: AppConstants.tableColumnStyle)),
+                            DataColumn(
+                                label: Text('Age',
+                                    style: AppConstants.tableColumnStyle)),
+                            DataColumn(
+                                label: Text('Cassette ID',
+                                    style: AppConstants.tableColumnStyle)),
+                            DataColumn(
+                                label: Text('Action',
+                                    style: AppConstants.tableColumnStyle))
+                          ],
+                          rows: rows),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-            const Spacer(),
+            // const Spacer(),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
               child: Row(

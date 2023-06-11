@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../api/myport_api.dart';
 import '../constants/app_constants.dart';
+import '../constants/app_dialogs.dart';
 import '../widgets/navigation_bar-widget.dart';
 
 class ErrorScreen extends StatefulWidget {
@@ -33,15 +35,19 @@ class _ErrorScreenState extends State<ErrorScreen> {
         child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: NavigationBarWidget(
-              title: 'Error',
-              otherLastWidget: Row(
-                children: const [
-                  SizedBox(
-                    width: 50,
-                    height: 50,
-                  )
-                ],
-              ), showLogoutIcon: false, showPowerOffIcon: false, showWifiListIcon: false,),
+            title: 'Error',
+            otherLastWidget: Row(
+              children: const [
+                SizedBox(
+                  width: 100,
+                  height: 50,
+                )
+              ],
+            ),
+            showLogoutIcon: false,
+            showPowerOffIcon: false,
+            showWifiListIcon: false,
+          ),
         ),
       ),
       // bottomSheet: Padding(
@@ -101,7 +107,27 @@ class _ErrorScreenState extends State<ErrorScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // Navigator.of(context).pop();
+                      AppDialogs.showAttentionDialog(
+                          context: context,
+                          content: 'Are you sure?\nSystem will restart.',
+                          function: () {
+                            Navigator.of(context).pop();
+                            AppDialogs.showCircularDialog(context: context);
+                            MyPortApi.actionApi(
+                                actionName: 'restart', endpoint: 'system')
+                                .then((value) => Navigator.of(context).pop())
+                                .catchError((error) {
+                              Navigator.of(context).pushNamed(
+                                  ErrorScreen.routeName,
+                                  arguments: {'errorCode': error});
+                            });
+                          },
+                          image:const Icon(
+                            Icons.power_settings_new,
+                            size: 80,
+                            color: Color(
+                                AppConstants.primaryColor),
+                          ));
                     },
                     child: const Padding(
                         padding: EdgeInsets.all(10.0), child: Text('Reboot')),

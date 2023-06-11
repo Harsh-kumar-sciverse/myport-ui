@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
+import 'package:my_port/constants/app_dialogs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/app_constants.dart';
 import '../widgets/navigation_bar-widget.dart';
 import 'home.dart';
 import 'login.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 
 class ViewDetails extends StatefulWidget {
   static const routeName = 'view-details';
@@ -36,7 +39,15 @@ class _ViewDetailsState extends State<ViewDetails> {
   String? lymphocyteProbability;
   String? monocyteNumber;
   String? monocyteProbability;
-  final pdf = pw.Document();
+  String? patientName;
+  String? patientAge;
+  TextEditingController toTextController = TextEditingController();
+  TextEditingController subjectTextController = TextEditingController();
+  TextEditingController ccTextController = TextEditingController();
+  TextEditingController composeTextController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+  var uuid = const Uuid();
 
   @override
   void didChangeDependencies() {
@@ -74,19 +85,225 @@ class _ViewDetailsState extends State<ViewDetails> {
             showLogoutIcon: true,
             otherLastWidget: ElevatedButton(
               onPressed: () async {
-                // pdf.addPage(pw.Page(
-                //     pageFormat: PdfPageFormat.a4,
-                //     build: (pw.Context context) {
-                //       return pw.Center(
-                //         child: pw.Text("Hello World"),
-                //       ); // Center
-                //     }));
-                final file = File('C:/Users/HARSH/my_folder/example.pdf');
-                XFile file2 = XFile(file.path);
-                // await file.writeAsBytes(await pdf.save());
-                Share.shareXFiles([file2], subject: 'wedwwedw');
+                /// kakxspxkwxcwlomr
+                final pdf = pw.Document();
+                pdf.addPage(pw.Page(
+                    pageFormat: PdfPageFormat.a4,
+                    build: (pw.Context context) {
+                      return pw.Column(children: [
+                        pw.Text('Patient Report',
+                            style: pw.TextStyle(
+                                fontSize: 30, fontWeight: pw.FontWeight.bold)),
+                        pw.Text('Patient Name : Harsh'),
+                        pw.SizedBox(
+                          height: 20,
+                        ),
+                        pw.Table(children: [
+                          pw.TableRow(
+                            children: [
+                              pw.Text('Name'),
+                              pw.Text('Count'),
+                              pw.Text('Probability'),
+                            ],
+                          ),
+                          pw.TableRow(
+                            children: [
+                              pw.Text('RBC'),
+                              pw.Text('${rbc == null ? 0 : rbc.toString()}'),
+                              pw.Text(
+                                  '${rbcProb == null ? 0 : rbcProb.toString()}'),
+                            ],
+                          ),
+                          pw.TableRow(
+                            children: [
+                              pw.Text('Platelets'),
+                              pw.Text(
+                                  '${platelets == null ? 0 : plateletsProb.toString()}'),
+                              pw.Text('Probability'),
+                            ],
+                          ),
+                          pw.TableRow(
+                            children: [
+                              pw.Text('Neutrophils'),
+                              pw.Text(
+                                  '${neutrophilNumber == null ? 0 : neutrophilNumber.toString()}'),
+                              pw.Text(
+                                  '${neutrophilProbability == null ? 0 : neutrophilProbability.toString()}'),
+                            ],
+                          ),
+                          pw.TableRow(
+                            children: [
+                              pw.Text('Eosinophils'),
+                              pw.Text(
+                                  '${eosinophilNumber == null ? 0 : eosinophilNumber.toString()}'),
+                              pw.Text(
+                                  '${eosinophilProbability == null ? 0 : eosinophilProbability.toString()}'),
+                            ],
+                          ),
+                          pw.TableRow(
+                            children: [
+                              pw.Text('Basophils'),
+                              pw.Text(
+                                  '${basophilNumber == null ? 0 : basophilNumber.toString()}'),
+                              pw.Text(
+                                  '${basophilProbability == null ? 0 : basophilProbability.toString()}'),
+                            ],
+                          ),
+                          pw.TableRow(
+                            children: [
+                              pw.Text('Lymphocyte'),
+                              pw.Text(
+                                  '${lymphocyteNumber == null ? 0 : lymphocyteNumber.toString()}'),
+                              pw.Text(
+                                  '${lymphocyteProbability == null ? 0 : lymphocyteProbability.toString()}'),
+                            ],
+                          ),
+                          pw.TableRow(
+                            children: [
+                              pw.Text('Monocyte'),
+                              pw.Text(
+                                  '${monocyteNumber == null ? 0 : monocyteNumber.toString()}'),
+                              pw.Text(
+                                  '${monocyteProbability == null ? 0 : monocyteProbability.toString()}'),
+                            ],
+                          ),
+                        ])
+                      ]);
+                    }));
+                const path = 'C:/Users/HARSH/patient reports';
+                await Directory(path).create(recursive: true);
+                String fileName = uuid.v4();
+                final file = File('$path/$fileName.pdf');
+                await file.writeAsBytes(await pdf.save());
+                if (!mounted) return;
 
-                // On Flutter, use the [path_provider](https://pub.dev/packages/path_provider) library:
+                AppDialogs.showEmailDialog(
+                    context: context,
+                    initialValue: 'myportsci@gmail.com',
+                    toEmailController: toTextController,
+                    ccEmailController: ccTextController,
+                    validator: (val) {
+                      String pattern = AppConstants.emailPattern;
+                      RegExp regEx = RegExp(pattern);
+                      if (val!.isEmpty) {
+                        return 'Please enter email!';
+                      }
+                      if (!regEx.hasMatch(val)) {
+                        return 'Please enter valid email!';
+                      }
+                      return null;
+                    },
+                    subjectEditingController: subjectTextController,
+                    composeTextEditingController: composeTextController,
+                    pdfName: '$fileName.pdf',
+                    function: () async {
+                      if (formKey.currentState!.validate()) {
+                        formKey.currentState!.save;
+
+                        Navigator.of(context).pop();
+                        AppDialogs.showCircularDialog(context: context);
+                        if (ccTextController.text.isNotEmpty) {
+                          String username = 'myportsci@gmail.com';
+                          String password = 'kakxspxkwxcwlomr';
+                          final smtpServer = gmail(username, password);
+                          try {
+                            final equivalentMessage = Message()
+                              ..from = Address(username, 'MyPort')
+                              ..recipients.add(Address(toTextController.text))
+                              ..ccRecipients.addAll([
+                                Address(ccTextController.text),
+                              ])
+                              ..subject = subjectTextController.text
+                              ..text = composeTextController.text
+                              ..html =
+                                  '<h1>Patient Report</h1>\n<p> ${composeTextController.text} \nAttached pdf is patient report</p>'
+                              ..attachments = [
+                                FileAttachment(file)..location = Location.inline
+                              ];
+                            var connection = PersistentConnection(smtpServer);
+                            await connection.send(equivalentMessage);
+                            await connection.close();
+                            toTextController.text = '';
+                            ccTextController.text = '';
+                            subjectTextController.text = '';
+                            composeTextController.text = '';
+                            Navigator.of(context).pop();
+                            AppDialogs.showSuccessDialog(
+                                context: context,
+                                content: 'Email sent successfully.',
+                                image: Icon(
+                                  Icons.done,
+                                  color: Color(AppConstants.primaryColor),
+                                  size: 80,
+                                ));
+                          } catch (error) {
+                            Navigator.of(context).pop();
+                            toTextController.text = '';
+                            ccTextController.text = '';
+                            subjectTextController.text = '';
+                            composeTextController.text = '';
+                            AppDialogs.showErrorDialog(
+                                context: context,
+                                content: 'Error occurred sending email',
+                                image: Icon(
+                                  Icons.error,
+                                  size: 80,
+                                  color: Color(AppConstants.primaryColor),
+                                ));
+                            print('error sending mail $error');
+                          }
+                        } else {
+                          String username = 'myportsci@gmail.com';
+                          String password = 'kakxspxkwxcwlomr';
+                          final smtpServer = gmail(username, password);
+                          print(toTextController.text);
+                          try {
+                            final equivalentMessage = Message()
+                              ..from = Address(username, 'MyPort')
+                              ..recipients.add(Address(toTextController.text))
+                              ..subject = subjectTextController.text
+                              ..text = composeTextController.text
+                              ..html =
+                                  '<h1>Patient Report</h1>\n<p> ${composeTextController.text} \n \n Attached pdf is patient report</p>'
+                              ..attachments = [
+                                FileAttachment(file)..location = Location.inline
+                              ];
+                            var connection = PersistentConnection(smtpServer);
+                            await connection.send(equivalentMessage);
+                            await connection.close();
+                            Navigator.of(context).pop();
+                            toTextController.text = '';
+                            ccTextController.text = '';
+                            subjectTextController.text = '';
+                            composeTextController.text = '';
+                            AppDialogs.showSuccessDialog(
+                                context: context,
+                                content: 'Email sent successfully.',
+                                image: Icon(
+                                  Icons.done,
+                                  color: Color(AppConstants.primaryColor),
+                                  size: 80,
+                                ));
+                          } catch (error) {
+                            toTextController.text = '';
+                            ccTextController.text = '';
+                            subjectTextController.text = '';
+                            composeTextController.text = '';
+                            Navigator.of(context).pop();
+                            AppDialogs.showErrorDialog(
+                                context: context,
+                                content: 'Error occurred sending email',
+                                image: Icon(
+                                  Icons.error,
+                                  size: 80,
+                                  color: Color(AppConstants.primaryColor),
+                                ));
+                            print('error sending mail $error');
+                          }
+                        }
+                      }
+                    },
+                    formKey: formKey);
               },
               style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(), backgroundColor: Colors.white),
@@ -98,7 +315,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                 ),
               ),
             ),
-            showPowerOffIcon: true,
+            showPowerOffIcon: false,
             showWifiListIcon: true,
           ),
         ),
@@ -141,7 +358,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                             style: AppConstants.tableRowStyle,
                           )),
                           DataCell(Text(
-                            '${rbcProb == null ? 0 : double.parse(rbcProb.toString()).toStringAsFixed(2)}',
+                            '${rbcProb == null ? 0 : rbcProb.toString()}',
                             style: AppConstants.tableRowStyle,
                           )),
                         ]),
@@ -155,7 +372,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                             style: AppConstants.tableRowStyle,
                           )),
                           DataCell(Text(
-                            '${plateletsProb == null ? 0 : double.parse(plateletsProb.toString()).toStringAsFixed(2)}',
+                            '${plateletsProb == null ? 0 : plateletsProb.toString()}',
                             style: AppConstants.tableRowStyle,
                           )),
                         ]),

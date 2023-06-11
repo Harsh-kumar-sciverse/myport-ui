@@ -256,7 +256,12 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                                   Navigator.of(context).pushNamedAndRemoveUntil(
                                       Home.routeName, (route) => false);
                                 },
-                                image: Image.asset('assets/error.png'));
+                                image:Icon(
+                                  Icons.error,
+                                  size: 80,
+                                  color: Color(
+                                      AppConstants.primaryColor),
+                                ));
                           },
                           child: const Padding(
                             padding: EdgeInsets.all(20.0),
@@ -280,7 +285,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                             title: 'Processing',
                             showLogoutIcon: true,
                             otherLastWidget: Container(),
-                            showPowerOffIcon: true,
+                            showPowerOffIcon: false,
                             showWifiListIcon: true,
                           ),
                         ),
@@ -388,7 +393,12 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                                         .pushNamedAndRemoveUntil(
                                             Home.routeName, (route) => false);
                                   },
-                                  image: Image.asset('assets/error.png'));
+                                  image: Icon(
+                                    Icons.error,
+                                    size: 80,
+                                    color: Color(
+                                        AppConstants.primaryColor),
+                                  ));
                             },
                             child: const Padding(
                               padding: EdgeInsets.all(20.0),
@@ -412,7 +422,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                               title: 'Processing',
                               showLogoutIcon: true,
                               otherLastWidget: Container(),
-                              showPowerOffIcon: true,
+                              showPowerOffIcon: false,
                               showWifiListIcon: true,
                             ),
                           ),

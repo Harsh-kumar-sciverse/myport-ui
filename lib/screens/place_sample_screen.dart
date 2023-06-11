@@ -61,7 +61,7 @@ class _PlaceSampleState extends State<PlaceSample> {
             title: 'Start Test',
             showLogoutIcon: true,
             otherLastWidget: Container(),
-            showPowerOffIcon: true,
+            showPowerOffIcon: false,
             showWifiListIcon: true,
           ),
         ),

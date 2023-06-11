@@ -31,7 +31,7 @@ class _LoginState extends State<Login> {
             title: 'Login',
             showLogoutIcon: false,
             otherLastWidget: Container(),
-            showPowerOffIcon: true,
+            showPowerOffIcon: false,
             showWifiListIcon: true,
           ),
         ),
@@ -135,8 +135,12 @@ class _LoginState extends State<Login> {
                                             context: context,
                                             content:
                                                 'Id password didn\'t match.',
-                                            image: Image.asset(
-                                                'assets/error.png'));
+                                            image: Icon(
+                                              Icons.error,
+                                              size: 80,
+                                              color: Color(
+                                                  AppConstants.primaryColor),
+                                            ));
                                         return;
                                       }
                                     }

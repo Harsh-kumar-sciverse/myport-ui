@@ -36,8 +36,12 @@ class _PatientDetailsState extends State<PatientDetails> {
         child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: NavigationBarWidget(
-              title: 'Add Details', showLogoutIcon: true, otherLastWidget: Container(), showPowerOffIcon: true, showWifiListIcon: true,
-            ),
+            title: 'Add Details',
+            showLogoutIcon: true,
+            otherLastWidget: Container(),
+            showPowerOffIcon: false,
+            showWifiListIcon: true,
+          ),
         ),
       ),
       body: Column(
