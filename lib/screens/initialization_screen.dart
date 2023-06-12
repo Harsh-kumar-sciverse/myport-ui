@@ -39,12 +39,12 @@ class _InitializationScreenState extends State<InitializationScreen> {
   }
 
   increaseProgressValue() {
-    Timer.periodic(const Duration(seconds: 4), (timer) {
+    Timer.periodic(const Duration(milliseconds: 100), (timer) {
       if (progressValue == 1) {
         timer.cancel();
       } else {
         setState(() {
-          progressValue = progressValue + 0.05;
+          progressValue = progressValue + 0.001;
           print('progress value $progressValue');
         });
       }
