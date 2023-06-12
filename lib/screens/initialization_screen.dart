@@ -130,7 +130,7 @@ class _InitializationScreenState extends State<InitializationScreen> {
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    // await initialize1();
+    await initialize1();
     // await initialize2();
     // await initialize3();
     // await initialize4();
