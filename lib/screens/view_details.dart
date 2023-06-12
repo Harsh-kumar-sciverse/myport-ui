@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:my_port/constants/app_dialogs.dart';
@@ -151,15 +152,59 @@ class _ViewDetailsState extends State<ViewDetails> {
                                       pw.Table(children: [
                                         pw.TableRow(
                                           children: [
-                                            pw.Text('Name',
+                                            pw.Padding(
+                                              padding: const pw.EdgeInsets.only(
+                                                  bottom: 10),
+                                              child: pw.Text('Investigation',
+                                                  style: pw.TextStyle(
+                                                      fontWeight:
+                                                          pw.FontWeight.bold)),
+                                            ),
+                                            pw.Padding(
+                                              padding: const pw.EdgeInsets.only(
+                                                  bottom: 10),
+                                              child: pw.Text('Result',
+                                                  style: pw.TextStyle(
+                                                      fontWeight:
+                                                          pw.FontWeight.bold)),
+                                            ),
+                                            pw.Padding(
+                                              padding: const pw.EdgeInsets.only(
+                                                  bottom: 10),
+                                              child: pw.Text('Reference',
+                                                  style: pw.TextStyle(
+                                                      fontWeight:
+                                                          pw.FontWeight.bold)),
+                                            ),
+                                            pw.Padding(
+                                              padding: const pw.EdgeInsets.only(
+                                                  bottom: 10),
+                                              child: pw.Text('Unit',
+                                                  style: pw.TextStyle(
+                                                      fontWeight:
+                                                          pw.FontWeight.bold)),
+                                            ),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Padding(
+                                              padding: const pw.EdgeInsets.only(
+                                                  bottom: 5),
+                                              child: pw.Text('RBC COUNT',
+                                                  style: pw.TextStyle(
+                                                      fontWeight:
+                                                          pw.FontWeight.bold)),
+                                            ),
+                                            pw.Text('',
                                                 style: pw.TextStyle(
                                                     fontWeight:
                                                         pw.FontWeight.bold)),
-                                            pw.Text('Count',
+                                            pw.Text('',
                                                 style: pw.TextStyle(
                                                     fontWeight:
                                                         pw.FontWeight.bold)),
-                                            pw.Text('Probability',
+                                            pw.Text('',
                                                 style: pw.TextStyle(
                                                     fontWeight:
                                                         pw.FontWeight.bold)),
@@ -167,11 +212,35 @@ class _ViewDetailsState extends State<ViewDetails> {
                                         ),
                                         pw.TableRow(
                                           children: [
-                                            pw.Text('RBC'),
+                                            pw.Text('Total RBC Count'),
                                             pw.Text(
                                                 '${rbc == null ? 0 : rbc.toString()}'),
-                                            pw.Text(
-                                                '${rbcProb == null ? 0 : rbcProb.toString()}'),
+                                            pw.Text('4.5-5.5'),
+                                            pw.Text('mill/cumm'),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Padding(
+                                              padding: const pw.EdgeInsets.only(
+                                                  bottom: 5, top: 5),
+                                              child: pw.Text('PLATELET COUNT',
+                                                  style: pw.TextStyle(
+                                                      fontWeight:
+                                                          pw.FontWeight.bold)),
+                                            ),
+                                            pw.Text('',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                            pw.Text('',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                            pw.Text('',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
                                           ],
                                         ),
                                         pw.TableRow(
@@ -179,8 +248,32 @@ class _ViewDetailsState extends State<ViewDetails> {
                                             pw.Text('Platelets'),
                                             pw.Text(
                                                 '${platelets == null ? 0 : plateletsProb.toString()}'),
-                                            pw.Text(
-                                                '${plateletsProb == null ? 0 : plateletsProb.toString()}'),
+                                            pw.Text('150000-410000'),
+                                            pw.Text('cumm'),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Padding(
+                                              padding: const pw.EdgeInsets.only(
+                                                  bottom: 5, top: 5),
+                                              child: pw.Text('WBC COUNT',
+                                                  style: pw.TextStyle(
+                                                      fontWeight:
+                                                          pw.FontWeight.bold)),
+                                            ),
+                                            pw.Text('',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                            pw.Text('',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                            pw.Text('',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
                                           ],
                                         ),
                                         pw.TableRow(
@@ -188,8 +281,8 @@ class _ViewDetailsState extends State<ViewDetails> {
                                             pw.Text('Neutrophils'),
                                             pw.Text(
                                                 '${neutrophilNumber == null ? 0 : neutrophilNumber.toString()}'),
-                                            pw.Text(
-                                                '${neutrophilProbability == null ? 0 : neutrophilProbability.toString()}'),
+                                            pw.Text('50-62'),
+                                            pw.Text('%'),
                                           ],
                                         ),
                                         pw.TableRow(
@@ -197,8 +290,8 @@ class _ViewDetailsState extends State<ViewDetails> {
                                             pw.Text('Eosinophils'),
                                             pw.Text(
                                                 '${eosinophilNumber == null ? 0 : eosinophilNumber.toString()}'),
-                                            pw.Text(
-                                                '${eosinophilProbability == null ? 0 : eosinophilProbability.toString()}'),
+                                            pw.Text('00-06'),
+                                            pw.Text('%'),
                                           ],
                                         ),
                                         pw.TableRow(
@@ -206,8 +299,8 @@ class _ViewDetailsState extends State<ViewDetails> {
                                             pw.Text('Basophils'),
                                             pw.Text(
                                                 '${basophilNumber == null ? 0 : basophilNumber.toString()}'),
-                                            pw.Text(
-                                                '${basophilProbability == null ? 0 : basophilProbability.toString()}'),
+                                            pw.Text('00-02'),
+                                            pw.Text('%'),
                                           ],
                                         ),
                                         pw.TableRow(
@@ -215,8 +308,8 @@ class _ViewDetailsState extends State<ViewDetails> {
                                             pw.Text('Lymphocyte'),
                                             pw.Text(
                                                 '${lymphocyteNumber == null ? 0 : lymphocyteNumber.toString()}'),
-                                            pw.Text(
-                                                '${lymphocyteProbability == null ? 0 : lymphocyteProbability.toString()}'),
+                                            pw.Text('20-40'),
+                                            pw.Text('%'),
                                           ],
                                         ),
                                         pw.TableRow(
@@ -224,16 +317,76 @@ class _ViewDetailsState extends State<ViewDetails> {
                                             pw.Text('Monocyte'),
                                             pw.Text(
                                                 '${monocyteNumber == null ? 0 : monocyteNumber.toString()}'),
-                                            pw.Text(
-                                                '${monocyteProbability == null ? 0 : monocyteProbability.toString()}'),
+                                            pw.Text('00-10'),
+                                            pw.Text('%'),
                                           ],
                                         ),
-                                      ])
+                                      ]),
+                                      pw.SizedBox(height: 20),
+                                      pw.RichText(
+                                        text: pw.TextSpan(
+                                            text: 'Instrument : ',
+                                            style: pw.TextStyle(
+                                              fontWeight: pw.FontWeight.bold,
+                                            ),
+                                            children: [
+                                              pw.TextSpan(
+                                                text: 'MyPort',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.normal),
+                                              ),
+                                            ]),
+                                      ),
+                                      pw.SizedBox(
+                                        height: 10,
+                                      ),
+                                      pw.Container(
+                                          width: 575,
+                                          height: 1,
+                                          color: PdfColors.blueGrey300),
+                                      pw.SizedBox(
+                                        height: 10,
+                                      ),
+                                      pw.Row(
+                                          mainAxisAlignment:
+                                              pw.MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            pw.Text('Thanks for reference'),
+                                            pw.Text('***End of Report***'),
+                                            pw.Text('             '),
+                                          ]),
+                                      pw.SizedBox(
+                                        height: 80,
+                                      ),
+                                      pw.Text('Medical Lab Technician',
+                                          style: pw.TextStyle(
+                                            fontWeight: pw.FontWeight.bold,
+                                            fontSize: 18,
+                                          )),
+                                      pw.SizedBox(
+                                        height: 10,
+                                      ),
+                                      pw.Container(
+                                          width: 575,
+                                          height: 1,
+                                          color: PdfColors.blueGrey300),
+                                      pw.SizedBox(
+                                        height: 10,
+                                      ),
+                                      pw.Align(
+                                        alignment: pw.Alignment.topRight,
+                                        child: pw.Text(
+                                            'Generated on : ${DateFormat('dd-MM-yyyy  kk:mm').format(DateTime.now())}',
+                                            style: const pw.TextStyle(
+                                              fontSize: 10,
+                                            )),
+                                      ),
                                     ])),
                           ]);
                     }));
-                const path = '/home/sci/Documents/Patient Reports';
-                // const path = 'C:/Users/HARSH/my_folder/Patient Reports';
+                // const path = '/home/sci/Documents/Patient Reports';
+                const path = 'C:/Users/HARSH/my_folder/Patient Reports';
                 await Directory(path).create(recursive: true);
                 String fileName = uuid.v4();
                 final file = File('$path/$fileName.pdf');
