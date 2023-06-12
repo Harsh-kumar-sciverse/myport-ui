@@ -68,19 +68,21 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
       plateletsNumber = value['data']['counts']['Pletelets'].toString();
       plateletsProbability =
           value['data']['counts']['Pletelets_conf'].toString();
-      neutrophilNumber = value['data']['counts']['Neutrophil'].toString();
+      neutrophilNumber = value['data']['counts']['Neutrophils'].toString();
       neutrophilProbability =
-          value['data']['counts']['Neutrophil_conf'].toString();
-      eosinophilNumber = value['data']['counts']['Eosinophil'].toString();
+          value['data']['counts']['Neutrophils_conf'].toString();
+      eosinophilNumber = value['data']['counts']['Eosinophils'].toString();
       eosinophilProbability =
-          value['data']['counts']['Eosinophil_conf'].toString();
-      basophilNumber = value['data']['counts']['Basophil'].toString();
-      basophilProbability = value['data']['counts']['Basophil_conf'].toString();
-      lymphocyteNumber = value['data']['counts']['Lymphocyte'].toString();
+          value['data']['counts']['Eosinophils_conf'].toString();
+      basophilNumber = value['data']['counts']['Basophils'].toString();
+      basophilProbability =
+          value['data']['counts']['Basophils_conf'].toString();
+      lymphocyteNumber = value['data']['counts']['Lymphocytes'].toString();
       lymphocyteProbability =
-          value['data']['counts']['Lymphocyte_conf'].toString();
-      monocyteNumber = value['data']['counts']['Monocyte'].toString();
-      monocyteProbability = value['data']['counts']['Monocyte_conf'].toString();
+          value['data']['counts']['Lymphocytes_conf'].toString();
+      monocyteNumber = value['data']['counts']['Monocytes'].toString();
+      monocyteProbability =
+          value['data']['counts']['Monocytes_conf'].toString();
 
       String id = uuid.v4();
       print(Provider.of<PatientDetailsProvider>(context, listen: false).name!);
@@ -90,6 +92,8 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
         "name":
             Provider.of<PatientDetailsProvider>(context, listen: false).name!,
         "age": Provider.of<PatientDetailsProvider>(context, listen: false).age!,
+        "sex":
+            Provider.of<PatientDetailsProvider>(context, listen: false).gender!,
         "id": id,
         "time": DateFormat('dd-MM-yyyy – kk:mm').format(DateTime.now()),
         'platelets': '$plateletsNumber',
@@ -256,11 +260,10 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                                   Navigator.of(context).pushNamedAndRemoveUntil(
                                       Home.routeName, (route) => false);
                                 },
-                                image:Icon(
+                                image: Icon(
                                   Icons.error,
                                   size: 80,
-                                  color: Color(
-                                      AppConstants.primaryColor),
+                                  color: Color(AppConstants.primaryColor),
                                 ));
                           },
                           child: const Padding(
@@ -396,8 +399,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                                   image: Icon(
                                     Icons.error,
                                     size: 80,
-                                    color: Color(
-                                        AppConstants.primaryColor),
+                                    color: Color(AppConstants.primaryColor),
                                   ));
                             },
                             child: const Padding(

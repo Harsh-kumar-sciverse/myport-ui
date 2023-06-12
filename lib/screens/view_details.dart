@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
@@ -58,6 +59,7 @@ class _ViewDetailsState extends State<ViewDetails> {
     final key = arguments1['key'];
     final arguments = patients.get(key);
     patientName = arguments['name'];
+    patientAge = arguments['age'];
     platelets = (arguments['platelets']);
     plateletsProb = arguments['plateletsProb'];
     rbc = arguments['rbc'];
@@ -88,93 +90,154 @@ class _ViewDetailsState extends State<ViewDetails> {
               onPressed: () async {
                 /// kakxspxkwxcwlomr
                 final pdf = pw.Document();
+                var assetImage = pw.MemoryImage(
+                  (await rootBundle.load('assets/mylab.png'))
+                      .buffer
+                      .asUint8List(),
+                );
                 pdf.addPage(pw.Page(
                     pageFormat: PdfPageFormat.a4,
+                    margin: const pw.EdgeInsets.all(0),
                     build: (pw.Context context) {
-                      return pw.Column(children: [
-                        pw.Text('Patient Report',
-                            style: pw.TextStyle(
-                                fontSize: 30, fontWeight: pw.FontWeight.bold)),
-                        pw.Text('Patient Name : $patientName'),
-                        pw.SizedBox(
-                          height: 20,
-                        ),
-                        pw.Table(children: [
-                          pw.TableRow(
-                            children: [
-                              pw.Text('Name'),
-                              pw.Text('Count'),
-                              pw.Text('Probability'),
-                            ],
-                          ),
-                          pw.TableRow(
-                            children: [
-                              pw.Text('RBC'),
-                              pw.Text('${rbc == null ? 0 : rbc.toString()}'),
-                              pw.Text(
-                                  '${rbcProb == null ? 0 : rbcProb.toString()}'),
-                            ],
-                          ),
-                          pw.TableRow(
-                            children: [
-                              pw.Text('Platelets'),
-                              pw.Text(
-                                  '${platelets == null ? 0 : plateletsProb.toString()}'),
-                              pw.Text('Probability'),
-                            ],
-                          ),
-                          pw.TableRow(
-                            children: [
-                              pw.Text('Neutrophils'),
-                              pw.Text(
-                                  '${neutrophilNumber == null ? 0 : neutrophilNumber.toString()}'),
-                              pw.Text(
-                                  '${neutrophilProbability == null ? 0 : neutrophilProbability.toString()}'),
-                            ],
-                          ),
-                          pw.TableRow(
-                            children: [
-                              pw.Text('Eosinophils'),
-                              pw.Text(
-                                  '${eosinophilNumber == null ? 0 : eosinophilNumber.toString()}'),
-                              pw.Text(
-                                  '${eosinophilProbability == null ? 0 : eosinophilProbability.toString()}'),
-                            ],
-                          ),
-                          pw.TableRow(
-                            children: [
-                              pw.Text('Basophils'),
-                              pw.Text(
-                                  '${basophilNumber == null ? 0 : basophilNumber.toString()}'),
-                              pw.Text(
-                                  '${basophilProbability == null ? 0 : basophilProbability.toString()}'),
-                            ],
-                          ),
-                          pw.TableRow(
-                            children: [
-                              pw.Text('Lymphocyte'),
-                              pw.Text(
-                                  '${lymphocyteNumber == null ? 0 : lymphocyteNumber.toString()}'),
-                              pw.Text(
-                                  '${lymphocyteProbability == null ? 0 : lymphocyteProbability.toString()}'),
-                            ],
-                          ),
-                          pw.TableRow(
-                            children: [
-                              pw.Text('Monocyte'),
-                              pw.Text(
-                                  '${monocyteNumber == null ? 0 : monocyteNumber.toString()}'),
-                              pw.Text(
-                                  '${monocyteProbability == null ? 0 : monocyteProbability.toString()}'),
-                            ],
-                          ),
-                        ])
-                      ]);
+                      return pw.Column(
+                          mainAxisAlignment: pw.MainAxisAlignment.start,
+                          children: [
+                            pw.Image(assetImage, width: 595),
+                            pw.SizedBox(
+                              height: 20,
+                            ),
+                            pw.Padding(
+                                padding: const pw.EdgeInsets.only(
+                                    left: 20, right: 20),
+                                child: pw.Column(
+                                    crossAxisAlignment:
+                                        pw.CrossAxisAlignment.start,
+                                    children: [
+                                      pw.Text('$patientName',
+                                          style: pw.TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: pw.FontWeight.bold)),
+                                      pw.Text('Age : $patientName'),
+                                      pw.Text('Sex : $patientAge'),
+                                      pw.SizedBox(
+                                        height: 10,
+                                      ),
+                                      pw.Container(
+                                          width: 575,
+                                          height: 1,
+                                          color: PdfColors.blueGrey300),
+                                      pw.SizedBox(
+                                        height: 10,
+                                      ),
+                                      pw.Align(
+                                        alignment: pw.Alignment.center,
+                                        child: pw.Text(
+                                            'Complete Blood Count (CBC)',
+                                            style: pw.TextStyle(
+                                              fontWeight: pw.FontWeight.bold,
+                                              fontSize: 20,
+                                            )),
+                                      ),
+                                      pw.SizedBox(
+                                        height: 10,
+                                      ),
+                                      pw.Container(
+                                          width: 575,
+                                          height: 1,
+                                          color: PdfColors.blueGrey300),
+                                      pw.SizedBox(
+                                        height: 10,
+                                      ),
+                                      pw.Table(children: [
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text('Name',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                            pw.Text('Count',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                            pw.Text('Probability',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text('RBC'),
+                                            pw.Text(
+                                                '${rbc == null ? 0 : rbc.toString()}'),
+                                            pw.Text(
+                                                '${rbcProb == null ? 0 : rbcProb.toString()}'),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text('Platelets'),
+                                            pw.Text(
+                                                '${platelets == null ? 0 : plateletsProb.toString()}'),
+                                            pw.Text(
+                                                '${plateletsProb == null ? 0 : plateletsProb.toString()}'),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text('Neutrophils'),
+                                            pw.Text(
+                                                '${neutrophilNumber == null ? 0 : neutrophilNumber.toString()}'),
+                                            pw.Text(
+                                                '${neutrophilProbability == null ? 0 : neutrophilProbability.toString()}'),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text('Eosinophils'),
+                                            pw.Text(
+                                                '${eosinophilNumber == null ? 0 : eosinophilNumber.toString()}'),
+                                            pw.Text(
+                                                '${eosinophilProbability == null ? 0 : eosinophilProbability.toString()}'),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text('Basophils'),
+                                            pw.Text(
+                                                '${basophilNumber == null ? 0 : basophilNumber.toString()}'),
+                                            pw.Text(
+                                                '${basophilProbability == null ? 0 : basophilProbability.toString()}'),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text('Lymphocyte'),
+                                            pw.Text(
+                                                '${lymphocyteNumber == null ? 0 : lymphocyteNumber.toString()}'),
+                                            pw.Text(
+                                                '${lymphocyteProbability == null ? 0 : lymphocyteProbability.toString()}'),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text('Monocyte'),
+                                            pw.Text(
+                                                '${monocyteNumber == null ? 0 : monocyteNumber.toString()}'),
+                                            pw.Text(
+                                                '${monocyteProbability == null ? 0 : monocyteProbability.toString()}'),
+                                          ],
+                                        ),
+                                      ])
+                                    ])),
+                          ]);
                     }));
                 const path = '/home/sci/Documents/Patient Reports';
+                // const path = 'C:/Users/HARSH/my_folder/Patient Reports';
                 await Directory(path).create(recursive: true);
                 String fileName = uuid.v4();
                 final file = File('$path/$fileName.pdf');
+                print(file.path);
                 await file.writeAsBytes(await pdf.save());
                 if (!mounted) return;
 

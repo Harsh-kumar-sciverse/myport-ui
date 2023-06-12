@@ -41,8 +41,6 @@ class _MainDashboardState extends State<MainDashboard> {
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
 
-    // Map<String, String?> data =
-    //     ModalRoute.of(context)!.settings!.arguments as Map<String, String>;
     imageData = arguments['response']['data']['predictions'];
     platelets = (arguments['platelets']).toString();
     plateletsProb = arguments['plateletsProb'].toString();
@@ -544,7 +542,7 @@ class _MainDashboardState extends State<MainDashboard> {
                           onSelectChanged: (val) {
                             queryCells = cells
                                 .where((cell) =>
-                                    cell.cellName.contains('Neutrophil'))
+                                    cell.cellName.contains('Neutrophils'))
                                 .toList();
                             setState(() {
                               selectedIndex = 2;
@@ -572,7 +570,7 @@ class _MainDashboardState extends State<MainDashboard> {
                           onSelectChanged: (val) {
                             queryCells = cells
                                 .where((cell) =>
-                                    cell.cellName.contains('Eosinophil'))
+                                    cell.cellName.contains('Eosinophils'))
                                 .toList();
                             setState(() {
                               selectedIndex = 3;
@@ -600,7 +598,7 @@ class _MainDashboardState extends State<MainDashboard> {
                           onSelectChanged: (val) {
                             queryCells = cells
                                 .where((cell) =>
-                                    cell.cellName.contains('Basophil'))
+                                    cell.cellName.contains('Basophils'))
                                 .toList();
                             setState(() {
                               selectedIndex = 4;
@@ -608,7 +606,7 @@ class _MainDashboardState extends State<MainDashboard> {
                           },
                           cells: [
                             DataCell(Text(
-                              'Basophil',
+                              'Basophils',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
@@ -628,7 +626,7 @@ class _MainDashboardState extends State<MainDashboard> {
                           onSelectChanged: (val) {
                             queryCells = cells
                                 .where((cell) =>
-                                    cell.cellName.contains('Lymphocyte'))
+                                    cell.cellName.contains('Lymphocytes'))
                                 .toList();
                             setState(() {
                               selectedIndex = 5;
@@ -656,7 +654,7 @@ class _MainDashboardState extends State<MainDashboard> {
                           onSelectChanged: (val) {
                             queryCells = cells
                                 .where((cell) =>
-                                    cell.cellName.contains('Monocyte'))
+                                    cell.cellName.contains('Monocytes'))
                                 .toList();
                             setState(() {
                               selectedIndex = 6;
