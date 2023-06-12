@@ -57,6 +57,7 @@ class _ViewDetailsState extends State<ViewDetails> {
         <String, dynamic>{}) as Map;
     final key = arguments1['key'];
     final arguments = patients.get(key);
+    patientName = arguments['name'];
     platelets = (arguments['platelets']);
     plateletsProb = arguments['plateletsProb'];
     rbc = arguments['rbc'];
@@ -94,7 +95,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                         pw.Text('Patient Report',
                             style: pw.TextStyle(
                                 fontSize: 30, fontWeight: pw.FontWeight.bold)),
-                        pw.Text('Patient Name : Harsh'),
+                        pw.Text('Patient Name : $patientName'),
                         pw.SizedBox(
                           height: 20,
                         ),
