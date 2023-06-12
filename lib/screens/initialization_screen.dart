@@ -21,7 +21,7 @@ class InitializationScreen extends StatefulWidget {
 class _InitializationScreenState extends State<InitializationScreen> {
   bool? isLoggedIn;
   late bool isInitializing;
-  String initializationName = 'Initializing';
+  String initializationName = 'Homing in progress';
   double progressValue = 0;
   late Timer timer;
 
@@ -40,7 +40,7 @@ class _InitializationScreenState extends State<InitializationScreen> {
 
   increaseProgressValue() {
     timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
-      if (progressValue == 1) {
+      if (progressValue > 0.9) {
         timer.cancel();
       } else {
         setState(() {
@@ -62,6 +62,7 @@ class _InitializationScreenState extends State<InitializationScreen> {
     MyPortApi.actionApi(actionName: 'homing', endpoint: 'motor_control')
         .then((value) {
       initializationName = 'Homing done.';
+      initializationName = 'Centring in progress';
       progressValue = 0.25;
       setState(() {});
       initialize2();
@@ -77,6 +78,7 @@ class _InitializationScreenState extends State<InitializationScreen> {
     MyPortApi.actionApi(actionName: 'center', endpoint: 'motor_control')
         .then((value) {
       initializationName = 'Centering done.';
+      initializationName = 'Camera check in progress';
       progressValue = 0.50;
       setState(() {});
       initialize3();
@@ -92,6 +94,7 @@ class _InitializationScreenState extends State<InitializationScreen> {
     MyPortApi.actionApi(actionName: 'camera_check', endpoint: 'motor_control')
         .then((value) {
       initializationName = 'Camera Check done.';
+      initializationName = 'Condenser check in progress';
       progressValue = 0.75;
       setState(() {});
       initialize4();
@@ -127,7 +130,7 @@ class _InitializationScreenState extends State<InitializationScreen> {
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    await initialize1();
+    // await initialize1();
     // await initialize2();
     // await initialize3();
     // await initialize4();
