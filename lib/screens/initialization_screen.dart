@@ -35,6 +35,7 @@ class _InitializationScreenState extends State<InitializationScreen> {
     // TODO: implement initState
     super.initState();
     getSharedPreferences();
+    increaseProgressValue();
   }
 
   increaseProgressValue() {
