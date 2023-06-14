@@ -63,6 +63,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
         .then((value) async {
       Provider.of<SampleProvider>(context, listen: false)
           .saveScanImageResponse(value: value);
+      print('response $value');
       rbcNumber = value['data']['counts']['RBC'].toString();
       rbcProbability = value['data']['counts']['RBC_conf'].toString();
       plateletsNumber = value['data']['counts']['Pletelets'].toString();
