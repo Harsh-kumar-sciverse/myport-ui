@@ -83,15 +83,14 @@ class _PatientDetailsState extends State<PatientDetails> {
           ],
         ),
       ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          Form(
-            key: formKey,
-            child: Align(
-              alignment: Alignment.center,
+      body: Align(
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Form(
+              key: formKey,
               child: Container(
                 width: 500,
                 height: 500,
@@ -279,8 +278,8 @@ class _PatientDetailsState extends State<PatientDetails> {
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
