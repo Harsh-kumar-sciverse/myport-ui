@@ -273,12 +273,17 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                 decoration: const BoxDecoration(),
                 child: Stack(
                   children: [
-                    // Image.asset(
-                    //   'assets/video.gif',
-                    //   width: MediaQuery.of(context).size.width,
-                    //   height: MediaQuery.of(context).size.height,
-                    //   fit: BoxFit.fill,
-                    // ),
+                    Image.asset(
+                      'assets/gif3.gif',
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      fit: BoxFit.fill,
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.white.withOpacity(0.5),
+                    ),
                     Container(
                       //  height: MediaQuery.of(context).size.height - 220,
                       width: MediaQuery.of(context).size.width,
@@ -316,17 +321,6 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                         ],
                       ),
                     ),
-                    Image.asset(
-                      'assets/gif3.gif',
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      fit: BoxFit.fill,
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.black.withOpacity(0.5),
-                    ),
                     Positioned(
                       left: MediaQuery.of(context).size.width / 4,
                       top: MediaQuery.of(context).size.height / 2,
@@ -362,7 +356,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                                         .pushNamedAndRemoveUntil(
                                             Home.routeName, (route) => false);
                                   },
-                                  image: Icon(
+                                  image: const Icon(
                                     Icons.error,
                                     size: 80,
                                     color: Color(AppConstants.primaryColor),
