@@ -79,15 +79,15 @@ class Calibration extends StatelessWidget {
                             style: AppConstants.tableRowStyle,
                           )),
                           DataCell(Text(
-                            '10500',
+                            '9250',
                             style: AppConstants.tableRowStyle,
                           )),
                           DataCell(Text(
-                            '10500',
+                            '9250',
                             style: AppConstants.tableRowStyle,
                           )),
                           DataCell(Text(
-                            '10500',
+                            '7250',
                             style: AppConstants.tableRowStyle,
                           )),
                         ]),
@@ -97,15 +97,15 @@ class Calibration extends StatelessWidget {
                             style: AppConstants.tableRowStyle,
                           )),
                           DataCell(Text(
-                            '21000',
+                            '18500',
                             style: AppConstants.tableRowStyle,
                           )),
                           DataCell(Text(
-                            '10500',
+                            '9250',
                             style: AppConstants.tableRowStyle,
                           )),
                           DataCell(Text(
-                            '10500',
+                            '7250',
                             style: AppConstants.tableRowStyle,
                           )),
                         ]),
@@ -115,15 +115,15 @@ class Calibration extends StatelessWidget {
                             style: AppConstants.tableRowStyle,
                           )),
                           DataCell(Text(
-                            '10500',
+                            '9250',
                             style: AppConstants.tableRowStyle,
                           )),
                           DataCell(Text(
-                            '10500',
+                            '9250',
                             style: AppConstants.tableRowStyle,
                           )),
                           DataCell(Text(
-                            '10500',
+                            '7250',
                             style: AppConstants.tableRowStyle,
                           )),
                         ]),
@@ -133,15 +133,15 @@ class Calibration extends StatelessWidget {
                             style: AppConstants.tableRowStyle,
                           )),
                           DataCell(Text(
-                            '7300',
+                            '7500',
                             style: AppConstants.tableRowStyle,
                           )),
                           DataCell(Text(
-                            '4210',
+                            '10500',
                             style: AppConstants.tableRowStyle,
                           )),
                           DataCell(Text(
-                            '19600',
+                            '13960',
                             style: AppConstants.tableRowStyle,
                           )),
                         ]),

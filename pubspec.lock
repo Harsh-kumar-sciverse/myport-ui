@@ -432,70 +432,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.0"
-  media_kit:
-    dependency: "direct main"
-    description:
-      name: media_kit
-      sha256: "080cfb5af8d04f8cc454cb4c5ea34b19de5b8e1a1b3af62a34e766364b5244ad"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.11"
-  media_kit_libs_android_audio:
-    dependency: "direct main"
-    description:
-      name: media_kit_libs_android_audio
-      sha256: "16e592c29532f42d253c897dc37c36bb7ca3f65c2a50668133c3a5b40d6c6b87"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.6"
-  media_kit_libs_ios_audio:
-    dependency: "direct main"
-    description:
-      name: media_kit_libs_ios_audio
-      sha256: bb18ed87e8a155fc1d2ee4bf59462ca04d02a0eeb38d0b454facee6d32441ce7
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.4"
-  media_kit_libs_linux:
-    dependency: "direct main"
-    description:
-      name: media_kit_libs_linux
-      sha256: "21acc71cbae3518b3aeef9023a6a3a3decb579a40153764333814987ccd61040"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.2"
-  media_kit_libs_macos_audio:
-    dependency: "direct main"
-    description:
-      name: media_kit_libs_macos_audio
-      sha256: b9f4a2995396fd5cc243901e618c0586d4f1781eecf2302999b77d6faee8b250
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.5"
-  media_kit_libs_windows_audio:
-    dependency: "direct main"
-    description:
-      name: media_kit_libs_windows_audio
-      sha256: f6ad5a1b910a6748a7350360756cd99a718fc9661a9583a7fd86a308d068dd81
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.3"
-  media_kit_native_event_loop:
-    dependency: "direct main"
-    description:
-      name: media_kit_native_event_loop
-      sha256: "521125e534603c3f603b93283db3938f557f33ecc383fbd62edd4beb3bf73747"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.4"
-  media_kit_video:
-    dependency: "direct main"
-    description:
-      name: media_kit_video
-      sha256: "89d3c2cdb0f74d1bb597a9c9a7678f656fe538d20620ad1317b7354fd5d1af15"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.12"
   meta:
     dependency: transitive
     description:
@@ -680,14 +616,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
-  safe_local_storage:
-    dependency: transitive
-    description:
-      name: safe_local_storage
-      sha256: ede4eb6cb7d88a116b3d3bf1df70790b9e2038bc37cb19112e381217c74d9440
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.2"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -821,14 +749,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  synchronized:
-    dependency: transitive
-    description:
-      name: synchronized
-      sha256: "5fcbd27688af6082f5abd611af56ee575342c30e87541d0245f7ff99faa02c60"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.1.0"
   term_glyph:
     dependency: transitive
     description:
@@ -861,14 +781,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.2"
-  uri_parser:
-    dependency: transitive
-    description:
-      name: uri_parser
-      sha256: "6543c9fd86d2862fac55d800a43e67c0dcd1a41677cb69c2f8edfe73bbcf1835"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.2"
   uuid:
     dependency: "direct main"
     description:
@@ -935,4 +847,4 @@ packages:
     version: "3.1.2"
 sdks:
   dart: ">=2.19.4 <3.0.0"
-  flutter: ">=3.7.0"
+  flutter: ">=3.3.0"
