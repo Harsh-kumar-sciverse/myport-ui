@@ -285,7 +285,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                       color: Colors.white.withOpacity(0.5),
                     ),
                     Container(
-                      //  height: MediaQuery.of(context).size.height - 220,
+                      height: MediaQuery.of(context).size.height - 220,
                       width: MediaQuery.of(context).size.width,
                       decoration:
                           BoxDecoration(border: Border.all(color: Colors.blue)),
@@ -313,7 +313,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                                     ),
                                     child: Image.file(
                                       File(ls[index]),
-                                      fit: BoxFit.fill,
+                                      // fit: BoxFit.fill,
                                     ),
                                   );
                                 }),
