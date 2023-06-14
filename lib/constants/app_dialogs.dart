@@ -191,17 +191,13 @@ class AppDialogs {
         });
   }
 
-  static showEmailDialog(
-      {required BuildContext context,
-      required TextEditingController toEmailController,
-      required TextEditingController ccEmailController,
-      required FormFieldValidator<String> validator,
-      required String initialValue,
-      required TextEditingController composeTextEditingController,
-      required String pdfName,
-      required VoidCallback function,
-      required GlobalKey<FormState> formKey,
-      required TextEditingController subjectEditingController}) {
+  static showEmailDialog({
+    required BuildContext context,
+    required TextEditingController toEmailController,
+    required FormFieldValidator<String> validator,
+    required VoidCallback function,
+    required GlobalKey<FormState> formKey,
+  }) {
     showDialog(
         context: context,
         builder: (context) {
@@ -227,24 +223,13 @@ class AppDialogs {
                     const SizedBox(
                       height: 20,
                     ),
-                    TextFormField(
-                      initialValue: initialValue,
-                      decoration: const InputDecoration(
-                        prefix: Text(
-                          'From  ',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                      readOnly: true,
+                    const Icon(
+                      Icons.email_outlined,
+                      color: Color(AppConstants.primaryColor),
+                      size: 80,
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     TextFormField(
                       controller: toEmailController,
@@ -264,77 +249,6 @@ class AppDialogs {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      controller: ccEmailController,
-                      decoration: const InputDecoration(
-                        prefixIconConstraints:
-                            BoxConstraints(minWidth: 0, minHeight: 0),
-                        prefixIcon: Text(
-                          'Cc  ',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      controller: subjectEditingController,
-                      decoration: const InputDecoration(
-                          hintStyle: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          hintText: 'Subject'),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      controller: composeTextEditingController,
-                      decoration: const InputDecoration(
-                        hintText: 'Compose email',
-                        border: InputBorder.none,
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      color: Colors.blue.shade300,
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.picture_as_pdf_rounded,
-                            color: Colors.red,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(pdfName)
-                        ],
-                      ),
-                    )
                   ],
                 ),
               ),

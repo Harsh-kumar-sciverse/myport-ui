@@ -10,6 +10,7 @@ import 'package:my_port/screens/main_dashboard.dart';
 import 'package:my_port/screens/patient_details.dart';
 import 'package:my_port/screens/place_sample_screen.dart';
 import 'package:my_port/screens/show_gif_video.dart';
+import 'package:my_port/screens/splash.dart';
 import './screens/initialization_screen.dart';
 import './constants/app_constants.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -38,9 +39,10 @@ class _MyPortState extends State<MyPort> {
             primarySwatch: AppConstants.primaryBlue,
             fontFamily: GoogleFonts.openSans().fontFamily,
             dividerColor: Colors.transparent),
-        home: const InitializationScreen(),
+        home: const SplashScreen(),
         routes: {
           Login.routeName: (_) => const Login(),
+          InitializationScreen.routeName: (_) => const InitializationScreen(),
           Home.routeName: (_) => const Home(),
           PlaceSample.routeName: (_) => const PlaceSample(),
           PatientDetails.routeName: (_) => const PatientDetails(),

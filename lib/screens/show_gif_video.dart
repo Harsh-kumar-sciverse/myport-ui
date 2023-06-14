@@ -139,40 +139,12 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
     });
   }
 
-  // Future<void> sendDataToScan() async {
-  //   var url = Uri.parse('http://192.168.1.101:8000/motor_control');
-  //
-  //   try {
-  //     var response = await http.post(
-  //       url,
-  //       headers: <String, String>{
-  //         'Content-type': 'application/json; charset=UTF-8',
-  //       },
-  //       body: jsonEncode(<String, String>{'action': 'scanslide'}),
-  //     );
-  //     print('response ${response.statusCode}');
-  //     if (response.statusCode == 200) {
-  //       print('response 200');
-  //       // var responseData = json.decode(response.body);
-  //       // var data = responseData['counts'];
-  //       // platelets = data['Pletelets'];
-  //       // plateletsProb = data['Pletelets_conf'];
-  //       // rbc = data['RBC'];
-  //       // rbcProb = data['RBC_conf'];
-  //     } else {
-  //       print('failed');
-  //     }
-  //   } catch (e) {
-  //     print('error in initialization $e');
-  //   }
-  // }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     scanSample();
-    subscription = Directory('/home/sci/Documents/ViewPort/app/temp')
+    subscription = Directory('/home/sciverse/Documents/ViewPort/app/temp')
         .watch(recursive: false, events: FileSystemEvent.create)
         .listen((event) {
       print('new path created ${event.path}');
@@ -188,113 +160,95 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
 
   @override
   Widget build(BuildContext context) {
-    // List<String> imagePathList = [
-    //   '/home/sci/Documents/ViewPort/app/temp/1_1.jpg',
-    //   '/home/sci/Documents/ViewPort/app/temp/2_2.jpg',
-    //   '/home/sci/Documents/ViewPort/app/temp/3_3.jpg',
-    //   '/home/sci/Documents/ViewPort/app/temp/4_4.png',
-    //   '/home/sci/Documents/ViewPort/app/temp/5_5.jpg',
-    //   '/home/sci/Documents/ViewPort/app/temp/6_6.jpg',
-    //   '/home/sci/Documents/ViewPort/app/temp/7.jpg',
-    //   '/home/sci/Documents/ViewPort/app/temp/8_8.jpg',
-    //   '/home/sci/Documents/ViewPort/app/temp/9.jpg',
-    //   '/home/sci/Documents/ViewPort/app/temp/10_10.jpg',
-    //   '/home/sci/Documents/ViewPort/app/temp/123_456.jpg',
-    // ];
-    //
-    // List<String> filteredImages = imagePathList
-    //     .where((path) => RegExp(r'\d+_\d+\.jpg$').hasMatch(path))
-    //     .toList();
-    //
-    // print(filteredImages);
-
     if (newDirectory == null) {
       return Scaffold(
-          body: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              decoration: const BoxDecoration(),
-              child: Stack(
-                children: [
-                  // Image.asset(
-                  //   'assets/video.gif',
-                  //   width: MediaQuery.of(context).size.width,
-                  //   height: MediaQuery.of(context).size.height,
-                  //   fit: BoxFit.fill,
-                  // ),
-                  Container(
-                    //  height: MediaQuery.of(context).size.height - 220,
-                    width: MediaQuery.of(context).size.width,
-                    decoration:
-                        BoxDecoration(border: Border.all(color: Colors.blue)),
-                  ),
-                  Positioned(
-                    left: MediaQuery.of(context).size.width / 4,
-                    top: MediaQuery.of(context).size.height / 2,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 2,
-                          height: 30,
-                          child: const ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            child: LinearProgressIndicator(
-                              color: Color(AppConstants.primaryColor),
-                              backgroundColor: Colors.white,
-                              value: 0,
-                            ),
-                          ),
+        body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: const BoxDecoration(),
+          child: Stack(
+            children: [
+              // Image.asset(
+              //   'assets/video.gif',
+              //   width: MediaQuery.of(context).size.width,
+              //   height: MediaQuery.of(context).size.height,
+              //   fit: BoxFit.fill,
+              // ),
+              Container(
+                //  height: MediaQuery.of(context).size.height - 220,
+                width: MediaQuery.of(context).size.width,
+                decoration:
+                    BoxDecoration(border: Border.all(color: Colors.blue)),
+              ),
+              Positioned(
+                left: MediaQuery.of(context).size.width / 4,
+                top: MediaQuery.of(context).size.height / 2,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 2,
+                      height: 30,
+                      child: const ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        child: LinearProgressIndicator(
+                          color: Color(AppConstants.primaryColor),
+                          backgroundColor: Colors.white,
+                          value: 0,
                         ),
-                        const SizedBox(
-                          height: 40,
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red),
-                          onPressed: () {
-                            AppDialogs.showAttentionDialog(
-                                context: context,
-                                content:
-                                    'Are you sure?\nProcessing will be aborted.',
-                                function: () {
-                                  Navigator.of(context).pushNamedAndRemoveUntil(
-                                      Home.routeName, (route) => false);
-                                },
-                                image: Icon(
-                                  Icons.error,
-                                  size: 80,
-                                  color: Color(AppConstants.primaryColor),
-                                ));
-                          },
-                          child: const Padding(
-                            padding: EdgeInsets.all(20.0),
-                            child: Text(
-                              'Abort',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                  Positioned(
-                      top: 0,
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: NavigationBarWidget(
-                            title: 'Processing',
-                            showLogoutIcon: true,
-                            otherLastWidget: Container(),
-                            showPowerOffIcon: false,
-                            showWifiListIcon: true,
-                          ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    ElevatedButton(
+                      style:
+                          ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                      onPressed: () {
+                        AppDialogs.showAttentionDialog(
+                            context: context,
+                            content:
+                                'Are you sure?\nProcessing will be aborted.',
+                            function: () {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  Home.routeName, (route) => false);
+                            },
+                            image: const Icon(
+                              Icons.error,
+                              size: 80,
+                              color: Color(AppConstants.primaryColor),
+                            ));
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.all(20.0),
+                        child: Text(
+                          'Abort',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                      ))
-                ],
-              )));
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                  top: 0,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20),
+                      child: NavigationBarWidget(
+                        title: 'Processing',
+                        showLogoutIcon: true,
+                        otherLastWidget: Container(),
+                        showPowerOffIcon: false,
+                        showWifiListIcon: true,
+                      ),
+                    ),
+                  ))
+            ],
+          ),
+        ),
+      );
     }
     return Scaffold(
       body: StreamBuilder<FileSystemEvent>(
@@ -346,15 +300,26 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                                     height: 100,
                                     width: 100,
                                     decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: const Color(
-                                                AppConstants.primaryColor))),
-                                    child: Image.file(File(ls[index])),
+                                      border: Border.all(
+                                        color: const Color(
+                                            AppConstants.primaryColor),
+                                      ),
+                                    ),
+                                    child: Image.file(
+                                      File(ls[index]),
+                                      fit: BoxFit.fill,
+                                    ),
                                   );
                                 }),
                           ),
                         ],
                       ),
+                    ),
+                    Image.asset(
+                      'assets/gif3.gif',
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.fill,
                     ),
                     Container(
                       height: MediaQuery.of(context).size.height,

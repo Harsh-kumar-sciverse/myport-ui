@@ -33,7 +33,7 @@ class AppConstants {
       color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold);
   static TextStyle tableRowStyle = const TextStyle(
     color: Colors.blue,
-    fontSize: 16,
+    fontSize: 14,
   );
   static String emailPattern =
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';

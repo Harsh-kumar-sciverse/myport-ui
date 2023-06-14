@@ -43,6 +43,9 @@ class _ViewDetailsState extends State<ViewDetails> {
   String? monocyteProbability;
   String? patientName;
   String? patientAge;
+  String? sampleCollectionTime;
+  double? hemoglobin;
+  double? mch;
   TextEditingController toTextController = TextEditingController();
   TextEditingController subjectTextController = TextEditingController();
   TextEditingController ccTextController = TextEditingController();
@@ -50,6 +53,7 @@ class _ViewDetailsState extends State<ViewDetails> {
   final formKey = GlobalKey<FormState>();
 
   var uuid = const Uuid();
+  String interpretation = '';
 
   @override
   void didChangeDependencies() {
@@ -61,6 +65,7 @@ class _ViewDetailsState extends State<ViewDetails> {
     final arguments = patients.get(key);
     patientName = arguments['name'];
     patientAge = arguments['age'];
+    sampleCollectionTime = arguments['time'];
     platelets = (arguments['platelets']);
     plateletsProb = arguments['plateletsProb'];
     rbc = arguments['rbc'];
@@ -75,6 +80,33 @@ class _ViewDetailsState extends State<ViewDetails> {
     lymphocyteProbability = arguments['lymphocytProb'];
     monocyteNumber = arguments['monocytes'];
     monocyteProbability = arguments['monocyteProb'];
+    hemoglobin = rbc == null ? 0 : (double.parse(rbc!)) / 3;
+    double mono =
+        monocyteNumber!.contains('null') ? 0 : double.parse(monocyteNumber!);
+    double neutro = neutrophilNumber!.contains('null')
+        ? 0
+        : double.parse(neutrophilNumber!);
+    double eosino = eosinophilNumber!.contains('null')
+        ? 0
+        : double.parse(eosinophilNumber!);
+    double baso =
+        basophilNumber!.contains('null') ? 0 : double.parse(basophilNumber!);
+    double lympho = lymphocyteNumber!.contains('null')
+        ? 0
+        : double.parse(lymphocyteNumber!);
+    double wbc = (mono + neutro + eosino + baso + lympho);
+    double rbcN = rbc!.contains('null') ? 0 : double.parse(rbc!);
+    mch = (wbc / rbcN) * 10;
+    getInterpretation(rbcN, rbcN / 3);
+  }
+
+  getInterpretation(double rbc, double hemoglobin) {
+    if (hemoglobin < 10) {
+      interpretation = 'Low Hemoglobin';
+    } else if (hemoglobin > 20) {
+      interpretation = 'High Hemoglobin';
+    }
+    setState(() {});
   }
 
   @override
@@ -114,12 +146,29 @@ class _ViewDetailsState extends State<ViewDetails> {
                                     crossAxisAlignment:
                                         pw.CrossAxisAlignment.start,
                                     children: [
-                                      pw.Text('$patientName',
-                                          style: pw.TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: pw.FontWeight.bold)),
-                                      pw.Text('Age : $patientName'),
-                                      pw.Text('Sex : $patientAge'),
+                                      pw.Row(
+                                          mainAxisAlignment:
+                                              pw.MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            pw.Text('Name :$patientName',
+                                                style: pw.TextStyle(
+                                                    // fontSize: 20,
+                                                    // fontWeight:
+                                                    //     pw.FontWeight.bold,
+                                                    )),
+                                            pw.Text('Age : $patientName'),
+                                            pw.Text('Sex : $patientAge'),
+                                            pw.Text(
+                                                'Sample Collection Time : $sampleCollectionTime'),
+                                          ]),
+                                      pw.SizedBox(
+                                        height: 10,
+                                      ),
+                                      pw.Align(
+                                        alignment: pw.Alignment.topRight,
+                                        child: pw.Text(
+                                            'Report Time : ${DateFormat('dd-MM-yyyy  h:mm a').format(DateTime.now())}'),
+                                      ),
                                       pw.SizedBox(
                                         height: 10,
                                       ),
@@ -190,7 +239,40 @@ class _ViewDetailsState extends State<ViewDetails> {
                                           children: [
                                             pw.Padding(
                                               padding: const pw.EdgeInsets.only(
-                                                  bottom: 5),
+                                                  bottom: 5, top: 5),
+                                              child: pw.Text('HEMOGLOBIN',
+                                                  style: pw.TextStyle(
+                                                      fontWeight:
+                                                          pw.FontWeight.bold)),
+                                            ),
+                                            pw.Text('',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                            pw.Text('',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                            pw.Text('',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text('Hemoglobin(Hb)'),
+                                            pw.Text(
+                                                '${hemoglobin == null ? 0 : hemoglobin}'),
+                                            pw.Text('13.0-17.0'),
+                                            pw.Text('g/dL'),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Padding(
+                                              padding: const pw.EdgeInsets.only(
+                                                  bottom: 5, top: 5),
                                               child: pw.Text('RBC COUNT',
                                                   style: pw.TextStyle(
                                                       fontWeight:
@@ -212,9 +294,42 @@ class _ViewDetailsState extends State<ViewDetails> {
                                         ),
                                         pw.TableRow(
                                           children: [
-                                            pw.Text('Total RBC Count'),
+                                            pw.Text('RBC'),
                                             pw.Text(
                                                 '${rbc == null ? 0 : rbc.toString()}'),
+                                            pw.Text('4.5-5.5'),
+                                            pw.Text('mill/cumm'),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Padding(
+                                              padding: const pw.EdgeInsets.only(
+                                                  bottom: 5, top: 5),
+                                              child: pw.Text('BLOOD INDICES',
+                                                  style: pw.TextStyle(
+                                                      fontWeight:
+                                                          pw.FontWeight.bold)),
+                                            ),
+                                            pw.Text('',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                            pw.Text('',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                            pw.Text('',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text('MCH'),
+                                            pw.Text(
+                                                '${mch == null ? 0 : mch.toString()}'),
                                             pw.Text('4.5-5.5'),
                                             pw.Text('mill/cumm'),
                                           ],
@@ -321,6 +436,76 @@ class _ViewDetailsState extends State<ViewDetails> {
                                             pw.Text('%'),
                                           ],
                                         ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Padding(
+                                              padding: const pw.EdgeInsets.only(
+                                                  bottom: 5, top: 5),
+                                              child: pw.Text(
+                                                  'ABSOLUTE WBC COUNT',
+                                                  style: pw.TextStyle(
+                                                      fontWeight:
+                                                          pw.FontWeight.bold)),
+                                            ),
+                                            pw.Text('',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                            pw.Text('',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                            pw.Text('',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text('Neutrophils'),
+                                            pw.Text(
+                                                '${neutrophilNumber == null ? 0 : neutrophilNumber.toString()}'),
+                                            pw.Text('50-62'),
+                                            pw.Text('%'),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text('Eosinophils'),
+                                            pw.Text(
+                                                '${eosinophilNumber == null ? 0 : eosinophilNumber.toString()}'),
+                                            pw.Text('00-06'),
+                                            pw.Text('%'),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text('Basophils'),
+                                            pw.Text(
+                                                '${basophilNumber == null ? 0 : basophilNumber.toString()}'),
+                                            pw.Text('00-02'),
+                                            pw.Text('%'),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text('Lymphocyte'),
+                                            pw.Text(
+                                                '${lymphocyteNumber == null ? 0 : lymphocyteNumber.toString()}'),
+                                            pw.Text('20-40'),
+                                            pw.Text('%'),
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text('Monocyte'),
+                                            pw.Text(
+                                                '${monocyteNumber == null ? 0 : monocyteNumber.toString()}'),
+                                            pw.Text('00-10'),
+                                            pw.Text('%'),
+                                          ],
+                                        ),
                                       ]),
                                       pw.SizedBox(height: 20),
                                       pw.RichText(
@@ -341,6 +526,15 @@ class _ViewDetailsState extends State<ViewDetails> {
                                       pw.SizedBox(
                                         height: 10,
                                       ),
+                                      pw.Text(
+                                        'Interpretation: $interpretation',
+                                        style: pw.TextStyle(
+                                          fontWeight: pw.FontWeight.bold,
+                                        ),
+                                      ),
+                                      pw.SizedBox(
+                                        height: 10,
+                                      ),
                                       pw.Container(
                                           width: 575,
                                           height: 1,
@@ -354,16 +548,39 @@ class _ViewDetailsState extends State<ViewDetails> {
                                           children: [
                                             pw.Text('Thanks for reference'),
                                             pw.Text('***End of Report***'),
-                                            pw.Text('             '),
+                                            pw.SizedBox(height: 10, width: 30),
                                           ]),
-                                      pw.SizedBox(
-                                        height: 80,
+                                      pw.SizedBox(height: 10),
+                                      pw.RichText(
+                                        text: pw.TextSpan(
+                                            text: 'Note : ',
+                                            style: pw.TextStyle(
+                                              fontWeight: pw.FontWeight.bold,
+                                            ),
+                                            children: [
+                                              pw.TextSpan(
+                                                text:
+                                                    'Test conducted on fresh blood sample.',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.normal),
+                                              ),
+                                            ]),
                                       ),
-                                      pw.Text('Medical Lab Technician',
+                                      pw.SizedBox(
+                                        height: 40,
+                                      ),
+                                      pw.Text('Pathologist',
                                           style: pw.TextStyle(
                                             fontWeight: pw.FontWeight.bold,
                                             fontSize: 18,
                                           )),
+                                      pw.SizedBox(
+                                        height: 5,
+                                      ),
+                                      pw.Text(
+                                        '(MD, Pathologist)',
+                                      ),
                                       pw.SizedBox(
                                         height: 10,
                                       ),
@@ -377,7 +594,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                       pw.Align(
                                         alignment: pw.Alignment.topRight,
                                         child: pw.Text(
-                                            'Generated on : ${DateFormat('dd-MM-yyyy  kk:mm').format(DateTime.now())}',
+                                            'Generated on : ${DateFormat('dd-MM-yyyy  h:mm a').format(DateTime.now())}',
                                             style: const pw.TextStyle(
                                               fontSize: 10,
                                             )),
@@ -385,8 +602,8 @@ class _ViewDetailsState extends State<ViewDetails> {
                                     ])),
                           ]);
                     }));
-                // const path = '/home/sci/Documents/Patient Reports';
-                const path = 'C:/Users/HARSH/my_folder/Patient Reports';
+                const path = '/home/sciverse/Documents/Patient Reports';
+                // const path = 'C:/Users/HARSH/my_folder/Patient Reports';
                 await Directory(path).create(recursive: true);
                 String fileName = uuid.v4();
                 final file = File('$path/$fileName.pdf');
@@ -396,9 +613,7 @@ class _ViewDetailsState extends State<ViewDetails> {
 
                 AppDialogs.showEmailDialog(
                     context: context,
-                    initialValue: 'myportsci@gmail.com',
                     toEmailController: toTextController,
-                    ccEmailController: ccTextController,
                     validator: (val) {
                       String pattern = AppConstants.emailPattern;
                       RegExp regEx = RegExp(pattern);
@@ -410,113 +625,72 @@ class _ViewDetailsState extends State<ViewDetails> {
                       }
                       return null;
                     },
-                    subjectEditingController: subjectTextController,
-                    composeTextEditingController: composeTextController,
-                    pdfName: '$fileName.pdf',
                     function: () async {
                       if (formKey.currentState!.validate()) {
                         formKey.currentState!.save;
 
                         Navigator.of(context).pop();
                         AppDialogs.showCircularDialog(context: context);
-                        if (ccTextController.text.isNotEmpty) {
-                          String username = 'myportsci@gmail.com';
-                          String password = 'kakxspxkwxcwlomr';
-                          final smtpServer = gmail(username, password);
-                          try {
-                            final equivalentMessage = Message()
-                              ..from = Address(username, 'MyPort')
-                              ..recipients.add(Address(toTextController.text))
-                              ..ccRecipients.addAll([
-                                Address(ccTextController.text),
-                              ])
-                              ..subject = subjectTextController.text
-                              ..text = composeTextController.text
-                              ..html =
-                                  '<h1>Patient Report</h1>\n<p> ${composeTextController.text} \nAttached pdf is patient report</p>'
-                              ..attachments = [
-                                FileAttachment(file)..location = Location.inline
-                              ];
-                            var connection = PersistentConnection(smtpServer);
-                            await connection.send(equivalentMessage);
-                            await connection.close();
-                            toTextController.text = '';
-                            ccTextController.text = '';
-                            subjectTextController.text = '';
-                            composeTextController.text = '';
-                            Navigator.of(context).pop();
-                            AppDialogs.showSuccessDialog(
-                                context: context,
-                                content: 'Email sent successfully.',
-                                image: Icon(
-                                  Icons.done,
-                                  color: Color(AppConstants.primaryColor),
-                                  size: 80,
-                                ));
-                          } catch (error) {
-                            Navigator.of(context).pop();
-                            toTextController.text = '';
-                            ccTextController.text = '';
-                            subjectTextController.text = '';
-                            composeTextController.text = '';
-                            AppDialogs.showErrorDialog(
-                                context: context,
-                                content: 'Error occurred sending email',
-                                image: Icon(
-                                  Icons.error,
-                                  size: 80,
-                                  color: Color(AppConstants.primaryColor),
-                                ));
-                            print('error sending mail $error');
-                          }
-                        } else {
-                          String username = 'myportsci@gmail.com';
-                          String password = 'kakxspxkwxcwlomr';
-                          final smtpServer = gmail(username, password);
-                          print(toTextController.text);
-                          try {
-                            final equivalentMessage = Message()
-                              ..from = Address(username, 'MyPort')
-                              ..recipients.add(Address(toTextController.text))
-                              ..subject = subjectTextController.text
-                              ..text = composeTextController.text
-                              ..html =
-                                  '<h1>Patient Report</h1>\n<p> ${composeTextController.text} \n \n Attached pdf is patient report</p>'
-                              ..attachments = [
-                                FileAttachment(file)..location = Location.inline
-                              ];
-                            var connection = PersistentConnection(smtpServer);
-                            await connection.send(equivalentMessage);
-                            await connection.close();
-                            Navigator.of(context).pop();
-                            toTextController.text = '';
-                            ccTextController.text = '';
-                            subjectTextController.text = '';
-                            composeTextController.text = '';
-                            AppDialogs.showSuccessDialog(
-                                context: context,
-                                content: 'Email sent successfully.',
-                                image: Icon(
-                                  Icons.done,
-                                  color: Color(AppConstants.primaryColor),
-                                  size: 80,
-                                ));
-                          } catch (error) {
-                            toTextController.text = '';
-                            ccTextController.text = '';
-                            subjectTextController.text = '';
-                            composeTextController.text = '';
-                            Navigator.of(context).pop();
-                            AppDialogs.showErrorDialog(
-                                context: context,
-                                content: 'Error occurred sending email',
-                                image: Icon(
-                                  Icons.error,
-                                  size: 80,
-                                  color: Color(AppConstants.primaryColor),
-                                ));
-                            print('error sending mail $error');
-                          }
+                        String username = 'myportsci@gmail.com';
+                        String password = 'kakxspxkwxcwlomr';
+                        final smtpServer = gmail(username, password);
+                        print(toTextController.text);
+                        try {
+                          final equivalentMessage = Message()
+                            ..from = Address(username, 'MyPort')
+                            ..recipients.add(Address(toTextController.text))
+                            ..subject = 'Your CBC Report'
+                            ..text = ''
+                            ..html = '<h3>Dear ${patientName},</h3><br> We at Mylab Discovery are honored to have you as a valued member of our family.'
+                                'On behalf of the team, we extend our sincere appreciation for your trust and confidence in us.'
+                                'It is with great pleasure that we share your MyPort CBC test report with you, which has been securely attached PDF.<br><br>'
+                                'Please note that you have the flexibility to view the report at your convenience, save it for future reference, and even print a copy if required. To ensure that you receive important notifications from us, kindly keep your'
+                                'email ID updated with us.<br><br>'
+                                'Should you require any assistance, our support team is always available to assist you at '
+                                'https://mylabdiscoverysolutions.com/ <br><br>'
+                                'We would like to extend our gratitude once again for choosing MyPort.<br><br>'
+                                'Warm regards,<br><br>'
+                                '<b>The Mylab Team.</b><br><br>'
+                                '<b>DISCLAIMER:</b> This message and any attachments are confidential and intended solely for the recipient. The'
+                                'protection. This message should not be forwarded or disclosed to any other person without the sender'
+                                'permission. If you are not the intended recipient, you are not authorized to retain, copy, distribute, or disclose'
+                                'this message or any part of it. If you have received this message in error, please notify the sender immediately'
+                                'and destroy the original message. Our company reserves the right to monitor all email messages passing'
+                                'through our network. </p>'
+                            ..attachments = [
+                              FileAttachment(file)..location = Location.inline
+                            ];
+                          var connection = PersistentConnection(smtpServer);
+                          await connection.send(equivalentMessage);
+                          await connection.close();
+                          Navigator.of(context).pop();
+                          toTextController.text = '';
+                          ccTextController.text = '';
+                          subjectTextController.text = '';
+                          composeTextController.text = '';
+                          AppDialogs.showSuccessDialog(
+                              context: context,
+                              content: 'Email sent successfully.',
+                              image: Icon(
+                                Icons.done,
+                                color: Color(AppConstants.primaryColor),
+                                size: 80,
+                              ));
+                        } catch (error) {
+                          toTextController.text = '';
+                          ccTextController.text = '';
+                          subjectTextController.text = '';
+                          composeTextController.text = '';
+                          Navigator.of(context).pop();
+                          AppDialogs.showErrorDialog(
+                              context: context,
+                              content: 'Error occurred sending email',
+                              image: Icon(
+                                Icons.error,
+                                size: 80,
+                                color: Color(AppConstants.primaryColor),
+                              ));
+                          print('error sending mail $error');
                         }
                       }
                     },

@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import './error_screen.dart';
 
 class InitializationScreen extends StatefulWidget {
+  static const routeName = '/initialization';
   const InitializationScreen({Key? key}) : super(key: key);
 
   @override

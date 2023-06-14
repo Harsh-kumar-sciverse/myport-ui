@@ -44,75 +44,68 @@ class _PatientDetailsState extends State<PatientDetails> {
           ),
         ),
       ),
+      bottomSheet: Padding(
+        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(15.0),
+                child: Icon(
+                  Icons.arrow_back_ios_new,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(Home.routeName, (route) => false);
+              },
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(15.0),
+                child: Icon(
+                  Icons.home,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
       body: Column(
         children: [
           const SizedBox(
             height: 20,
           ),
-          Expanded(
-            child: Form(
-              key: formKey,
-              child: Align(
-                alignment: Alignment.center,
-                child: Container(
-                  width: 500,
-                  padding: const EdgeInsets.all(20),
-                  decoration: AppConstants.decoration,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Enter Patient Details',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(
-                              AppConstants.primaryColor,
-                            ),
-                            fontSize: 25,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                      ),
-                      TextFormField(
-                        controller: nameController,
-                        keyboardType: TextInputType.text,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(
-                              RegExp('^[a-zA-Z ]*'))
-                        ],
-                        style: const TextStyle(fontSize: 20),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter patient name';
-                          }
-                          return null;
-                        },
-                        decoration: const InputDecoration(label: Text('Name')),
-                      ),
-                      TextFormField(
-                        controller: ageController,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        style: const TextStyle(fontSize: 20),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter patient age';
-                          }
-                          return null;
-                        },
-                        keyboardType: TextInputType.number,
-                        maxLength: 2,
-                        decoration: const InputDecoration(
-                          label: Text('Age'),
-                          counterText: "",
-                        ),
-                      ),
-                      const Text(
-                        'Gender',
+          Form(
+            key: formKey,
+            child: Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: 500,
+                height: 500,
+                padding: const EdgeInsets.all(20),
+                decoration: AppConstants.decoration,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Enter Patient Details',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Color(
                             AppConstants.primaryColor,
@@ -121,167 +114,172 @@ class _PatientDetailsState extends State<PatientDetails> {
                           fontWeight: FontWeight.w900,
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            height: 80,
-                            width: 80,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: const Color(AppConstants.primaryColor),
-                              ),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(15),
-                              ),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Radio<gender>(
-                                  groupValue: selectedGender,
-                                  value: gender.Male,
-                                  onChanged: (gender? value) {
-                                    setState(() {
-                                      selectedGender = value!;
-                                    });
-                                  },
-                                ),
-                                const Text('Male')
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 80,
-                            width: 80,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: const Color(AppConstants.primaryColor),
-                              ),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(15),
-                              ),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Radio<gender>(
-                                  groupValue: selectedGender,
-                                  value: gender.Female,
-                                  onChanged: (gender? value) {
-                                    setState(() {
-                                      selectedGender = value!;
-                                    });
-                                  },
-                                ),
-                                const Text('Female')
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 80,
-                            width: 80,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: const Color(AppConstants.primaryColor),
-                              ),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(15),
-                              ),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Radio<gender>(
-                                  groupValue: selectedGender,
-                                  value: gender.Other,
-                                  onChanged: (gender? value) {
-                                    setState(() {
-                                      selectedGender = value!;
-                                    });
-                                  },
-                                ),
-                                const Text('Other')
-                              ],
-                            ),
-                          ),
-                        ],
+                    ),
+                    TextFormField(
+                      controller: nameController,
+                      keyboardType: TextInputType.text,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.allow(RegExp('^[a-zA-Z ]*'))
+                      ],
+                      style: const TextStyle(fontSize: 20),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter patient name';
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(label: Text('Name')),
+                    ),
+                    TextFormField(
+                      controller: ageController,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      style: const TextStyle(fontSize: 20),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter patient age';
+                        }
+                        return null;
+                      },
+                      keyboardType: TextInputType.number,
+                      maxLength: 2,
+                      decoration: const InputDecoration(
+                        label: Text('Age'),
+                        counterText: "",
                       ),
-                      isLoading
-                          ? const CircularProgressIndicator()
-                          : Row(
-                              children: [
-                                Expanded(
-                                  child: ElevatedButton(
-                                      onPressed: () async {
-                                        if (formKey.currentState!.validate()) {
-                                          formKey.currentState!.save();
-                                          Provider.of<PatientDetailsProvider>(
-                                                  context,
-                                                  listen: false)
-                                              .setPatient(
-                                                  pName: nameController.text,
-                                                  pAge: ageController.text,
-                                                  pGender: selectedGender.name);
-                                          Navigator.of(context)
-                                              .pushNamed(PlaceSample.routeName);
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        padding: const EdgeInsets.all(20),
-                                      ),
-                                      child: const Text(
-                                        'Next',
-                                        style: TextStyle(fontSize: 20),
-                                      )),
-                                ),
-                              ],
+                    ),
+                    const Text(
+                      'Gender',
+                      style: TextStyle(
+                        color: Color(
+                          AppConstants.primaryColor,
+                        ),
+                        fontSize: 25,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: const Color(AppConstants.primaryColor),
                             ),
-                    ],
-                  ),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(15),
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Radio<gender>(
+                                groupValue: selectedGender,
+                                value: gender.Male,
+                                onChanged: (gender? value) {
+                                  setState(() {
+                                    selectedGender = value!;
+                                  });
+                                },
+                              ),
+                              const Text('Male')
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: const Color(AppConstants.primaryColor),
+                            ),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(15),
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Radio<gender>(
+                                groupValue: selectedGender,
+                                value: gender.Female,
+                                onChanged: (gender? value) {
+                                  setState(() {
+                                    selectedGender = value!;
+                                  });
+                                },
+                              ),
+                              const Text('Female')
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: const Color(AppConstants.primaryColor),
+                            ),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(15),
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Radio<gender>(
+                                groupValue: selectedGender,
+                                value: gender.Other,
+                                onChanged: (gender? value) {
+                                  setState(() {
+                                    selectedGender = value!;
+                                  });
+                                },
+                              ),
+                              const Text('Other')
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    isLoading
+                        ? const CircularProgressIndicator()
+                        : Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                    onPressed: () async {
+                                      if (formKey.currentState!.validate()) {
+                                        formKey.currentState!.save();
+                                        Provider.of<PatientDetailsProvider>(
+                                                context,
+                                                listen: false)
+                                            .setPatient(
+                                                pName: nameController.text,
+                                                pAge: ageController.text,
+                                                pGender: selectedGender.name);
+                                        Navigator.of(context)
+                                            .pushNamed(PlaceSample.routeName);
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.all(20),
+                                    ),
+                                    child: const Text(
+                                      'Next',
+                                      style: TextStyle(fontSize: 20),
+                                    )),
+                              ),
+                            ],
+                          ),
+                  ],
                 ),
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: Icon(
-                      Icons.arrow_back_ios_new,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        Home.routeName, (route) => false);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: Icon(
-                      Icons.home,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
         ],
       ),
     );

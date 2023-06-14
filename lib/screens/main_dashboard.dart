@@ -32,6 +32,8 @@ class _MainDashboardState extends State<MainDashboard> {
   List<dynamic>? imageData;
   List<CellModel> cells = [];
   List<CellModel>? queryCells;
+  double? mch;
+  double? hemoglobin;
 
   @override
   void didChangeDependencies() {
@@ -63,6 +65,23 @@ class _MainDashboardState extends State<MainDashboard> {
             probability: data['probability'].toString(),
             cellPath: data['image_path']))
         .toList();
+    double mono =
+        monocyteNumber!.contains('null') ? 0 : double.parse(monocyteNumber!);
+    double neutro = neutrophilNumber!.contains('null')
+        ? 0
+        : double.parse(neutrophilNumber!);
+    double eosino = eosinophilNumber!.contains('null')
+        ? 0
+        : double.parse(eosinophilNumber!);
+    double baso =
+        basophilNumber!.contains('null') ? 0 : double.parse(basophilNumber!);
+    double lympho = lymphocyteNumber!.contains('null')
+        ? 0
+        : double.parse(lymphocyteNumber!);
+    double wbc = (mono + neutro + eosino + baso + lympho);
+    double rbcN = rbc!.contains('null') ? 0 : double.parse(rbc!);
+    mch = (wbc / rbcN) * 10;
+    hemoglobin = rbc == null ? 0 : (double.parse(rbc!)) / 3;
   }
 
   @override
@@ -386,13 +405,14 @@ class _MainDashboardState extends State<MainDashboard> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+        padding:
+            const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 70),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               //  height: MediaQuery.of(context).size.height - 220,
-              width: MediaQuery.of(context).size.width / 1.5,
+              width: MediaQuery.of(context).size.width / 1.6,
               decoration: BoxDecoration(border: Border.all(color: Colors.blue)),
 
               child: Column(
@@ -409,7 +429,8 @@ class _MainDashboardState extends State<MainDashboard> {
                             ),
                             itemCount: cells.length,
                             itemBuilder: (context, index) {
-                              String path = '/home/sci/Documents/ViewPort/app/';
+                              String path =
+                                  '/home/sciverse/Documents/ViewPort/app/';
                               final completePath = path + cells[index].cellPath;
                               final myFile = File(completePath);
 
@@ -433,7 +454,8 @@ class _MainDashboardState extends State<MainDashboard> {
                             ),
                             itemCount: queryCells!.length,
                             itemBuilder: (context, index) {
-                              String path = '/home/sci/Documents/ViewPort/app/';
+                              String path =
+                                  '/home/sciverse/Documents/ViewPort/app/';
                               final completePath =
                                   path + queryCells![index].cellPath;
                               final myFile = File(completePath);
@@ -457,11 +479,11 @@ class _MainDashboardState extends State<MainDashboard> {
             ),
             Expanded(
               child: Container(
-                height: MediaQuery.of(context).size.height,
+                height: MediaQuery.of(context).size.height - 40,
                 decoration:
                     BoxDecoration(border: Border.all(color: Colors.blue)),
                 child: DataTable(
-                    dataRowHeight: (MediaQuery.of(context).size.height) / 10,
+                    dataRowHeight: (MediaQuery.of(context).size.height) / 16,
                     // dataRowColor:
                     //     MaterialStateColor.resolveWith((states) => Colors.black),
                     headingRowColor: MaterialStateColor.resolveWith(
@@ -475,10 +497,37 @@ class _MainDashboardState extends State<MainDashboard> {
                           label: Text('Count',
                               style: AppConstants.tableColumnStyle)),
                       DataColumn(
-                          label: Text('Probability',
+                          label: Text('Absolute Count',
                               style: AppConstants.tableColumnStyle)),
                     ],
                     rows: [
+                      DataRow(
+                          //selected: 0 == selectedIndex,
+                          // color: MaterialStateColor.resolveWith((states) =>
+                          //     const Color(AppConstants.primaryColor)
+                          //         .withOpacity(0.8)),
+                          // onSelectChanged: (val) {
+                          //   queryCells = cells
+                          //       .where((cell) => cell.cellName.contains('RBC'))
+                          //       .toList();
+                          //   setState(() {
+                          //     selectedIndex = 0;
+                          //   });
+                          // },
+                          cells: [
+                            DataCell(Text(
+                              'Hemoglobin',
+                              style: AppConstants.tableRowStyle,
+                            )),
+                            DataCell(Text(
+                              '${hemoglobin == null ? 0 : hemoglobin.toString()}',
+                              style: AppConstants.tableRowStyle,
+                            )),
+                            DataCell(Text(
+                              '',
+                              style: AppConstants.tableRowStyle,
+                            )),
+                          ]),
                       DataRow(
                           selected: 0 == selectedIndex,
                           // color: MaterialStateColor.resolveWith((states) =>
@@ -502,7 +551,34 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${rbcProb ?? 0}',
+                              '',
+                              style: AppConstants.tableRowStyle,
+                            )),
+                          ]),
+                      DataRow(
+                          // selected: 0 == selectedIndex,
+                          // // color: MaterialStateColor.resolveWith((states) =>
+                          // //     const Color(AppConstants.primaryColor)
+                          // //         .withOpacity(0.8)),
+                          // onSelectChanged: (val) {
+                          //   queryCells = cells
+                          //       .where((cell) => cell.cellName.contains('RBC'))
+                          //       .toList();
+                          //   setState(() {
+                          //     selectedIndex = 0;
+                          //   });
+                          // },
+                          cells: [
+                            DataCell(Text(
+                              'MCH',
+                              style: AppConstants.tableRowStyle,
+                            )),
+                            DataCell(Text(
+                              '${mch == null ? 0 : mch.toString()}',
+                              style: AppConstants.tableRowStyle,
+                            )),
+                            DataCell(Text(
+                              '',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -530,7 +606,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${plateletsProb ?? 0}',
+                              '',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -558,7 +634,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${neutrophilProbability ?? 0}',
+                              '${neutrophilNumber ?? 0}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -586,7 +662,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${eosinophilProbability ?? 0}',
+                              '${eosinophilNumber ?? 0}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -614,7 +690,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${basophilProbability ?? 0}',
+                              '${basophilNumber ?? 0}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -642,7 +718,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${lymphocyteProbability ?? 0}',
+                              '${lymphocyteNumber ?? 0}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -670,7 +746,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${monocyteProbability ?? 0}',
+                              '${monocyteNumber ?? 0}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
