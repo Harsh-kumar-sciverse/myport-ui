@@ -39,7 +39,7 @@ class _MyPortState extends State<MyPort> {
             primarySwatch: AppConstants.primaryBlue,
             fontFamily: GoogleFonts.openSans().fontFamily,
             dividerColor: Colors.transparent),
-        home: const PatientDetails(),
+        home: const SplashScreen(),
         routes: {
           Login.routeName: (_) => const Login(),
           InitializationScreen.routeName: (_) => const InitializationScreen(),
