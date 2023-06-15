@@ -108,7 +108,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
         'platelets': '$plateletsNumber',
         'hemoglobin': hemoglobin,
         'mch': mch,
-        'images': value['response']['data']['predictions'],
+        'images': value['data']['predictions'],
         'plateletsProb': '$plateletsProbability',
         'cellsPath': '$cellsPath',
         'rbc': '$rbcNumber',

@@ -93,7 +93,6 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print(isLoading);
     return Container(
       height: 100,
       padding: const EdgeInsets.all(20),
@@ -300,11 +299,10 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
                                 arguments: {'errorCode': error});
                           });
                         },
-                        image:const Icon(
+                        image: const Icon(
                           Icons.power_settings_new,
                           size: 80,
-                          color: Color(
-                              AppConstants.primaryColor),
+                          color: Color(AppConstants.primaryColor),
                         ));
                   },
                   style: ElevatedButton.styleFrom(
