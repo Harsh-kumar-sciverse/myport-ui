@@ -482,7 +482,7 @@ class _MainDashboardState extends State<MainDashboard> {
                           label: Text('Count',
                               style: AppConstants.tableColumnStyle)),
                       DataColumn(
-                          label: Text('Absolute Count',
+                          label: Text('Reference Range',
                               style: AppConstants.tableColumnStyle)),
                     ],
                     rows: [
@@ -509,7 +509,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '',
+                              '13.0-17.0 g/dL',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -536,7 +536,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '',
+                              '4.5-5.5 mill/cumm',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -563,7 +563,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '',
+                              '27-32 pg',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -591,7 +591,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '',
+                              '150000-410000 cumm',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -619,7 +619,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${neutrophilNumber}',
+                              '50-62 %',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -647,7 +647,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${eosinophilNumber}',
+                              '00-06 %',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -675,7 +675,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${basophilNumber}',
+                              '00-02 %',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -703,7 +703,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${lymphocyteNumber}',
+                              '20-40 %',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -731,7 +731,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${monocyteNumber}',
+                              '00-10 %',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),

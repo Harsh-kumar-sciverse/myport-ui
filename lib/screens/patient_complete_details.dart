@@ -44,6 +44,7 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
   List<CellModel>? queryCells;
   String? mch;
   String? hemoglobin;
+  String? sex;
 
   final patients = Hive.box('patients');
   String? patientName;
@@ -71,6 +72,7 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
     patientName = arguments['name'];
     patientAge = arguments['age'];
     sampleCollectionTime = arguments['time'];
+    sex = arguments['sex'];
 
     imageData = arguments['images'];
     platelets = (arguments['platelets']).toString();
@@ -152,13 +154,9 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                                               pw.MainAxisAlignment.spaceBetween,
                                           children: [
                                             pw.Text('Name :$patientName',
-                                                style: pw.TextStyle(
-                                                    // fontSize: 20,
-                                                    // fontWeight:
-                                                    //     pw.FontWeight.bold,
-                                                    )),
-                                            pw.Text('Age : $patientName'),
-                                            pw.Text('Sex : $patientAge'),
+                                                style: pw.TextStyle()),
+                                            pw.Text('Age : $patientAge'),
+                                            pw.Text('Sex : $sex'),
                                             pw.Text(
                                                 'Sample Collection Time : $sampleCollectionTime'),
                                           ]),
@@ -363,7 +361,7 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                                           children: [
                                             pw.Text('Platelets'),
                                             pw.Text(
-                                                '${platelets == null ? 0 : plateletsProb.toString()}'),
+                                                '${platelets == null ? 0 : platelets.toString()}'),
                                             pw.Text('150000-410000'),
                                             pw.Text('cumm'),
                                           ],
@@ -829,7 +827,7 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                           label: Text('Count',
                               style: AppConstants.tableColumnStyle)),
                       DataColumn(
-                          label: Text('Absolute Count',
+                          label: Text('Reference Range',
                               style: AppConstants.tableColumnStyle)),
                     ],
                     rows: [
@@ -856,7 +854,7 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '',
+                              '13.0-17.0 g/dL',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -883,7 +881,7 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '',
+                              '4.5-5.5 mill/cumm',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -910,7 +908,7 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '',
+                              '27-32 pg',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -938,7 +936,7 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '',
+                              '150000-410000 cumm',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -966,7 +964,7 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${neutrophilNumber ?? 0}',
+                              '50-62 %',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -994,7 +992,7 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${eosinophilNumber ?? 0}',
+                              '00-06 %',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -1022,7 +1020,7 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${basophilNumber ?? 0}',
+                              '00-02 %',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -1050,7 +1048,7 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${lymphocyteNumber ?? 0}',
+                              '20-40 %',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -1078,7 +1076,7 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${monocyteNumber ?? 0}',
+                              '00-10 %',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
