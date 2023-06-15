@@ -42,8 +42,8 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
   List<dynamic>? imageData;
   List<CellModel> cells = [];
   List<CellModel>? queryCells;
-  double? mch;
-  double? hemoglobin;
+  String? mch;
+  String? hemoglobin;
 
   final patients = Hive.box('patients');
   String? patientName;
@@ -98,17 +98,17 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
     double rbcN = double.parse(rbc!);
     mch = arguments['mch'];
     hemoglobin = arguments['hemoglobin'];
-    getInterpretation(rbcN, rbcN / 3);
+    // getInterpretation(rbcN, rbcN / 3);
   }
-
-  getInterpretation(double rbc, double hemoglobin) {
-    if (hemoglobin < 10) {
-      interpretation = 'Low Hemoglobin';
-    } else if (hemoglobin > 20) {
-      interpretation = 'High Hemoglobin';
-    }
-    setState(() {});
-  }
+  //
+  // getInterpretation(double rbc, double hemoglobin) {
+  //   if (hemoglobin < 10) {
+  //     interpretation = 'Low Hemoglobin';
+  //   } else if (hemoglobin > 20) {
+  //     interpretation = 'High Hemoglobin';
+  //   }
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {

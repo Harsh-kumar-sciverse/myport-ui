@@ -32,8 +32,8 @@ class _MainDashboardState extends State<MainDashboard> {
   List<dynamic>? imageData;
   List<CellModel> cells = [];
   List<CellModel>? queryCells;
-  double? mch;
-  double? hemoglobin;
+  String? mch;
+  String? hemoglobin;
 
   @override
   void didChangeDependencies() {
