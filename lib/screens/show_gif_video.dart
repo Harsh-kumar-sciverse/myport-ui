@@ -313,7 +313,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                                     ),
                                     child: Image.file(
                                       File(ls[index]),
-                                      // fit: BoxFit.fill,
+                                      fit: BoxFit.fill,
                                     ),
                                   );
                                 }),
