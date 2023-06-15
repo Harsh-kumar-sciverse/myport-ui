@@ -446,7 +446,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               final completePath =
                                   path + queryCells![index].cellPath;
                               final myFile = File(completePath);
-                              print('');
+                              print('path of images ${myFile.path}');
 
                               return Container(
                                 height: 100,
