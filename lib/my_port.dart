@@ -17,6 +17,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import './provider/sample_provider.dart';
 import './screens/view_details.dart';
+import './screens/patient_complete_details.dart';
 
 class MyPort extends StatefulWidget {
   const MyPort({Key? key}) : super(key: key);
@@ -52,6 +53,8 @@ class _MyPortState extends State<MyPort> {
           ErrorScreen.routeName: (_) => const ErrorScreen(),
           ViewDetails.routeName: (_) => const ViewDetails(),
           Calibration.routeName: (_) => const Calibration(),
+          PatientCompleteDetails.routeName: (_) =>
+              const PatientCompleteDetails(),
         },
       ),
     );

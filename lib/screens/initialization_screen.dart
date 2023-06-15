@@ -46,7 +46,6 @@ class _InitializationScreenState extends State<InitializationScreen> {
       } else {
         setState(() {
           progressValue = progressValue + 0.001;
-          print('progress value $progressValue');
         });
       }
     });
@@ -63,7 +62,7 @@ class _InitializationScreenState extends State<InitializationScreen> {
     MyPortApi.actionApi(actionName: 'homing', endpoint: 'motor_control')
         .then((value) {
       initializationName = 'Homing done.';
-      initializationName = 'Centring in progress';
+      initializationName = 'Centering in progress';
       progressValue = 0.25;
       setState(() {});
       initialize2();

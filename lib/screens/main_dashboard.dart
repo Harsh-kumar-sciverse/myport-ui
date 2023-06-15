@@ -65,23 +65,10 @@ class _MainDashboardState extends State<MainDashboard> {
             probability: data['probability'].toString(),
             cellPath: data['image_path']))
         .toList();
-    double mono =
-        monocyteNumber!.contains('null') ? 0 : double.parse(monocyteNumber!);
-    double neutro = neutrophilNumber!.contains('null')
-        ? 0
-        : double.parse(neutrophilNumber!);
-    double eosino = eosinophilNumber!.contains('null')
-        ? 0
-        : double.parse(eosinophilNumber!);
-    double baso =
-        basophilNumber!.contains('null') ? 0 : double.parse(basophilNumber!);
-    double lympho = lymphocyteNumber!.contains('null')
-        ? 0
-        : double.parse(lymphocyteNumber!);
-    double wbc = (mono + neutro + eosino + baso + lympho);
-    double rbcN = rbc!.contains('null') ? 0 : double.parse(rbc!);
+    double wbc = double.parse(arguments['wbc']);
+    double rbcN = double.parse(rbc!);
     mch = (wbc / rbcN) * 10;
-    hemoglobin = rbc == null ? 0 : (double.parse(rbc!)) / 3;
+    hemoglobin = (double.parse(rbc!)) / 3;
   }
 
   @override
@@ -438,10 +425,11 @@ class _MainDashboardState extends State<MainDashboard> {
                                 height: 100,
                                 width: 100,
                                 decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: const Color(
-                                            AppConstants.primaryColor))),
-                                child: Image.file(myFile),
+                                    border: Border.all(color: Colors.white)),
+                                child: Image.file(
+                                  myFile,
+                                  fit: BoxFit.fill,
+                                ),
                               );
                             })
                         : GridView.builder(

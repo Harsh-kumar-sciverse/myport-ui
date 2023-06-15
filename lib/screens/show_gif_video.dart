@@ -45,15 +45,18 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
   String? lymphocyteProbability;
   String? monocyteNumber;
   String? monocyteProbability;
+  String? wbcNumber;
   List<String> ls1 = [];
   List<String> ls = [];
   double value = 0;
   String? newPath;
   Directory? newDirectory;
   RegExp regex = RegExp(r'^\d+_\d+\.jpg$');
+  String? cellsPath;
   late StreamSubscription<FileSystemEvent> subscription;
   final patientDetails = Hive.box('patients');
   var uuid = const Uuid();
+  late Timer timer;
   Future<void> createItem(Map<String, dynamic> newItem) async {
     await patientDetails.add(newItem);
   }
@@ -66,7 +69,8 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
       print('response $value');
       rbcNumber = value['data']['counts']['RBC'].toString();
       rbcProbability = value['data']['counts']['RBC_conf'].toString();
-      plateletsNumber = value['data']['counts']['Pletelets'].toString();
+      plateletsNumber = value['data']['counts']['Platelets'].toString();
+      wbcNumber = value['data']['counts']['WBC'].toString();
       plateletsProbability =
           value['data']['counts']['Pletelets_conf'].toString();
       neutrophilNumber = value['data']['counts']['Neutrophils'].toString();
@@ -98,8 +102,11 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
         "id": id,
         "time": DateFormat('dd-MM-yyyy – kk:mm').format(DateTime.now()),
         'platelets': '$plateletsNumber',
+        'images': value['response']['data']['predictions'],
         'plateletsProb': '$plateletsProbability',
+        'cellsPath': '$cellsPath',
         'rbc': '$rbcNumber',
+        'wbc': wbcNumber!,
         'rbcProb': '$rbcProbability',
         'neutrophils': '$neutrophilNumber',
         'neutrophilsProb': '$neutrophilProbability',
@@ -120,6 +127,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
             'platelets': plateletsNumber,
             'plateletsProb': plateletsProbability,
             'rbc': rbcNumber,
+            'wbc': wbcNumber,
             'rbcProb': rbcProbability,
             'neutrophils': neutrophilNumber,
             'neutrophilsProb': neutrophilProbability,
@@ -144,12 +152,14 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    increaseProgressValue();
     scanSample();
     subscription = Directory('/home/sciverse/Documents/ViewPort/app/temp')
         .watch(recursive: false, events: FileSystemEvent.create)
         .listen((event) {
       print('new path created ${event.path}');
       newPath = event.path;
+      cellsPath = event.path;
       newDirectory = Directory(event.path);
 
       setState(() {});
@@ -157,6 +167,25 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
 
       print(newPath);
     });
+  }
+
+  increaseProgressValue() {
+    timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
+      if (value > 0.8) {
+        timer.cancel();
+      } else {
+        setState(() {
+          value = value + 0.0001;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    timer.cancel();
   }
 
   @override
@@ -264,7 +293,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                   .where(
                       (element) => RegExp(r'\d+_\d+\.jpg$').hasMatch(element))
                   .toList();
-              value = (1 / 64) * (ls.length);
+              value = (1 / 40) * (ls.length);
               print(ls);
             }
             return Container(
@@ -307,8 +336,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                                     width: 100,
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        color: const Color(
-                                            AppConstants.primaryColor),
+                                        color: Colors.white,
                                       ),
                                     ),
                                     child: Image.file(

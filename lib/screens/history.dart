@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:my_port/constants/app_constants.dart';
+import 'package:my_port/screens/patient_complete_details.dart';
 import 'package:my_port/screens/view_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -88,8 +89,11 @@ class _HistoryState extends State<History> {
                   )),
                   DataCell(ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed(ViewDetails.routeName,
-                          arguments: {'key': patient['key']});
+                      Navigator.of(context)
+                          .pushNamed(PatientCompleteDetails.routeName, arguments: {
+                        'key': patient['key']
+                      }); // Navigator.of(context).pushNamed(ViewDetails.routeName,
+                      //     arguments: {'key': patient['key']});
                     },
                     style:
                         ElevatedButton.styleFrom(shape: const StadiumBorder()),
