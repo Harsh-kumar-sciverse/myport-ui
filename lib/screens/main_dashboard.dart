@@ -418,6 +418,7 @@ class _MainDashboardState extends State<MainDashboard> {
                                   '/home/sciverse/Documents/ViewPort/app/';
                               final completePath = path + cells[index].cellPath;
                               final myFile = File(completePath);
+                              print('path of images ${myFile.path}');
 
                               return Container(
                                 height: 100,
