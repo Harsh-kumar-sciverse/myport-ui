@@ -273,17 +273,17 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                 decoration: const BoxDecoration(),
                 child: Stack(
                   children: [
-                    Image.asset(
-                      'assets/gif3.gif',
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      fit: BoxFit.fill,
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.white.withOpacity(0.5),
-                    ),
+                    // Image.asset(
+                    //   'assets/gif3.gif',
+                    //   width: MediaQuery.of(context).size.width,
+                    //   height: MediaQuery.of(context).size.height,
+                    //   fit: BoxFit.fill,
+                    // ),
+                    // Container(
+                    //   height: MediaQuery.of(context).size.height,
+                    //   width: MediaQuery.of(context).size.width,
+                    //   color: Colors.white.withOpacity(0.5),
+                    // ),
                     Container(
                       height: MediaQuery.of(context).size.height - 220,
                       width: MediaQuery.of(context).size.width,
