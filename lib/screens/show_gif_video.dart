@@ -76,7 +76,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
       hemoglobin = value['data']['counts']['Hemoglobin'].toString();
       mch = value['data']['counts']['MCH'].toString();
       plateletsProbability =
-          value['data']['counts']['Pletelets_conf'].toString();
+          value['data']['counts']['Platelets_conf'].toString();
       neutrophilNumber = value['data']['counts']['Neutrophils'].toString();
       neutrophilProbability =
           value['data']['counts']['Neutrophils_conf'].toString();
@@ -164,15 +164,12 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
     subscription = Directory('/home/sciverse/Documents/ViewPort/app/temp')
         .watch(recursive: false, events: FileSystemEvent.create)
         .listen((event) {
-      print('new path created ${event.path}');
       newPath = event.path;
       cellsPath = event.path;
       newDirectory = Directory(event.path);
 
       setState(() {});
       subscription.cancel();
-
-      print(newPath);
     });
   }
 
@@ -276,13 +273,11 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
             if (snapshot.hasData && snapshot.data != null) {
               //   print('new stream ${snapshot.data!.path}');
               ls1.add(snapshot.data!.path);
-              print('new folder path ${snapshot.data!.path}');
               ls = ls1
                   .where(
                       (element) => RegExp(r'\d+_\d+\.jpg$').hasMatch(element))
                   .toList();
               value = (1 / 40) * (ls.length);
-              print(ls);
             }
             return Container(
                 width: MediaQuery.of(context).size.width,
