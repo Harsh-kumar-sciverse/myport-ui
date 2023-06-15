@@ -65,10 +65,8 @@ class _MainDashboardState extends State<MainDashboard> {
             probability: data['probability'].toString(),
             cellPath: data['image_path']))
         .toList();
-    double wbc = double.parse(arguments['wbc']);
-    double rbcN = double.parse(rbc!);
-    mch = (wbc / rbcN) * 10;
-    hemoglobin = (double.parse(rbc!)) / 3;
+    mch = arguments['mch'];
+    hemoglobin = arguments['hemoglobin'];
   }
 
   @override
@@ -578,7 +576,7 @@ class _MainDashboardState extends State<MainDashboard> {
                           onSelectChanged: (val) {
                             queryCells = cells
                                 .where((cell) =>
-                                    cell.cellName.contains('Pletelets'))
+                                    cell.cellName.contains('Platelets'))
                                 .toList();
                             setState(() {
                               selectedIndex = 1;

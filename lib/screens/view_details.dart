@@ -81,22 +81,10 @@ class _ViewDetailsState extends State<ViewDetails> {
     monocyteNumber = arguments['monocytes'];
     monocyteProbability = arguments['monocyteProb'];
     hemoglobin = rbc == null ? 0 : (double.parse(rbc!)) / 3;
-    double mono =
-        monocyteNumber!.contains('null') ? 0 : double.parse(monocyteNumber!);
-    double neutro = neutrophilNumber!.contains('null')
-        ? 0
-        : double.parse(neutrophilNumber!);
-    double eosino = eosinophilNumber!.contains('null')
-        ? 0
-        : double.parse(eosinophilNumber!);
-    double baso =
-        basophilNumber!.contains('null') ? 0 : double.parse(basophilNumber!);
-    double lympho = lymphocyteNumber!.contains('null')
-        ? 0
-        : double.parse(lymphocyteNumber!);
-    double wbc = (mono + neutro + eosino + baso + lympho);
-    double rbcN = rbc!.contains('null') ? 0 : double.parse(rbc!);
-    mch = (wbc / rbcN) * 10;
+
+    double rbcN = double.parse(rbc!);
+    mch = arguments['mch'];
+    hemoglobin = arguments['hemoglobin'];
     getInterpretation(rbcN, rbcN / 3);
   }
 

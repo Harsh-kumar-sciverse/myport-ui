@@ -94,10 +94,10 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
             probability: data['probability'].toString(),
             cellPath: data['image_path']))
         .toList();
-    double wbc = arguments['wbc'];
+
     double rbcN = double.parse(rbc!);
-    mch = (wbc / rbcN) * 10;
-    hemoglobin = (double.parse(rbc!)) / 3;
+    mch = arguments['mch'];
+    hemoglobin = arguments['hemoglobin'];
     getInterpretation(rbcN, rbcN / 3);
   }
 

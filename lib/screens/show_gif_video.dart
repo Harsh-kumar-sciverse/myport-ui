@@ -50,6 +50,8 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
   List<String> ls = [];
   double value = 0;
   String? newPath;
+  String? hemoglobin;
+  String? mch;
   Directory? newDirectory;
   RegExp regex = RegExp(r'^\d+_\d+\.jpg$');
   String? cellsPath;
@@ -71,6 +73,8 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
       rbcProbability = value['data']['counts']['RBC_conf'].toString();
       plateletsNumber = value['data']['counts']['Platelets'].toString();
       wbcNumber = value['data']['counts']['WBC'].toString();
+      hemoglobin = value['data']['counts']['Hemoglobin'].toString();
+      mch = value['data']['counts']['MCH'].toString();
       plateletsProbability =
           value['data']['counts']['Pletelets_conf'].toString();
       neutrophilNumber = value['data']['counts']['Neutrophils'].toString();
@@ -102,6 +106,8 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
         "id": id,
         "time": DateFormat('dd-MM-yyyy – kk:mm').format(DateTime.now()),
         'platelets': '$plateletsNumber',
+        'hemoglobin': hemoglobin,
+        'mch': mch,
         'images': value['response']['data']['predictions'],
         'plateletsProb': '$plateletsProbability',
         'cellsPath': '$cellsPath',
@@ -127,6 +133,8 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
             'platelets': plateletsNumber,
             'plateletsProb': plateletsProbability,
             'rbc': rbcNumber,
+            'hemoglobin': hemoglobin,
+            'mch': mch,
             'wbc': wbcNumber,
             'rbcProb': rbcProbability,
             'neutrophils': neutrophilNumber,
@@ -152,7 +160,6 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    increaseProgressValue();
     scanSample();
     subscription = Directory('/home/sciverse/Documents/ViewPort/app/temp')
         .watch(recursive: false, events: FileSystemEvent.create)
@@ -167,25 +174,6 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
 
       print(newPath);
     });
-  }
-
-  increaseProgressValue() {
-    timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
-      if (value > 0.8) {
-        timer.cancel();
-      } else {
-        setState(() {
-          value = value + 0.0001;
-        });
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    timer.cancel();
   }
 
   @override
