@@ -44,8 +44,8 @@ class _ViewDetailsState extends State<ViewDetails> {
   String? patientName;
   String? patientAge;
   String? sampleCollectionTime;
-  double? hemoglobin;
-  double? mch;
+  String? hemoglobin;
+  String? mch;
   TextEditingController toTextController = TextEditingController();
   TextEditingController subjectTextController = TextEditingController();
   TextEditingController ccTextController = TextEditingController();
@@ -80,22 +80,20 @@ class _ViewDetailsState extends State<ViewDetails> {
     lymphocyteProbability = arguments['lymphocytProb'];
     monocyteNumber = arguments['monocytes'];
     monocyteProbability = arguments['monocyteProb'];
-    hemoglobin = rbc == null ? 0 : (double.parse(rbc!)) / 3;
 
-    double rbcN = double.parse(rbc!);
     mch = arguments['mch'];
     hemoglobin = arguments['hemoglobin'];
-    getInterpretation(rbcN, rbcN / 3);
+    // getInterpretation(rbcN, rbcN / 3);
   }
 
-  getInterpretation(double rbc, double hemoglobin) {
-    if (hemoglobin < 10) {
-      interpretation = 'Low Hemoglobin';
-    } else if (hemoglobin > 20) {
-      interpretation = 'High Hemoglobin';
-    }
-    setState(() {});
-  }
+  // getInterpretation(double rbc, double hemoglobin) {
+  //   if (hemoglobin < 10) {
+  //     interpretation = 'Low Hemoglobin';
+  //   } else if (hemoglobin > 20) {
+  //     interpretation = 'High Hemoglobin';
+  //   }
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {

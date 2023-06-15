@@ -65,8 +65,8 @@ class _MainDashboardState extends State<MainDashboard> {
             probability: data['probability'].toString(),
             cellPath: data['image_path']))
         .toList();
-    mch = arguments['mch'];
-    hemoglobin = arguments['hemoglobin'];
+    mch = arguments['mch'].toString();
+    hemoglobin = arguments['hemoglobin'].toString();
   }
 
   @override
@@ -426,7 +426,7 @@ class _MainDashboardState extends State<MainDashboard> {
                                     border: Border.all(color: Colors.white)),
                                 child: Image.file(
                                   myFile,
-                                  fit: BoxFit.fill,
+                                  // fit: BoxFit.fill,
                                 ),
                               );
                             })
@@ -445,6 +445,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               final completePath =
                                   path + queryCells![index].cellPath;
                               final myFile = File(completePath);
+                              print('');
 
                               return Container(
                                 height: 100,
@@ -506,7 +507,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${hemoglobin == null ? 0 : hemoglobin.toString()}',
+                              '${hemoglobin}',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
@@ -533,7 +534,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${rbc == null ? 0 : rbc.toString()}',
+                              '${rbc}',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
@@ -560,7 +561,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${mch == null ? 0 : mch.toString()}',
+                              '${mch}',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
@@ -588,7 +589,7 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${platelets == null ? 0 : platelets.toString()}',
+                              '${platelets}',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
@@ -612,15 +613,15 @@ class _MainDashboardState extends State<MainDashboard> {
                           },
                           cells: [
                             DataCell(Text(
-                              'Neutrophil',
+                              'Neutrophils',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${neutrophilNumber ?? 0}',
+                              '${neutrophilNumber}',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${neutrophilNumber ?? 0}',
+                              '${neutrophilNumber}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -640,15 +641,15 @@ class _MainDashboardState extends State<MainDashboard> {
                           },
                           cells: [
                             DataCell(Text(
-                              'Eosinophil',
+                              'Eosinophils',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${eosinophilNumber ?? 0}',
+                              '${eosinophilNumber}',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${eosinophilNumber ?? 0}',
+                              '${eosinophilNumber}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -672,11 +673,11 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${basophilNumber ?? 0}',
+                              '${basophilNumber}',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${basophilNumber ?? 0}',
+                              '${basophilNumber}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -696,15 +697,15 @@ class _MainDashboardState extends State<MainDashboard> {
                           },
                           cells: [
                             DataCell(Text(
-                              'Lymphocyte',
+                              'Lymphocytes',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${lymphocyteNumber ?? 0}',
+                              '${lymphocyteNumber}',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${lymphocyteNumber ?? 0}',
+                              '${lymphocyteNumber}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
@@ -724,15 +725,15 @@ class _MainDashboardState extends State<MainDashboard> {
                           },
                           cells: [
                             DataCell(Text(
-                              'Monocyte',
+                              'Monocytes',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${monocyteNumber ?? 0}',
+                              '${monocyteNumber}',
                               style: AppConstants.tableRowStyle,
                             )),
                             DataCell(Text(
-                              '${monocyteNumber ?? 0}',
+                              '${monocyteNumber}',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),

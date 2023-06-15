@@ -96,8 +96,8 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
         .toList();
 
     double rbcN = double.parse(rbc!);
-    mch = arguments['mch'];
-    hemoglobin = arguments['hemoglobin'];
+    mch = arguments['mch'].toString();
+    hemoglobin = arguments['hemoglobin'].toString();
     // getInterpretation(rbcN, rbcN / 3);
   }
   //
