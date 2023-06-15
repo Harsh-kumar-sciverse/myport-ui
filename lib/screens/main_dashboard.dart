@@ -58,15 +58,15 @@ class _MainDashboardState extends State<MainDashboard> {
     lymphocyteProbability = arguments['lymphocytProb'].toString();
     monocyteNumber = arguments['monocytes'].toString();
     monocyteProbability = arguments['monocyteProb'].toString();
+    mch = arguments['mch'].toString();
+    hemoglobin = arguments['hemoglobin'].toString();
 
     cells = imageData!
         .map((data) => CellModel(
             cellName: data['tag_name'].toString(),
             probability: data['probability'].toString(),
-            cellPath: data['image_path']))
+            cellPath: data['image_path'].toString()))
         .toList();
-    mch = arguments['mch'].toString();
-    hemoglobin = arguments['hemoglobin'].toString();
   }
 
   @override
@@ -446,15 +446,12 @@ class _MainDashboardState extends State<MainDashboard> {
                               final completePath =
                                   path + queryCells![index].cellPath;
                               final myFile = File(completePath);
-                              print('path of images ${myFile.path}');
 
                               return Container(
                                 height: 100,
                                 width: 100,
                                 decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: const Color(
-                                            AppConstants.primaryColor))),
+                                    border: Border.all(color: Colors.white)),
                                 child: Image.file(myFile),
                               );
                             }),
@@ -578,7 +575,7 @@ class _MainDashboardState extends State<MainDashboard> {
                           onSelectChanged: (val) {
                             queryCells = cells
                                 .where((cell) =>
-                                    cell.cellName.contains('Platelets'))
+                                    cell.cellName.contains('Pletelets'))
                                 .toList();
                             setState(() {
                               selectedIndex = 1;
