@@ -414,9 +414,11 @@ class _MainDashboardState extends State<MainDashboard> {
                             ),
                             itemCount: cells.length,
                             itemBuilder: (context, index) {
-                              String path =
-                                  '/home/sciverse/Documents/ViewPort/app/';
-                              final completePath = path + cells[index].cellPath;
+                              // String path =
+                              //     '/home/sciverse/Documents/ViewPort/app/';
+                              // final completePath = path + cells[index].cellPath;
+                              final completePath = cells[index].cellPath;
+
                               final myFile = File(completePath);
                               print('path of images ${myFile.path}');
 

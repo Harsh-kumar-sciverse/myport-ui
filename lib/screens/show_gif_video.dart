@@ -9,6 +9,7 @@ import 'package:my_port/api/myport_api.dart';
 import 'package:my_port/constants/app_dialogs.dart';
 import 'package:my_port/provider/patient_details_provider.dart';
 import 'package:my_port/screens/main_dashboard.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/app_constants.dart';
@@ -161,7 +162,8 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
     // TODO: implement initState
     super.initState();
     scanSample();
-    subscription = Directory('/home/sciverse/Documents/ViewPort/app/temp')
+
+    subscription = Directory('/home/sciverse/Documents/ViewPort/app/data')
         .watch(recursive: false, events: FileSystemEvent.create)
         .listen((event) {
       newPath = event.path;
@@ -171,6 +173,12 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
       setState(() {});
       subscription.cancel();
     });
+    getApplicationSupportDirectory();
+  }
+
+  getApplicationSupportDirectory() async{
+    final Directory appDocumentsDir = await getApplicationDocumentsDirectory();
+    print('application directory ${appDocumentsDir.path}');
   }
 
   @override
@@ -189,6 +197,12 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
               //   height: MediaQuery.of(context).size.height,
               //   fit: BoxFit.fill,
               // ),
+              Image.asset(
+                'assets/gif3.gif',
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                fit: BoxFit.fill,
+              ),
               Container(
                 //  height: MediaQuery.of(context).size.height - 220,
                 width: MediaQuery.of(context).size.width,
