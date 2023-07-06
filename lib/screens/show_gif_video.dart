@@ -359,7 +359,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10)),
                               child: LinearTimer(
-                                duration: Duration(milliseconds: 100),
+                                duration: Duration(minutes: 10),
                                 color:  Color(AppConstants.primaryColor),
                                   backgroundColor: Colors.white,
                               ),
