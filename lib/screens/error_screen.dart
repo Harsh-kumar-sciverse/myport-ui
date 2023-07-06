@@ -96,19 +96,19 @@ class _ErrorScreenState extends State<ErrorScreen> {
                     fontWeight: FontWeight.bold,
                     fontSize: 20),
               ),
-            // const SizedBox(
-            //   height: 20,
-            // ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //    // Navigator.of(context).pushNamedAndRemoveUntil(SplashScreen.routeName, (route) => false);
-            //     WidgetsBinding.instance!.addPostFrameCallback((_) {
-            //       Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SplashScreen()));
-            //     });
-            //   },
-            //   child: const Padding(
-            //       padding: EdgeInsets.all(10.0), child: Text('Restart App')),
-            // ),
+            const SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              onPressed: () {
+               // Navigator.of(context).pushNamedAndRemoveUntil(SplashScreen.routeName, (route) => false);
+                WidgetsBinding.instance!.addPostFrameCallback((_) {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SplashScreen()));
+                });
+              },
+              child: const Padding(
+                  padding: EdgeInsets.all(10.0), child: Text('Restart App')),
+            ),
             if (hardwareError == true)
               Column(
                 children: [
