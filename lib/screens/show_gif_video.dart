@@ -64,9 +64,6 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
         "time": DateFormat('dd-MM-yyyy – kk:mm').format(DateTime.now()),
         "response":value,
       });
-           if(mounted){
-             timer.cancel();
-           }
 
       Navigator.of(context).pushNamedAndRemoveUntil(
           MainDashboard.routeName,
@@ -125,6 +122,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
       print('path for live feed image $pathForSubscription');
       noOfSlices=data2['slides']*2;
           scanSample();
+      updateValue();
       subscription = Directory(pathForSubscription)
           .watch(recursive: false, events: FileSystemEvent.create)
           .listen((event) {
@@ -140,6 +138,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
       Navigator.of(context)
           .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
     }
+
 
   }
   void updateJsonValue() {
@@ -165,16 +164,19 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
   }
 
   void updateValue(){
-    if(value==0.5){
-      print('value of progress $value');
-      timer=  Timer.periodic(const Duration(milliseconds: 10000), (timer) {
-        setState(() {
-          value2=value2+0.0001;
-        });
-        print('value of progress $value');
+      timer=  Timer.periodic(const Duration(milliseconds: 100), (timer) {
+        if(value>0.9){
+          timer.cancel();
+        }else{
+          if(mounted){
+            setState(() {
+              value=value+0.000001666;
+            });
+        }
 
+      }
       });
-    }
+
   }
 
   @override
@@ -289,7 +291,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                   .where(
                       (element) => !p.basename(element).startsWith('s') && RegExp(r'\d+_\d+_\d+\.jpg$').hasMatch(element))
                   .toList();
-              value = (1 / noOfSlices) * (ls.length);
+              // value = (1 / noOfSlices) * (ls.length);
             }
             return Container(
                 width: MediaQuery.of(context).size.width,
@@ -358,7 +360,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                               child: LinearProgressIndicator(
                                 color: const Color(AppConstants.primaryColor),
                                 backgroundColor: Colors.white,
-                                value:value==0.5?value2: value,
+                                value:value,
                               ),
                             ),
                           ),
