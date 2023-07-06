@@ -432,7 +432,7 @@ class _MainDashboardState extends State<MainDashboard> {
                                     border: Border.all(color: Colors.white)),
                                 child: Image.file(
                                   myFile,
-                                  // fit: BoxFit.fill,
+                                  fit: BoxFit.fill,
                                 ),
                               );
                             })
@@ -454,7 +454,7 @@ class _MainDashboardState extends State<MainDashboard> {
                                 width: 100,
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.white)),
-                                child: Image.file(myFile),
+                                child: Image.file(myFile,fit: BoxFit.fill,),
                               );
                             }),
                   ),

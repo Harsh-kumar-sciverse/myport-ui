@@ -707,7 +707,7 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
       bottomSheet: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ElevatedButton(
               onPressed: () {
@@ -720,6 +720,21 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                 padding: EdgeInsets.all(15.0),
                 child: Icon(
                   Icons.home,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(15.0),
+                child: Icon(
+                  Icons.arrow_back_ios_new,
                   color: Colors.white,
                 ),
               ),
@@ -762,7 +777,7 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                                     border: Border.all(
                                         color: const Color(
                                             AppConstants.primaryColor))),
-                                child: Image.file(myFile),
+                                child: Image.file(myFile,fit: BoxFit.fill,),
                               );
                             })
                         : GridView.builder(

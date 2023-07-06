@@ -47,6 +47,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
   var uuid = const Uuid();
   late Timer timer;
    String? jsonFilePath;
+
   Future<void> createItem(Map<String, dynamic> newItem) async {
     await patientDetails.add(newItem);
   }
@@ -82,7 +83,12 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
           .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
     });
   }
-
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    timer.cancel();
+  }
 
   @override
   void initState() {
@@ -120,8 +126,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
       final data2 = json.decode(jsonStringFile2);
       String pathForSubscription=data2['data_dir'];
       print('path for live feed image $pathForSubscription');
-      noOfSlices=data2['slides'];
-
+      noOfSlices=data2['slides']*2;
           scanSample();
       subscription = Directory(pathForSubscription)
           .watch(recursive: false, events: FileSystemEvent.create)
@@ -274,6 +279,18 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                       (element) => !p.basename(element).startsWith('s') && RegExp(r'\d+_\d+_\d+\.jpg$').hasMatch(element))
                   .toList();
               value = (1 / noOfSlices) * (ls.length);
+              if(noOfSlices/2==ls.length){
+              timer=  Timer.periodic(const Duration(milliseconds: 100), (timer) {
+                if(value>0.98){
+                  timer.cancel();
+                }else{
+                  setState(() {
+                    value=value+0.001;
+                  });
+                }
+
+                });
+              }
             }
             return Container(
                 width: MediaQuery.of(context).size.width,
