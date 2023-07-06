@@ -38,6 +38,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
   List<String> ls = [];
   double value = 0;
   String? newPath;
+  double noOfSlices=30;
   Directory? newDirectory;
   RegExp regex = RegExp(r'^\d+_\d+\.jpg$');
   String? cellsPath;
@@ -119,7 +120,9 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
       final data2 = json.decode(jsonStringFile2);
       String pathForSubscription=data2['data_dir'];
       print('path for live feed image $pathForSubscription');
-      scanSample();
+      noOfSlices=double.parse(data2['slides']);
+
+          scanSample();
       subscription = Directory(pathForSubscription)
           .watch(recursive: false, events: FileSystemEvent.create)
           .listen((event) {
@@ -339,7 +342,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                               child: LinearProgressIndicator(
                                 color: const Color(AppConstants.primaryColor),
                                 backgroundColor: Colors.white,
-                                value: value,
+                                value: noOfSlices,
                               ),
                             ),
                           ),

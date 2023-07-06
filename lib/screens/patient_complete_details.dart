@@ -752,9 +752,7 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                             ),
                             itemCount: cells.length,
                             itemBuilder: (context, index) {
-                              String path =
-                                  '/home/sciverse/Documents/ViewPort/app/';
-                              final completePath = path + cells[index].cellPath;
+                              final completePath = cells[index].cellPath;
                               final myFile = File(completePath);
 
                               return Container(
@@ -777,10 +775,9 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                             ),
                             itemCount: queryCells!.length,
                             itemBuilder: (context, index) {
-                              String path =
-                                  '/home/sciverse/Documents/ViewPort/app/';
+
                               final completePath =
-                                  path + queryCells![index].cellPath;
+                                   queryCells![index].cellPath;
                               final myFile = File(completePath);
 
                               return Container(
