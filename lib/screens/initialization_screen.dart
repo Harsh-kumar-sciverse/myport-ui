@@ -59,25 +59,20 @@ class _InitializationScreenState extends State<InitializationScreen> {
   }
 
   Future initialize1() async {
-    try{
-      MyPortApi.actionApi(actionName: 'homing', endpoint: 'motor_control')
-          .then((value) {
-        initializationName = 'Homing done.';
-        initializationName = 'Centering in progress';
-        progressValue = 0.25;
-        setState(() {});
-        initialize2();
-      }).catchError((error) {
-        print('error code in initialization screen $error');
 
-        Navigator.of(context)
-            .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
-      });
-    }catch(e){
+    MyPortApi.actionApi(actionName: 'homing', endpoint: 'motor_control')
+        .then((value) {
+      initializationName = 'Homing done.';
+      initializationName = 'Centering in progress';
+      progressValue = 0.25;
+      setState(() {});
+      initialize2();
+    }).catchError((error) {
+      print('error code in initialization screen $error');
+
       Navigator.of(context)
-          .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': e});
-    }
-
+          .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
+    });
   }
 
   Future initialize2() async {

@@ -26,7 +26,7 @@ class _ErrorScreenState extends State<ErrorScreen> {
     if (arguments['errorCode'] == 100) {
       hardwareError = true;
     }else{
-      error=arguments['errorCode'];
+      error=arguments['errorCode'].toString();
     }
   }
 
