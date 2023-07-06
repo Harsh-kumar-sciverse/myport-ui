@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:linear_timer/linear_timer.dart';
 import '../api/myport_api.dart';
 import '../constants/app_dialogs.dart';
 import '../provider/patient_details_provider.dart';
@@ -132,7 +133,6 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
 
         setState(() {});
         subscription.cancel();
-        updateValue();
       });
 
     }catch(error){
@@ -182,7 +182,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
 
   @override
   Widget build(BuildContext context) {
-    updateValue();
+
     if (newDirectory == null) {
       return Scaffold(
         body: Container(
@@ -355,14 +355,19 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                           SizedBox(
                             width: MediaQuery.of(context).size.width / 2,
                             height: 30,
-                            child: ClipRRect(
+                            child: const ClipRRect(
                               borderRadius:
-                                  const BorderRadius.all(Radius.circular(10)),
-                              child: LinearProgressIndicator(
-                                color: const Color(AppConstants.primaryColor),
-                                backgroundColor: Colors.white,
-                                value:value,
+                                  BorderRadius.all(Radius.circular(10)),
+                              child: LinearTimer(
+                                duration: Duration(milliseconds: 100),
+                                color:  Color(AppConstants.primaryColor),
+                                  backgroundColor: Colors.white,
                               ),
+                              // child: LinearProgressIndicator(
+                              //   color: const Color(AppConstants.primaryColor),
+                              //   backgroundColor: Colors.white,
+                              //   value:value,
+                              // ),
                             ),
                           ),
                           const SizedBox(
