@@ -102,10 +102,10 @@ class _ErrorScreenState extends State<ErrorScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                  Navigator.of(context).pushNamedAndRemoveUntil(SplashScreen.routeName, (route) => false);
+               // Navigator.of(context).pushNamedAndRemoveUntil(SplashScreen.routeName, (route) => false);
+                WidgetsBinding.instance!.addPostFrameCallback((_) {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SplashScreen()));
                 });
-
               },
               child: const Padding(
                   padding: EdgeInsets.all(10.0), child: Text('Restart App')),
@@ -155,8 +155,9 @@ class _ErrorScreenState extends State<ErrorScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                        Navigator.of(context).pushNamedAndRemoveUntil(SplashScreen.routeName, (route) => false);
+                    //  Navigator.of(context).pushNamedAndRemoveUntil(SplashScreen.routeName, (route) => false);
+                      WidgetsBinding.instance!.addPostFrameCallback((_) {
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SplashScreen()));
                       });
                     },
                     child: const Padding(
