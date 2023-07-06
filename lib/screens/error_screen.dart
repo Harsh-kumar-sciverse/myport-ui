@@ -89,7 +89,7 @@ class _ErrorScreenState extends State<ErrorScreen> {
             ),
             if (hardwareError == false)
                Text(
-                'Please connect to admin. error $error',
+                'Please connect to admin. Error: $error',
                 style:const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,

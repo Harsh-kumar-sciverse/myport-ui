@@ -59,9 +59,9 @@ class _InitializationScreenState extends State<InitializationScreen> {
   }
 
   Future initialize1() async {
-
     MyPortApi.actionApi(actionName: 'homing', endpoint: 'motor_control')
         .then((value) {
+          print('value $value');
       initializationName = 'Homing done.';
       initializationName = 'Centering in progress';
       progressValue = 0.25;
