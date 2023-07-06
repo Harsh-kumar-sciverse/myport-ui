@@ -13,8 +13,14 @@ class MyPortApi {
       },
       body: jsonEncode(<String, String>{'action': actionName}),
     );
+    print('response status code ${response.statusCode}');
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      if(jsonDecode(response.body)['status']==100){
+        throw 100;
+      }else{
+        return jsonDecode(response.body);
+      }
+
     } else {
       throw response.statusCode;
     }
