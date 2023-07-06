@@ -122,7 +122,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
       print('path for live feed image $pathForSubscription');
       noOfSlices=data2['slides']*2;
           scanSample();
-      updateValue();
+
       subscription = Directory(pathForSubscription)
           .watch(recursive: false, events: FileSystemEvent.create)
           .listen((event) {
@@ -132,6 +132,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
 
         setState(() {});
         subscription.cancel();
+        updateValue();
       });
 
     }catch(error){
