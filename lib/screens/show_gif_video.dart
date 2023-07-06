@@ -276,12 +276,12 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                   .toList();
               value = (1 / noOfSlices) * (ls.length);
               if(noOfSlices/2==ls.length){
-              timer=  Timer.periodic(const Duration(milliseconds: 100), (timer) {
-                if(value>0.98){
+              timer=  Timer.periodic(const Duration(milliseconds: 10000), (timer) {
+                if(value>0.95){
                   timer.cancel();
                 }else{
                   setState(() {
-                    value=value+0.001;
+                    value=value+0.00001;
                   });
                 }
 
