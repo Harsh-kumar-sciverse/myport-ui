@@ -36,31 +36,37 @@ class _MainDashboardState extends State<MainDashboard> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
-    final arguments1 = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
+    try{
+      final arguments1 = (ModalRoute.of(context)?.settings.arguments ??
+          <String, dynamic>{}) as Map;
+      final arguments=arguments1['response']['data']['counts'];
 
-    final arguments=arguments1['response']['data']['counts'];
+      imageData = arguments1['response']['data']['predictions'];
+      wbcNumber=arguments['WBC'].toString();
+      platelets = arguments['Platelets'].toString();
+      rbc = arguments['RBC'].toString();
+      neutrophilNumber = arguments['Neutrophils'].toString();
+      eosinophilNumber = arguments['Eosinophils'].toString();
+      basophilNumber = arguments['Basophils'].toString();
+      lymphocyteNumber = arguments['Lymphocytes'].toString();
+      monocyteNumber = arguments['Monocytes'].toString();
+      mch = arguments['MCH'].toString();
+      hemoglobin = arguments['Hemoglobin'].toString();
 
-    imageData = arguments1['response']['data']['predictions'];
-    wbcNumber=arguments['WBC']??'';
-    platelets = (arguments['Platelets'])??'';
-    rbc = arguments['RBC']??'';
-    neutrophilNumber = arguments['Neutrophils']??'';
-    eosinophilNumber = arguments['Eosinophils']??'';
-    basophilNumber = arguments['Basophils']??'';
-    lymphocyteNumber = arguments['Lymphocytes']??'';
-    monocyteNumber = arguments['Monocytes']??'';
-    mch = arguments['MCH']??'';
-    hemoglobin = arguments['Hemoglobin']??'';
+      cells = imageData==null?[]:imageData!
+          .map((data) => CellModel(
+          cellName: data['tag_name'].toString(),
+          probability: data['probability'].toString(),
+          cellPath: data['image_path'].toString()))
+          .toList();
 
-    cells = imageData==null?[]:imageData!
-        .map((data) => CellModel(
-            cellName: data['tag_name'].toString(),
-            probability: data['probability'].toString(),
-            cellPath: data['image_path'].toString()))
-        .toList();
+      homing();
+    }catch(e){
+      Navigator.of(context)
+          .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': e});
+    }
 
-    homing();
+
   }
   Future homing() async {
     MyPortApi.actionApi(actionName: 'homing', endpoint: 'motor_control');

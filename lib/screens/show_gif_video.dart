@@ -118,6 +118,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
       final jsonStringFile2 = await myFile2.readAsString();
       final data2 = json.decode(jsonStringFile2);
       String pathForSubscription=data2['data_dir'];
+      print('path for live feed image $pathForSubscription');
       scanSample();
       subscription = Directory(pathForSubscription)
           .watch(recursive: false, events: FileSystemEvent.create)

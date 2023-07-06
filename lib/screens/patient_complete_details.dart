@@ -10,6 +10,7 @@ import '../constants/app_constants.dart';
 import '../constants/app_dialogs.dart';
 import '../models/cell_model.dart';
 import '../widgets/navigation_bar-widget.dart';
+import 'error_screen.dart';
 import 'home.dart';
 import 'dart:io';
 import 'package:pdf/pdf.dart';
@@ -58,35 +59,42 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
-    final arguments1 = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
-    final key = arguments1['key'];
-    final arguments = patients.get(key);
+    try{
 
-    patientName = arguments['name'];
-    patientAge = arguments['age'];
-    sampleCollectionTime = arguments['time'];
-    sex = arguments['sex'];
+      final arguments1 = (ModalRoute.of(context)?.settings.arguments ??
+          <String, dynamic>{}) as Map;
+      final key = arguments1['key'];
+      final arguments = patients.get(key);
 
-    final counts=arguments['response']['data']['counts'];
-    imageData = arguments['response']['data']['predictions'];
-    wbcNumber=counts['WBC']??'';
-    platelets = counts['Platelets']??'';
-    rbc = counts['RBC']??'';
-    neutrophilNumber = counts['Neutrophils']??'';
-    eosinophilNumber = counts['Eosinophils']??'';
-    basophilNumber = counts['Basophils']??'';
-    lymphocyteNumber = counts['Lymphocytes']??'';
-    monocyteNumber = counts['Monocytes']??'';
-    mch = counts['MCH']??'';
-    hemoglobin = counts['Hemoglobin']??'';
+      patientName = arguments['name'];
+      patientAge = arguments['age'];
+      sampleCollectionTime = arguments['time'];
+      sex = arguments['sex'];
 
-    cells = imageData==null?[]:imageData!
-        .map((data) => CellModel(
-            cellName: data['tag_name'].toString(),
-            probability: data['probability'].toString(),
-            cellPath: data['image_path']))
-        .toList();
+      final counts=arguments['response']['data']['counts'];
+      imageData = arguments['response']['data']['predictions'];
+      wbcNumber=counts['WBC'].toString();
+      platelets = counts['Platelets'].toString();
+      rbc = counts['RBC'].toString();
+      neutrophilNumber = counts['Neutrophils'].toString();
+      eosinophilNumber = counts['Eosinophils'].toString();
+      basophilNumber = counts['Basophils'].toString();
+      lymphocyteNumber = counts['Lymphocytes'].toString();
+      monocyteNumber = counts['Monocytes'].toString();
+      mch = counts['MCH'].toString();
+      hemoglobin = counts['Hemoglobin'].toString();
+
+      cells = imageData==null?[]:imageData!
+          .map((data) => CellModel(
+          cellName: data['tag_name'].toString(),
+          probability: data['probability'].toString(),
+          cellPath: data['image_path']))
+          .toList();
+    }catch(e){
+      Navigator.of(context)
+          .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': e});
+    }
+
   }
   //
   // getInterpretation(double rbc, double hemoglobin) {
