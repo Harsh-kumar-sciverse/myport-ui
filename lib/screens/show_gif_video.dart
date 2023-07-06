@@ -40,7 +40,6 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
   late StreamSubscription<FileSystemEvent> subscription;
   final patientDetails = Hive.box('patients');
   var uuid = const Uuid();
-  late Timer timer;
    String? jsonFilePath;
 
   Future<void> createItem(Map<String, dynamic> newItem) async {
@@ -82,7 +81,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    timer.cancel();
+
   }
 
   @override
@@ -164,21 +163,6 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
 
   }
 
-  void updateValue(){
-      timer=  Timer.periodic(const Duration(milliseconds: 100), (timer) {
-        if(value>0.9){
-          timer.cancel();
-        }else{
-          if(mounted){
-            setState(() {
-              value=value+0.000001666;
-            });
-        }
-
-      }
-      });
-
-  }
 
   @override
   Widget build(BuildContext context) {

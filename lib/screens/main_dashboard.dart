@@ -516,18 +516,18 @@ class _MainDashboardState extends State<MainDashboard> {
                             )),
                           ]),
                       DataRow(
-                          selected: 0 == selectedIndex,
-                          // color: MaterialStateColor.resolveWith((states) =>
-                          //     const Color(AppConstants.primaryColor)
-                          //         .withOpacity(0.8)),
-                          onSelectChanged: (val) {
-                            queryCells = cells
-                                .where((cell) => cell.cellName.contains('RBC'))
-                                .toList();
-                            setState(() {
-                              selectedIndex = 0;
-                            });
-                          },
+                          // selected: 0 == selectedIndex,
+                          // // color: MaterialStateColor.resolveWith((states) =>
+                          // //     const Color(AppConstants.primaryColor)
+                          // //         .withOpacity(0.8)),
+                          // onSelectChanged: (val) {
+                          //   queryCells = cells
+                          //       .where((cell) => cell.cellName.contains('RBC'))
+                          //       .toList();
+                          //   setState(() {
+                          //     selectedIndex = 0;
+                          //   });
+                          // },
                           cells: [
                             DataCell(Text(
                               'RBC',
@@ -570,19 +570,19 @@ class _MainDashboardState extends State<MainDashboard> {
                             )),
                           ]),
                       DataRow(
-                          selected: 1 == selectedIndex,
-                          // color: MaterialStateColor.resolveWith((states) =>
-                          //     const Color(AppConstants.primaryColor)
-                          //         .withOpacity(0.8)),
-                          onSelectChanged: (val) {
-                            queryCells = cells
-                                .where((cell) =>
-                                    cell.cellName.contains('Pletelets'))
-                                .toList();
-                            setState(() {
-                              selectedIndex = 1;
-                            });
-                          },
+                          // selected: 1 == selectedIndex,
+                          // // color: MaterialStateColor.resolveWith((states) =>
+                          // //     const Color(AppConstants.primaryColor)
+                          // //         .withOpacity(0.8)),
+                          // onSelectChanged: (val) {
+                          //   queryCells = cells
+                          //       .where((cell) =>
+                          //           cell.cellName.contains('Pletelets'))
+                          //       .toList();
+                          //   setState(() {
+                          //     selectedIndex = 1;
+                          //   });
+                          // },
                           cells: [
                             DataCell(Text(
                               'Platelets',
@@ -598,19 +598,19 @@ class _MainDashboardState extends State<MainDashboard> {
                             )),
                           ]),
                       DataRow(
-                          selected: 2 == selectedIndex,
-                          // color: MaterialStateColor.resolveWith((states) =>
-                          //     const Color(AppConstants.primaryColor)
-                          //         .withOpacity(0.8)),
-                          onSelectChanged: (val) {
-                            queryCells = cells
-                                .where((cell) =>
-                                cell.cellName.contains('WBC'))
-                                .toList();
-                            setState(() {
-                              selectedIndex = 2;
-                            });
-                          },
+                          // selected: 2 == selectedIndex,
+                          // // color: MaterialStateColor.resolveWith((states) =>
+                          // //     const Color(AppConstants.primaryColor)
+                          // //         .withOpacity(0.8)),
+                          // onSelectChanged: (val) {
+                          //   queryCells = cells
+                          //       .where((cell) =>
+                          //       cell.cellName.contains('WBC'))
+                          //       .toList();
+                          //   setState(() {
+                          //     selectedIndex = 2;
+                          //   });
+                          // },
                           cells: [
                             DataCell(Text(
                               'WBC',
@@ -626,19 +626,19 @@ class _MainDashboardState extends State<MainDashboard> {
                             )),
                           ]),
                       DataRow(
-                          selected: 3 == selectedIndex,
-                          // color: MaterialStateColor.resolveWith((states) =>
-                          //     const Color(AppConstants.primaryColor)
-                          //         .withOpacity(0.8)),
-                          onSelectChanged: (val) {
-                            queryCells = cells
-                                .where((cell) =>
-                                    cell.cellName.contains('Neutrophils'))
-                                .toList();
-                            setState(() {
-                              selectedIndex = 3;
-                            });
-                          },
+                          // selected: 3 == selectedIndex,
+                          // // color: MaterialStateColor.resolveWith((states) =>
+                          // //     const Color(AppConstants.primaryColor)
+                          // //         .withOpacity(0.8)),
+                          // onSelectChanged: (val) {
+                          //   queryCells = cells
+                          //       .where((cell) =>
+                          //           cell.cellName.contains('Neutrophils'))
+                          //       .toList();
+                          //   setState(() {
+                          //     selectedIndex = 3;
+                          //   });
+                          // },
                           cells: [
                             DataCell(Text(
                               'Neutrophils',
@@ -654,19 +654,19 @@ class _MainDashboardState extends State<MainDashboard> {
                             )),
                           ]),
                       DataRow(
-                          selected: 4 == selectedIndex,
-                          // color: MaterialStateColor.resolveWith((states) =>
-                          //     const Color(AppConstants.primaryColor)
-                          //         .withOpacity(0.8)),
-                          onSelectChanged: (val) {
-                            queryCells = cells
-                                .where((cell) =>
-                                    cell.cellName.contains('Eosinophils'))
-                                .toList();
-                            setState(() {
-                              selectedIndex = 4;
-                            });
-                          },
+                          // selected: 4 == selectedIndex,
+                          // // color: MaterialStateColor.resolveWith((states) =>
+                          // //     const Color(AppConstants.primaryColor)
+                          // //         .withOpacity(0.8)),
+                          // onSelectChanged: (val) {
+                          //   queryCells = cells
+                          //       .where((cell) =>
+                          //           cell.cellName.contains('Eosinophils'))
+                          //       .toList();
+                          //   setState(() {
+                          //     selectedIndex = 4;
+                          //   });
+                          // },
                           cells: [
                             DataCell(Text(
                               'Eosinophils',
@@ -682,19 +682,19 @@ class _MainDashboardState extends State<MainDashboard> {
                             )),
                           ]),
                       DataRow(
-                          selected: 5 == selectedIndex,
-                          // color: MaterialStateColor.resolveWith((states) =>
-                          //     const Color(AppConstants.primaryColor)
-                          //         .withOpacity(0.8)),
-                          onSelectChanged: (val) {
-                            queryCells = cells
-                                .where((cell) =>
-                                    cell.cellName.contains('Basophils'))
-                                .toList();
-                            setState(() {
-                              selectedIndex = 5;
-                            });
-                          },
+                          // selected: 5 == selectedIndex,
+                          // // color: MaterialStateColor.resolveWith((states) =>
+                          // //     const Color(AppConstants.primaryColor)
+                          // //         .withOpacity(0.8)),
+                          // onSelectChanged: (val) {
+                          //   queryCells = cells
+                          //       .where((cell) =>
+                          //           cell.cellName.contains('Basophils'))
+                          //       .toList();
+                          //   setState(() {
+                          //     selectedIndex = 5;
+                          //   });
+                          // },
                           cells: [
                             DataCell(Text(
                               'Basophils',
@@ -710,19 +710,19 @@ class _MainDashboardState extends State<MainDashboard> {
                             )),
                           ]),
                       DataRow(
-                          selected: 6 == selectedIndex,
-                          // color: MaterialStateColor.resolveWith((states) =>
-                          //     const Color(AppConstants.primaryColor)
-                          //         .withOpacity(0.8)),
-                          onSelectChanged: (val) {
-                            queryCells = cells
-                                .where((cell) =>
-                                    cell.cellName.contains('Lymphocytes'))
-                                .toList();
-                            setState(() {
-                              selectedIndex = 6;
-                            });
-                          },
+                          // selected: 6 == selectedIndex,
+                          // // color: MaterialStateColor.resolveWith((states) =>
+                          // //     const Color(AppConstants.primaryColor)
+                          // //         .withOpacity(0.8)),
+                          // onSelectChanged: (val) {
+                          //   queryCells = cells
+                          //       .where((cell) =>
+                          //           cell.cellName.contains('Lymphocytes'))
+                          //       .toList();
+                          //   setState(() {
+                          //     selectedIndex = 6;
+                          //   });
+                          // },
                           cells: [
                             DataCell(Text(
                               'Lymphocytes',
@@ -738,19 +738,19 @@ class _MainDashboardState extends State<MainDashboard> {
                             )),
                           ]),
                       DataRow(
-                          selected: 7 == selectedIndex,
-                          // color: MaterialStateColor.resolveWith((states) =>
-                          //     const Color(AppConstants.primaryColor)
-                          //         .withOpacity(0.8)),
-                          onSelectChanged: (val) {
-                            queryCells = cells
-                                .where((cell) =>
-                                    cell.cellName.contains('Monocytes'))
-                                .toList();
-                            setState(() {
-                              selectedIndex = 7;
-                            });
-                          },
+                          // selected: 7 == selectedIndex,
+                          // // color: MaterialStateColor.resolveWith((states) =>
+                          // //     const Color(AppConstants.primaryColor)
+                          // //         .withOpacity(0.8)),
+                          // onSelectChanged: (val) {
+                          //   queryCells = cells
+                          //       .where((cell) =>
+                          //           cell.cellName.contains('Monocytes'))
+                          //       .toList();
+                          //   setState(() {
+                          //     selectedIndex = 7;
+                          //   });
+                          // },
                           cells: [
                             DataCell(Text(
                               'Monocytes',
@@ -765,31 +765,31 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
-                      DataRow(
-                          selected: 8 == selectedIndex,
-                          // color: MaterialStateColor.resolveWith((states) =>
-                          //     const Color(AppConstants.primaryColor)
-                          //         .withOpacity(0.8)),
-                          onSelectChanged: (val) {
-                            queryCells = null;
-                            setState(() {
-                              selectedIndex = 8;
-                            });
-                          },
-                          cells: [
-                            DataCell(Text(
-                              'All',
-                              style: AppConstants.tableRowStyle,
-                            )),
-                            DataCell(Text(
-                              '',
-                              style: AppConstants.tableRowStyle,
-                            )),
-                            DataCell(Text(
-                              '',
-                              style: AppConstants.tableRowStyle,
-                            )),
-                          ])
+                      // DataRow(
+                      //     // selected: 8 == selectedIndex,
+                      //     // // color: MaterialStateColor.resolveWith((states) =>
+                      //     // //     const Color(AppConstants.primaryColor)
+                      //     // //         .withOpacity(0.8)),
+                      //     // onSelectChanged: (val) {
+                      //     //   queryCells = null;
+                      //     //   setState(() {
+                      //     //     selectedIndex = 8;
+                      //     //   });
+                      //     // },
+                      //     cells: [
+                      //       DataCell(Text(
+                      //         'All',
+                      //         style: AppConstants.tableRowStyle,
+                      //       )),
+                      //       DataCell(Text(
+                      //         '',
+                      //         style: AppConstants.tableRowStyle,
+                      //       )),
+                      //       DataCell(Text(
+                      //         '',
+                      //         style: AppConstants.tableRowStyle,
+                      //       )),
+                      //     ])
                     ]),
               ),
             ),

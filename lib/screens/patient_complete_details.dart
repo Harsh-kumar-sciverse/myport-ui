@@ -865,18 +865,18 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                             )),
                           ]),
                       DataRow(
-                          selected: 0 == selectedIndex,
-                          // color: MaterialStateColor.resolveWith((states) =>
-                          //     const Color(AppConstants.primaryColor)
-                          //         .withOpacity(0.8)),
-                          onSelectChanged: (val) {
-                            queryCells = cells
-                                .where((cell) => cell.cellName.contains('RBC'))
-                                .toList();
-                            setState(() {
-                              selectedIndex = 0;
-                            });
-                          },
+                          // selected: 0 == selectedIndex,
+                          // // color: MaterialStateColor.resolveWith((states) =>
+                          // //     const Color(AppConstants.primaryColor)
+                          // //         .withOpacity(0.8)),
+                          // onSelectChanged: (val) {
+                          //   queryCells = cells
+                          //       .where((cell) => cell.cellName.contains('RBC'))
+                          //       .toList();
+                          //   setState(() {
+                          //     selectedIndex = 0;
+                          //   });
+                          // },
                           cells: [
                             DataCell(Text(
                               'RBC',
@@ -919,19 +919,19 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                             )),
                           ]),
                       DataRow(
-                          selected: 1 == selectedIndex,
-                          // color: MaterialStateColor.resolveWith((states) =>
-                          //     const Color(AppConstants.primaryColor)
-                          //         .withOpacity(0.8)),
-                          onSelectChanged: (val) {
-                            queryCells = cells
-                                .where((cell) =>
-                                    cell.cellName.contains('Pletelets'))
-                                .toList();
-                            setState(() {
-                              selectedIndex = 1;
-                            });
-                          },
+                          // selected: 1 == selectedIndex,
+                          // // color: MaterialStateColor.resolveWith((states) =>
+                          // //     const Color(AppConstants.primaryColor)
+                          // //         .withOpacity(0.8)),
+                          // onSelectChanged: (val) {
+                          //   queryCells = cells
+                          //       .where((cell) =>
+                          //           cell.cellName.contains('Pletelets'))
+                          //       .toList();
+                          //   setState(() {
+                          //     selectedIndex = 1;
+                          //   });
+                          // },
                           cells: [
                             DataCell(Text(
                               'Platelets',
@@ -947,19 +947,19 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                             )),
                           ]),
                       DataRow(
-                          selected: 2 == selectedIndex,
-                          // color: MaterialStateColor.resolveWith((states) =>
-                          //     const Color(AppConstants.primaryColor)
-                          //         .withOpacity(0.8)),
-                          onSelectChanged: (val) {
-                            queryCells = cells
-                                .where((cell) =>
-                                cell.cellName.contains('WBC'))
-                                .toList();
-                            setState(() {
-                              selectedIndex = 2;
-                            });
-                          },
+                          // selected: 2 == selectedIndex,
+                          // // color: MaterialStateColor.resolveWith((states) =>
+                          // //     const Color(AppConstants.primaryColor)
+                          // //         .withOpacity(0.8)),
+                          // onSelectChanged: (val) {
+                          //   queryCells = cells
+                          //       .where((cell) =>
+                          //       cell.cellName.contains('WBC'))
+                          //       .toList();
+                          //   setState(() {
+                          //     selectedIndex = 2;
+                          //   });
+                          // },
                           cells: [
                             DataCell(Text(
                               'WBC',
@@ -975,19 +975,19 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                             )),
                           ]),
                       DataRow(
-                          selected: 2 == selectedIndex,
-                          // color: MaterialStateColor.resolveWith((states) =>
-                          //     const Color(AppConstants.primaryColor)
-                          //         .withOpacity(0.8)),
-                          onSelectChanged: (val) {
-                            queryCells = cells
-                                .where((cell) =>
-                                    cell.cellName.contains('Neutrophils'))
-                                .toList();
-                            setState(() {
-                              selectedIndex = 2;
-                            });
-                          },
+                          // selected: 2 == selectedIndex,
+                          // // color: MaterialStateColor.resolveWith((states) =>
+                          // //     const Color(AppConstants.primaryColor)
+                          // //         .withOpacity(0.8)),
+                          // onSelectChanged: (val) {
+                          //   queryCells = cells
+                          //       .where((cell) =>
+                          //           cell.cellName.contains('Neutrophils'))
+                          //       .toList();
+                          //   setState(() {
+                          //     selectedIndex = 2;
+                          //   });
+                          // },
                           cells: [
                             DataCell(Text(
                               'Neutrophil',
@@ -1003,19 +1003,19 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                             )),
                           ]),
                       DataRow(
-                          selected: 3 == selectedIndex,
-                          // color: MaterialStateColor.resolveWith((states) =>
-                          //     const Color(AppConstants.primaryColor)
-                          //         .withOpacity(0.8)),
-                          onSelectChanged: (val) {
-                            queryCells = cells
-                                .where((cell) =>
-                                    cell.cellName.contains('Eosinophils'))
-                                .toList();
-                            setState(() {
-                              selectedIndex = 3;
-                            });
-                          },
+                          // selected: 3 == selectedIndex,
+                          // // color: MaterialStateColor.resolveWith((states) =>
+                          // //     const Color(AppConstants.primaryColor)
+                          // //         .withOpacity(0.8)),
+                          // onSelectChanged: (val) {
+                          //   queryCells = cells
+                          //       .where((cell) =>
+                          //           cell.cellName.contains('Eosinophils'))
+                          //       .toList();
+                          //   setState(() {
+                          //     selectedIndex = 3;
+                          //   });
+                          // },
                           cells: [
                             DataCell(Text(
                               'Eosinophil',
@@ -1031,19 +1031,19 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                             )),
                           ]),
                       DataRow(
-                          selected: 4 == selectedIndex,
-                          // color: MaterialStateColor.resolveWith((states) =>
-                          //     const Color(AppConstants.primaryColor)
-                          //         .withOpacity(0.8)),
-                          onSelectChanged: (val) {
-                            queryCells = cells
-                                .where((cell) =>
-                                    cell.cellName.contains('Basophils'))
-                                .toList();
-                            setState(() {
-                              selectedIndex = 4;
-                            });
-                          },
+                          // selected: 4 == selectedIndex,
+                          // // color: MaterialStateColor.resolveWith((states) =>
+                          // //     const Color(AppConstants.primaryColor)
+                          // //         .withOpacity(0.8)),
+                          // onSelectChanged: (val) {
+                          //   queryCells = cells
+                          //       .where((cell) =>
+                          //           cell.cellName.contains('Basophils'))
+                          //       .toList();
+                          //   setState(() {
+                          //     selectedIndex = 4;
+                          //   });
+                          // },
                           cells: [
                             DataCell(Text(
                               'Basophils',
@@ -1059,19 +1059,19 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                             )),
                           ]),
                       DataRow(
-                          selected: 5 == selectedIndex,
-                          // color: MaterialStateColor.resolveWith((states) =>
-                          //     const Color(AppConstants.primaryColor)
-                          //         .withOpacity(0.8)),
-                          onSelectChanged: (val) {
-                            queryCells = cells
-                                .where((cell) =>
-                                    cell.cellName.contains('Lymphocytes'))
-                                .toList();
-                            setState(() {
-                              selectedIndex = 5;
-                            });
-                          },
+                          // selected: 5 == selectedIndex,
+                          // // color: MaterialStateColor.resolveWith((states) =>
+                          // //     const Color(AppConstants.primaryColor)
+                          // //         .withOpacity(0.8)),
+                          // onSelectChanged: (val) {
+                          //   queryCells = cells
+                          //       .where((cell) =>
+                          //           cell.cellName.contains('Lymphocytes'))
+                          //       .toList();
+                          //   setState(() {
+                          //     selectedIndex = 5;
+                          //   });
+                          // },
                           cells: [
                             DataCell(Text(
                               'Lymphocyte',
@@ -1087,19 +1087,19 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                             )),
                           ]),
                       DataRow(
-                          selected: 6 == selectedIndex,
-                          // color: MaterialStateColor.resolveWith((states) =>
-                          //     const Color(AppConstants.primaryColor)
-                          //         .withOpacity(0.8)),
-                          onSelectChanged: (val) {
-                            queryCells = cells
-                                .where((cell) =>
-                                    cell.cellName.contains('Monocytes'))
-                                .toList();
-                            setState(() {
-                              selectedIndex = 6;
-                            });
-                          },
+                          // selected: 6 == selectedIndex,
+                          // // color: MaterialStateColor.resolveWith((states) =>
+                          // //     const Color(AppConstants.primaryColor)
+                          // //         .withOpacity(0.8)),
+                          // onSelectChanged: (val) {
+                          //   queryCells = cells
+                          //       .where((cell) =>
+                          //           cell.cellName.contains('Monocytes'))
+                          //       .toList();
+                          //   setState(() {
+                          //     selectedIndex = 6;
+                          //   });
+                          // },
                           cells: [
                             DataCell(Text(
                               'Monocyte',
@@ -1114,31 +1114,31 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
-                      DataRow(
-                          selected: 6 == selectedIndex,
-                          // color: MaterialStateColor.resolveWith((states) =>
-                          //     const Color(AppConstants.primaryColor)
-                          //         .withOpacity(0.8)),
-                          onSelectChanged: (val) {
-                            queryCells = null;
-                            setState(() {
-                              selectedIndex = 6;
-                            });
-                          },
-                          cells: [
-                            DataCell(Text(
-                              'All',
-                              style: AppConstants.tableRowStyle,
-                            )),
-                            DataCell(Text(
-                              '',
-                              style: AppConstants.tableRowStyle,
-                            )),
-                            DataCell(Text(
-                              '',
-                              style: AppConstants.tableRowStyle,
-                            )),
-                          ])
+                      // DataRow(
+                      //     // selected: 6 == selectedIndex,
+                      //     // // color: MaterialStateColor.resolveWith((states) =>
+                      //     // //     const Color(AppConstants.primaryColor)
+                      //     // //         .withOpacity(0.8)),
+                      //     // onSelectChanged: (val) {
+                      //     //   queryCells = null;
+                      //     //   setState(() {
+                      //     //     selectedIndex = 6;
+                      //     //   });
+                      //     // },
+                      //     cells: [
+                      //       DataCell(Text(
+                      //         'All',
+                      //         style: AppConstants.tableRowStyle,
+                      //       )),
+                      //       DataCell(Text(
+                      //         '',
+                      //         style: AppConstants.tableRowStyle,
+                      //       )),
+                      //       DataCell(Text(
+                      //         '',
+                      //         style: AppConstants.tableRowStyle,
+                      //       )),
+                      //     ])
                     ]),
               ),
             ),
