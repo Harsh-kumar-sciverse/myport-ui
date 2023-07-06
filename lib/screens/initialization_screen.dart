@@ -131,9 +131,6 @@ class _InitializationScreenState extends State<InitializationScreen> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     await initialize1();
-    // await initialize2();
-    // await initialize3();
-    // await initialize4();
   }
 
   @override
