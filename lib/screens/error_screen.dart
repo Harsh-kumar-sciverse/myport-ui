@@ -15,7 +15,7 @@ class ErrorScreen extends StatefulWidget {
 }
 
 class _ErrorScreenState extends State<ErrorScreen> {
-  bool hardwareError = true;
+  bool hardwareError = false;
   String error='';
   @override
   void didChangeDependencies() {
