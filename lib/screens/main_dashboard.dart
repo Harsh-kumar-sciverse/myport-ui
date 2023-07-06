@@ -42,16 +42,16 @@ class _MainDashboardState extends State<MainDashboard> {
     final arguments=arguments1['response']['data']['counts'];
 
     imageData = arguments1['response']['data']['predictions'];
-    wbcNumber=arguments['WBC'].toString();
-    platelets = (arguments['Platelets']).toString();
-    rbc = arguments['RBC'].toString();
-    neutrophilNumber = arguments['Neutrophils'].toString();
-    eosinophilNumber = arguments['Eosinophils'].toString();
-    basophilNumber = arguments['Basophils'].toString();
-    lymphocyteNumber = arguments['Lymphocytes'].toString();
-    monocyteNumber = arguments['Monocytes'].toString();
-    mch = arguments['MCH'].toString();
-    hemoglobin = arguments['Hemoglobin'].toString();
+    wbcNumber=arguments['WBC']??'';
+    platelets = (arguments['Platelets'])??'';
+    rbc = arguments['RBC']??'';
+    neutrophilNumber = arguments['Neutrophils']??'';
+    eosinophilNumber = arguments['Eosinophils']??'';
+    basophilNumber = arguments['Basophils']??'';
+    lymphocyteNumber = arguments['Lymphocytes']??'';
+    monocyteNumber = arguments['Monocytes']??'';
+    mch = arguments['MCH']??'';
+    hemoglobin = arguments['Hemoglobin']??'';
 
     cells = imageData==null?[]:imageData!
         .map((data) => CellModel(

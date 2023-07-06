@@ -57,7 +57,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
     String gender=patient.gender;
     MyPortApi.actionApiForScanSlide(actionName: 'scanslide',
         endpoint: 'motor_control',
-        patientName: '$name', patientAge: '$age', patientGender: '$gender')
+        patientName: name, patientAge: age, patientGender: gender)
         .then((value) async {
             String id = uuid.v4();
            await createItem({
@@ -82,17 +82,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
           .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
     });
   }
-  Future centering() async {
-    MyPortApi.actionApi(actionName: 'center', endpoint: 'motor_control')
-        .then((value) {
-      scanSample();
-    }).catchError((error) {
-      print('error in show gif video in centering api $error');
 
-      Navigator.of(context)
-          .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
-    });
-  }
 
   @override
   void initState() {
@@ -129,25 +119,17 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
       final jsonStringFile2 = await myFile2.readAsString();
       final data2 = json.decode(jsonStringFile2);
       String pathForSubscription=data2['data_dir'];
-      int status=data2['status'];
-      if(status==1){
-        centering();
-        subscription = Directory(pathForSubscription)
-            .watch(recursive: false, events: FileSystemEvent.create)
-            .listen((event) {
-          newPath = event.path;
-          cellsPath = event.path;
-          newDirectory = Directory(event.path);
+      scanSample();
+      subscription = Directory(pathForSubscription)
+          .watch(recursive: false, events: FileSystemEvent.create)
+          .listen((event) {
+        newPath = event.path;
+        cellsPath = event.path;
+        newDirectory = Directory(event.path);
 
-          setState(() {});
-          subscription.cancel();
-        });
-      }else{
-        if(mounted){
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('System busy')));
-          Navigator.of(context).pop();
-        }
-      }
+        setState(() {});
+        subscription.cancel();
+      });
 
     }catch(error){
       Navigator.of(context)

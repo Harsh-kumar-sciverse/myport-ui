@@ -70,16 +70,16 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
 
     final counts=arguments['response']['data']['counts'];
     imageData = arguments['response']['data']['predictions'];
-    wbcNumber=counts['WBC'].toString();
-    platelets = counts['Platelets'].toString();
-    rbc = counts['RBC'].toString();
-    neutrophilNumber = counts['Neutrophils'].toString();
-    eosinophilNumber = counts['Eosinophils'].toString();
-    basophilNumber = counts['Basophils'].toString();
-    lymphocyteNumber = counts['Lymphocytes'].toString();
-    monocyteNumber = counts['Monocytes'].toString();
-    mch = counts['MCH'].toString();
-    hemoglobin = counts['Hemoglobin'].toString();
+    wbcNumber=counts['WBC']??'';
+    platelets = counts['Platelets']??'';
+    rbc = counts['RBC']??'';
+    neutrophilNumber = counts['Neutrophils']??'';
+    eosinophilNumber = counts['Eosinophils']??'';
+    basophilNumber = counts['Basophils']??'';
+    lymphocyteNumber = counts['Lymphocytes']??'';
+    monocyteNumber = counts['Monocytes']??'';
+    mch = counts['MCH']??'';
+    hemoglobin = counts['Hemoglobin']??'';
 
     cells = imageData==null?[]:imageData!
         .map((data) => CellModel(

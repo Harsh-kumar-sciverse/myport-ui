@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
@@ -8,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../provider/patient_details_provider.dart';
 import '../widgets/navigation_bar-widget.dart';
+import 'error_screen.dart';
 import 'login.dart';
 import 'package:provider/provider.dart';
 
@@ -247,6 +251,9 @@ class _PatientDetailsState extends State<PatientDetails> {
                             child: ElevatedButton(
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
+                                    setState(() {
+                                      isLoading=true;
+                                    });
                                     formKey.currentState!.save();
                                     Provider.of<PatientDetailsProvider>(context,
                                             listen: false)
@@ -254,8 +261,39 @@ class _PatientDetailsState extends State<PatientDetails> {
                                             pName: nameController.text,
                                             pAge: ageController.text,
                                             pGender: selectedGender.name);
-                                    Navigator.of(context)
-                                        .pushNamed(PlaceSample.routeName);
+                                    try{
+                                      Directory current = Directory.current;
+                                      print('current dir ${current.path}');
+                                      final filePath = '${current.path}/file.json';
+                                      final myFile = File(filePath);
+                                      final jsonStringFile = await myFile.readAsString();
+                                      final data = json.decode(jsonStringFile);
+                                      String pathOfConfigJsonFile=data['path'];
+
+                                      final myFile2 = File(pathOfConfigJsonFile);
+                                      final jsonStringFile2 = await myFile2.readAsString();
+                                      final data2 = json.decode(jsonStringFile2);
+                                      int status=data2['status'];
+                                      if(status==1){
+                                        Navigator.of(context)
+                                            .pushNamed(PlaceSample.routeName);
+                                      }else{
+                                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('System busy')));
+                                      }
+                                      if(mounted){
+                                        setState(() {
+                                          isLoading=false;
+                                        });
+                                      }
+                                    }catch(e){
+                                     if(mounted){
+                                       setState(() {
+                                         isLoading=false;
+                                       });
+                                     }
+                                      Navigator.of(context)
+                                          .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': e.toString()});
+                                    }
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(

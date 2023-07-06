@@ -38,7 +38,11 @@ class MyPortApi {
       'patient_age':patientAge,'patient_age':patientAge}),
     );
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      if(jsonDecode(response.body)['status']==100){
+        throw 100;
+      }else{
+        return jsonDecode(response.body);
+      }
     } else {
       throw response.statusCode;
     }
@@ -59,7 +63,11 @@ class MyPortApi {
       }),
     );
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      if(jsonDecode(response.body)['status']==100){
+        throw 100;
+      }else{
+        return jsonDecode(response.body);
+      }
     } else {
       throw response.statusCode;
     }

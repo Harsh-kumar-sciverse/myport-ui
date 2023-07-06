@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_port/screens/splash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/myport_api.dart';
@@ -95,6 +96,16 @@ class _ErrorScreenState extends State<ErrorScreen> {
                     fontWeight: FontWeight.bold,
                     fontSize: 20),
               ),
+            const SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(SplashScreen.routeName, (route) => false);
+              },
+              child: const Padding(
+                  padding: EdgeInsets.all(10.0), child: Text('Restart App')),
+            ),
             if (hardwareError == true)
               Column(
                 children: [
@@ -134,6 +145,16 @@ class _ErrorScreenState extends State<ErrorScreen> {
                     },
                     child: const Padding(
                         padding: EdgeInsets.all(10.0), child: Text('Reboot')),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(SplashScreen.routeName, (route) => false);
+                    },
+                    child: const Padding(
+                        padding: EdgeInsets.all(10.0), child: Text('Restart App')),
                   ),
                 ],
               ),
