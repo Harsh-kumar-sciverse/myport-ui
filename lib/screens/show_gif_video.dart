@@ -36,7 +36,6 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
 
   List<String> ls1 = [];
   List<String> ls = [];
-  double value = 0;
   String? newPath;
   double noOfSlices=30;
   Directory? newDirectory;
@@ -120,7 +119,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
       final data2 = json.decode(jsonStringFile2);
       String pathForSubscription=data2['data_dir'];
       print('path for live feed image $pathForSubscription');
-      noOfSlices=double.parse(data2['slides']);
+      noOfSlices=double.parse(data2['slides'].toString());
 
           scanSample();
       subscription = Directory(pathForSubscription)
@@ -273,7 +272,6 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                   .where(
                       (element) => !p.basename(element).startsWith('s') && RegExp(r'\d+_\d+_\d+\.jpg$').hasMatch(element))
                   .toList();
-              value = (1 / 40) * (ls.length);
             }
             return Container(
                 width: MediaQuery.of(context).size.width,
