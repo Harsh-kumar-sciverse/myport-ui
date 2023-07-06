@@ -32,6 +32,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
   double value = 0;
   String? newPath;
   int noOfSlices=30;
+  double value2=0.5;
   Directory? newDirectory;
   RegExp regex = RegExp(r'^\d+_\d+\.jpg$');
   String? cellsPath;
@@ -163,8 +164,22 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
 
   }
 
+  void updateValue(){
+    if(value==0.5){
+      print('value of progress $value');
+      timer=  Timer.periodic(const Duration(milliseconds: 10000), (timer) {
+        setState(() {
+          value2=value2+0.0001;
+        });
+        print('value of progress $value');
+
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    updateValue();
     if (newDirectory == null) {
       return Scaffold(
         body: Container(
@@ -275,19 +290,6 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                       (element) => !p.basename(element).startsWith('s') && RegExp(r'\d+_\d+_\d+\.jpg$').hasMatch(element))
                   .toList();
               value = (1 / noOfSlices) * (ls.length);
-              if(noOfSlices/2==ls.length){
-                print('value of progress $value');
-              timer=  Timer.periodic(const Duration(milliseconds: 10000), (timer) {
-                if(value>0.95){
-                  timer.cancel();
-                }else{
-                  setState(() {
-                    value=value+0.0001;
-                  });
-                }
-
-                });
-              }
             }
             return Container(
                 width: MediaQuery.of(context).size.width,
@@ -356,7 +358,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                               child: LinearProgressIndicator(
                                 color: const Color(AppConstants.primaryColor),
                                 backgroundColor: Colors.white,
-                                value: value,
+                                value:value==0.5?value2: value,
                               ),
                             ),
                           ),
