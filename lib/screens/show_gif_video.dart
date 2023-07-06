@@ -63,8 +63,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
            await createItem({
         "name":name,
         "age": age,
-        "sex":
-        gender,
+        "sex": gender,
         "id": id,
         "time": DateFormat('dd-MM-yyyy – kk:mm').format(DateTime.now()),
         "response":value,

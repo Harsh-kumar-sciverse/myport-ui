@@ -274,8 +274,6 @@ class _PatientDetailsState extends State<PatientDetails> {
                                       final jsonStringFile2 = await myFile2.readAsString();
                                       final data2 = json.decode(jsonStringFile2);
                                       int status=data2['status'];
-                                      print('json file $data2');
-                                      print('json status $status');
                                       if(status==1){
                                         Navigator.of(context)
                                             .pushNamed(PlaceSample.routeName);

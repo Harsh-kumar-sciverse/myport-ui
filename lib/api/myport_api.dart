@@ -35,7 +35,7 @@ class MyPortApi {
         'Content-type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{'action': actionName,'patient_name':patientName,
-      'patient_age':patientAge,'patient_age':patientAge}),
+      'patient_age':patientAge,'patient_gender':patientGender}),
     );
     if (response.statusCode == 200) {
       if(jsonDecode(response.body)['status']==100){
