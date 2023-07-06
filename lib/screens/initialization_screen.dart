@@ -2,12 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:my_port/constants/app_constants.dart';
-import 'package:my_port/screens/home.dart';
-import 'package:my_port/screens/login.dart';
+import '../constants/app_constants.dart';
+import '../screens/home.dart';
+import '../screens/login.dart';
 import '../api/myport_api.dart';
 import '../widgets/navigation_bar-widget.dart';
-import 'package:linear_timer/linear_timer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './error_screen.dart';
 

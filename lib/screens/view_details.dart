@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
-import 'package:my_port/constants/app_dialogs.dart';
+import '../constants/app_dialogs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/app_constants.dart';

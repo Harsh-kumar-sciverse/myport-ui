@@ -4,22 +4,15 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:linear_timer/linear_timer.dart';
-import 'package:my_port/api/myport_api.dart';
-import 'package:my_port/constants/app_dialogs.dart';
-import 'package:my_port/provider/patient_details_provider.dart';
-import 'package:my_port/screens/main_dashboard.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import '../api/myport_api.dart';
+import '../constants/app_dialogs.dart';
+import '../provider/patient_details_provider.dart';
+import './main_dashboard.dart';
 import '../constants/app_constants.dart';
 import '../widgets/navigation_bar-widget.dart';
 import 'error_screen.dart';
 import 'home.dart';
-import 'login.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import '../provider/sample_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import 'package:path/path.dart' as p;
@@ -70,6 +63,9 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
         "time": DateFormat('dd-MM-yyyy – kk:mm').format(DateTime.now()),
         "response":value,
       });
+           if(mounted){
+             timer.cancel();
+           }
 
       Navigator.of(context).pushNamedAndRemoveUntil(
           MainDashboard.routeName,

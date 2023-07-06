@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_port/constants/app_constants.dart';
+import '../constants/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/navigation_bar-widget.dart';

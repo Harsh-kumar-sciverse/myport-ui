@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:my_port/screens/calibration.dart';
-import 'package:my_port/screens/history.dart';
-import 'package:my_port/screens/login.dart';
-import 'package:my_port/screens/patient_details.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import './calibration.dart';
+
+import './history.dart';
+import './patient_details.dart';
 import '../constants/app_constants.dart';
 import '../widgets/navigation_bar-widget.dart';
-import 'main_dashboard.dart';
+
 
 class Home extends StatefulWidget {
   static const routeName = '/home';

@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:my_port/screens/home.dart';
+import './home.dart';
 import '../api/myport_api.dart';
 import '../constants/app_constants.dart';
 import '../models/cell_model.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_port/constants/app_constants.dart';
+import '../constants/app_constants.dart';
 
 class AppDialogs {
   static showErrorDialog({

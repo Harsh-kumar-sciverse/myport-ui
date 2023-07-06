@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:my_port/constants/app_constants.dart';
-import 'package:my_port/screens/patient_complete_details.dart';
-import 'package:my_port/screens/view_details.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import '../constants/app_constants.dart';
+import './patient_complete_details.dart';
 import '../widgets/navigation_bar-widget.dart';
 import 'home.dart';
-import 'login.dart';
+
 
 class History extends StatefulWidget {
   static const routeName = '/history';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_port/screens/splash.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../screens/splash.dart';
 
 import '../api/myport_api.dart';
 import '../constants/app_constants.dart';

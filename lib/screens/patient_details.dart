@@ -3,16 +3,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive/hive.dart';
-import 'package:my_port/constants/app_constants.dart';
-import 'package:my_port/screens/home.dart';
-import 'package:my_port/screens/place_sample_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../constants/app_constants.dart';
+import './home.dart';
+import './place_sample_screen.dart';
 
 import '../provider/patient_details_provider.dart';
 import '../widgets/navigation_bar-widget.dart';
 import 'error_screen.dart';
-import 'login.dart';
 import 'package:provider/provider.dart';
 
 enum gender { Male, Female, Other }

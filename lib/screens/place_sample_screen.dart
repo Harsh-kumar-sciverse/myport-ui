@@ -1,16 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:my_port/constants/app_dialogs.dart';
-import 'package:my_port/screens/show_gif_video.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../constants/app_dialogs.dart';
+import './show_gif_video.dart';
 
 import '../api/myport_api.dart';
-import '../constants/app_constants.dart';
+
 import '../widgets/navigation_bar-widget.dart';
 import 'home.dart';
-import 'login.dart';
-import 'package:http/http.dart' as http;
 import './error_screen.dart';
 
 class PlaceSample extends StatefulWidget {

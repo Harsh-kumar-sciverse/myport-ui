@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:my_port/api/myport_api.dart';
-import 'package:my_port/constants/app_dialogs.dart';
+import '../constants/app_dialogs.dart';
+import '../api/myport_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/app_constants.dart';
