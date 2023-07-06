@@ -355,9 +355,9 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                                   content:
                                       'Are you sure?\nProcessing will be aborted.',
                                   function: () {
-                                    Navigator.of(context)
-                                        .pushNamedAndRemoveUntil(
-                                            Home.routeName, (route) => false);
+                                    updateJsonValue();
+                                    Navigator.of(context).pushNamedAndRemoveUntil(
+                                        Home.routeName, (route) => false);
                                   },
                                   image: const Icon(
                                     Icons.error,
