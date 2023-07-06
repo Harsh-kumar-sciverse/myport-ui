@@ -22,6 +22,7 @@ import 'package:provider/provider.dart';
 import '../provider/sample_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
+import 'package:path/path.dart' as p;
 
 class ShowGifVideo extends StatefulWidget {
   static const routeName = '/processing';
@@ -32,27 +33,11 @@ class ShowGifVideo extends StatefulWidget {
 }
 
 class _ShowGifVideoState extends State<ShowGifVideo> {
-  String? rbcNumber;
-  String? rbcProbability;
-  String? plateletsNumber;
-  String? plateletsProbability;
-  String? neutrophilNumber;
-  String? neutrophilProbability;
-  String? eosinophilNumber;
-  String? eosinophilProbability;
-  String? basophilNumber;
-  String? basophilProbability;
-  String? lymphocyteNumber;
-  String? lymphocyteProbability;
-  String? monocyteNumber;
-  String? monocyteProbability;
-  String? wbcNumber;
+
   List<String> ls1 = [];
   List<String> ls = [];
   double value = 0;
   String? newPath;
-  String? hemoglobin;
-  String? mch;
   Directory? newDirectory;
   RegExp regex = RegExp(r'^\d+_\d+\.jpg$');
   String? cellsPath;
@@ -60,98 +45,50 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
   final patientDetails = Hive.box('patients');
   var uuid = const Uuid();
   late Timer timer;
+   String? jsonFilePath;
   Future<void> createItem(Map<String, dynamic> newItem) async {
     await patientDetails.add(newItem);
   }
 
   Future scanSample() async {
-    MyPortApi.actionApi(actionName: 'scanslide', endpoint: 'motor_control')
+    final patient=Provider.of<PatientDetailsProvider>(context, listen: false);
+    String name=patient.name;
+    String age=patient.age;
+    String gender=patient.gender;
+    MyPortApi.actionApiForScanSlide(actionName: 'scanslide',
+        endpoint: 'motor_control',
+        patientName: '$name', patientAge: '$age', patientGender: '$gender')
         .then((value) async {
-      Provider.of<SampleProvider>(context, listen: false)
-          .saveScanImageResponse(value: value);
-      print('response $value');
-      rbcNumber = value['data']['counts']['RBC'].toString();
-      rbcProbability = value['data']['counts']['RBC_conf'].toString();
-      plateletsNumber = value['data']['counts']['Platelets'].toString();
-      wbcNumber = value['data']['counts']['WBC'].toString();
-      hemoglobin = value['data']['counts']['Hemoglobin'].toString();
-      mch = value['data']['counts']['MCH'].toString();
-      plateletsProbability =
-          value['data']['counts']['Platelets_conf'].toString();
-      neutrophilNumber = value['data']['counts']['Neutrophils'].toString();
-      neutrophilProbability =
-          value['data']['counts']['Neutrophils_conf'].toString();
-      eosinophilNumber = value['data']['counts']['Eosinophils'].toString();
-      eosinophilProbability =
-          value['data']['counts']['Eosinophils_conf'].toString();
-      basophilNumber = value['data']['counts']['Basophils'].toString();
-      basophilProbability =
-          value['data']['counts']['Basophils_conf'].toString();
-      lymphocyteNumber = value['data']['counts']['Lymphocytes'].toString();
-      lymphocyteProbability =
-          value['data']['counts']['Lymphocytes_conf'].toString();
-      monocyteNumber = value['data']['counts']['Monocytes'].toString();
-      monocyteProbability =
-          value['data']['counts']['Monocytes_conf'].toString();
-
-      String id = uuid.v4();
-      print(Provider.of<PatientDetailsProvider>(context, listen: false).name!);
-      print(Provider.of<PatientDetailsProvider>(context, listen: false).age!);
-
-      await createItem({
-        "name":
-            Provider.of<PatientDetailsProvider>(context, listen: false).name!,
-        "age": Provider.of<PatientDetailsProvider>(context, listen: false).age!,
+            String id = uuid.v4();
+           await createItem({
+        "name":name,
+        "age": age,
         "sex":
-            Provider.of<PatientDetailsProvider>(context, listen: false).gender!,
+        gender,
         "id": id,
         "time": DateFormat('dd-MM-yyyy – kk:mm').format(DateTime.now()),
-        'platelets': '$plateletsNumber',
-        'hemoglobin': '$hemoglobin',
-        'mch': '$mch',
-        'images': value['data']['predictions'],
-        'plateletsProb': '$plateletsProbability',
-        'cellsPath': '$cellsPath',
-        'rbc': '$rbcNumber',
-        'wbc': '$wbcNumber',
-        'rbcProb': '$rbcProbability',
-        'neutrophils': '$neutrophilNumber',
-        'neutrophilsProb': '$neutrophilProbability',
-        'eosinophils': '$eosinophilNumber',
-        'basophils': '$basophilNumber',
-        'basophilProb': '$basophilProbability',
-        'eosinophilProb': '$eosinophilProbability',
-        'lymphocyts': '$lymphocyteNumber',
-        'lymphocytProb': '$lymphocyteProbability',
-        'monocytes': '$monocyteNumber',
-        'monocyteProb': '$monocyteProbability',
+        "response":value,
       });
 
       Navigator.of(context).pushNamedAndRemoveUntil(
           MainDashboard.routeName,
           arguments: {
             'response': value,
-            'platelets': plateletsNumber,
-            'plateletsProb': plateletsProbability,
-            'rbc': rbcNumber,
-            'hemoglobin': hemoglobin,
-            'mch': mch,
-            'wbc': wbcNumber,
-            'rbcProb': rbcProbability,
-            'neutrophils': neutrophilNumber,
-            'neutrophilsProb': neutrophilProbability,
-            'eosinophils': eosinophilNumber,
-            'basophils': basophilNumber,
-            'basophilProb': basophilProbability,
-            'eosinophilProb': eosinophilProbability,
-            'lymphocyts': lymphocyteNumber,
-            'lymphocytProb': lymphocyteProbability,
-            'monocytes': monocyteNumber,
-            'monocyteProb': monocyteProbability,
           },
           (route) => false);
     }).catchError((error) {
       print('error in showgif $error');
+      Navigator.of(context)
+          .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
+    });
+  }
+  Future centering() async {
+    MyPortApi.actionApi(actionName: 'center', endpoint: 'motor_control')
+        .then((value) {
+      scanSample();
+    }).catchError((error) {
+      print('error in show gif video in centering api $error');
+
       Navigator.of(context)
           .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
     });
@@ -161,24 +98,83 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    scanSample();
+    // scanSample();
+    readJsonFileFromExtStorage();
 
-    subscription = Directory('/home/sciverse/Documents/ViewPort/app/data')
-        .watch(recursive: false, events: FileSystemEvent.create)
-        .listen((event) {
-      newPath = event.path;
-      cellsPath = event.path;
-      newDirectory = Directory(event.path);
-
-      setState(() {});
-      subscription.cancel();
-    });
-    getApplicationSupportDirectory();
+    // subscription = Directory('/home/sciverse/Documents/ViewPort/app/data')
+    //     .watch(recursive: false, events: FileSystemEvent.create)
+    //     .listen((event) {
+    //   newPath = event.path;
+    //   cellsPath = event.path;
+    //   newDirectory = Directory(event.path);
+    //
+    //   setState(() {});
+    //   subscription.cancel();
+    // });
   }
 
-  getApplicationSupportDirectory() async{
-    final Directory appDocumentsDir = await getApplicationDocumentsDirectory();
-    print('application directory ${appDocumentsDir.path}');
+  void readJsonFileFromExtStorage() async {
+    try{
+      Directory current = Directory.current;
+      print('current dir ${current.path}');
+      final filePath = '${current.path}/file.json';
+      final myFile = File(filePath);
+      final jsonStringFile = await myFile.readAsString();
+      final data = json.decode(jsonStringFile);
+      String pathOfConfigJsonFile=data['path'];
+      jsonFilePath=pathOfConfigJsonFile;
+
+      ///read json file for myport
+      final myFile2 = File(pathOfConfigJsonFile);
+      final jsonStringFile2 = await myFile2.readAsString();
+      final data2 = json.decode(jsonStringFile2);
+      String pathForSubscription=data2['data_dir'];
+      int status=data2['status'];
+      if(status==1){
+        centering();
+        subscription = Directory(pathForSubscription)
+            .watch(recursive: false, events: FileSystemEvent.create)
+            .listen((event) {
+          newPath = event.path;
+          cellsPath = event.path;
+          newDirectory = Directory(event.path);
+
+          setState(() {});
+          subscription.cancel();
+        });
+      }else{
+        if(mounted){
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('System busy')));
+          Navigator.of(context).pop();
+        }
+      }
+
+    }catch(error){
+      Navigator.of(context)
+          .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
+    }
+
+  }
+  void updateJsonValue() {
+    // Path to the JSON file
+    if(jsonFilePath!=null){
+      String filePath = jsonFilePath!;
+      try {
+        // Read the JSON file
+        File jsonFile = File(filePath);
+        Map<String, dynamic> jsonData = json.decode(jsonFile.readAsStringSync());
+        jsonData['abort'] = 1;
+        String jsonString = json.encode(jsonData);
+        jsonFile.writeAsStringSync(jsonString);
+
+        print('JSON value updated successfully!');
+      } catch (e) {
+        print('Error updating JSON value: $e');
+      }
+    }
+
+
+
   }
 
   @override
@@ -238,6 +234,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
                             content:
                                 'Are you sure?\nProcessing will be aborted.',
                             function: () {
+                              updateJsonValue();
                               Navigator.of(context).pushNamedAndRemoveUntil(
                                   Home.routeName, (route) => false);
                             },
@@ -289,7 +286,7 @@ class _ShowGifVideoState extends State<ShowGifVideo> {
               ls1.add(snapshot.data!.path);
               ls = ls1
                   .where(
-                      (element) => RegExp(r'\d+_\d+\.jpg$').hasMatch(element))
+                      (element) => !p.basename(element).startsWith('s') && RegExp(r'\d+_\d+_\d+\.jpg$').hasMatch(element))
                   .toList();
               value = (1 / 40) * (ls.length);
             }

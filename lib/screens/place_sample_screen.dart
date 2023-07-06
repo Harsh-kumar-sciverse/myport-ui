@@ -36,12 +36,24 @@ class _PlaceSampleState extends State<PlaceSample> {
           .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
     });
   }
+  Future centering() async {
+    MyPortApi.actionApi(actionName: 'center', endpoint: 'motor_control')
+        .then((value) {
+      ejectApi();
+    }).catchError((error) {
+      print('error in centering in place sample $error');
+
+      Navigator.of(context)
+          .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': error});
+    });
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    ejectApi();
+    // ejectApi();
+    centering();
   }
 
   @override

@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:my_port/screens/home.dart';
+import '../api/myport_api.dart';
 import '../constants/app_constants.dart';
 import '../models/cell_model.dart';
 import '../widgets/navigation_bar-widget.dart';
+import 'error_screen.dart';
 
 class MainDashboard extends StatefulWidget {
   static const routeName = '/final-report';
@@ -16,57 +18,52 @@ class MainDashboard extends StatefulWidget {
 class _MainDashboardState extends State<MainDashboard> {
   int selectedIndex = -1;
   String? platelets;
-  String? plateletsProb;
   String? rbc;
-  String? rbcProb;
   String? neutrophilNumber;
-  String? neutrophilProbability;
   String? eosinophilNumber;
-  String? eosinophilProbability;
   String? basophilNumber;
-  String? basophilProbability;
   String? lymphocyteNumber;
-  String? lymphocyteProbability;
   String? monocyteNumber;
-  String? monocyteProbability;
   List<dynamic>? imageData;
   List<CellModel> cells = [];
   List<CellModel>? queryCells;
   String? mch;
   String? hemoglobin;
+  String? wbcNumber;
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
-    final arguments = (ModalRoute.of(context)?.settings.arguments ??
+    final arguments1 = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
 
-    imageData = arguments['response']['data']['predictions'];
-    platelets = (arguments['platelets']).toString();
-    plateletsProb = arguments['plateletsProb'].toString();
-    rbc = arguments['rbc'].toString();
-    rbcProb = arguments['rbcProb'].toString();
-    neutrophilNumber = arguments['neutrophils'].toString();
-    neutrophilProbability = arguments['neutrophilsProb'].toString();
-    eosinophilNumber = arguments['eosinophils'].toString();
-    eosinophilProbability = arguments['eosinophilProb'].toString();
-    basophilNumber = arguments['basophils'].toString();
-    basophilProbability = arguments['basophilProb'].toString();
-    lymphocyteNumber = arguments['lymphocyts'].toString();
-    lymphocyteProbability = arguments['lymphocytProb'].toString();
-    monocyteNumber = arguments['monocytes'].toString();
-    monocyteProbability = arguments['monocyteProb'].toString();
-    mch = arguments['mch'].toString();
-    hemoglobin = arguments['hemoglobin'].toString();
+    final arguments=arguments1['response']['data']['counts'];
 
-    cells = imageData!
+    imageData = arguments1['response']['data']['predictions'];
+    wbcNumber=arguments['WBC'].toString();
+    platelets = (arguments['Platelets']).toString();
+    rbc = arguments['RBC'].toString();
+    neutrophilNumber = arguments['Neutrophils'].toString();
+    eosinophilNumber = arguments['Eosinophils'].toString();
+    basophilNumber = arguments['Basophils'].toString();
+    lymphocyteNumber = arguments['Lymphocytes'].toString();
+    monocyteNumber = arguments['Monocytes'].toString();
+    mch = arguments['MCH'].toString();
+    hemoglobin = arguments['Hemoglobin'].toString();
+
+    cells = imageData==null?[]:imageData!
         .map((data) => CellModel(
             cellName: data['tag_name'].toString(),
             probability: data['probability'].toString(),
             cellPath: data['image_path'].toString()))
         .toList();
+
+    homing();
+  }
+  Future homing() async {
+    MyPortApi.actionApi(actionName: 'homing', endpoint: 'motor_control');
   }
 
   @override
@@ -443,10 +440,7 @@ class _MainDashboardState extends State<MainDashboard> {
                             ),
                             itemCount: queryCells!.length,
                             itemBuilder: (context, index) {
-                              String path =
-                                  '/home/sciverse/Documents/ViewPort/app/';
-                              final completePath =
-                                  path + queryCells![index].cellPath;
+                              final completePath = cells[index].cellPath;
                               final myFile = File(completePath);
 
                               return Container(
@@ -605,10 +599,38 @@ class _MainDashboardState extends State<MainDashboard> {
                           onSelectChanged: (val) {
                             queryCells = cells
                                 .where((cell) =>
-                                    cell.cellName.contains('Neutrophils'))
+                                cell.cellName.contains('WBC'))
                                 .toList();
                             setState(() {
                               selectedIndex = 2;
+                            });
+                          },
+                          cells: [
+                            DataCell(Text(
+                              'WBC',
+                              style: AppConstants.tableRowStyle,
+                            )),
+                            DataCell(Text(
+                              '${wbcNumber}',
+                              style: AppConstants.tableRowStyle,
+                            )),
+                            DataCell(Text(
+                              '4000-11000',
+                              style: AppConstants.tableRowStyle,
+                            )),
+                          ]),
+                      DataRow(
+                          selected: 3 == selectedIndex,
+                          // color: MaterialStateColor.resolveWith((states) =>
+                          //     const Color(AppConstants.primaryColor)
+                          //         .withOpacity(0.8)),
+                          onSelectChanged: (val) {
+                            queryCells = cells
+                                .where((cell) =>
+                                    cell.cellName.contains('Neutrophils'))
+                                .toList();
+                            setState(() {
+                              selectedIndex = 3;
                             });
                           },
                           cells: [
@@ -626,7 +648,7 @@ class _MainDashboardState extends State<MainDashboard> {
                             )),
                           ]),
                       DataRow(
-                          selected: 3 == selectedIndex,
+                          selected: 4 == selectedIndex,
                           // color: MaterialStateColor.resolveWith((states) =>
                           //     const Color(AppConstants.primaryColor)
                           //         .withOpacity(0.8)),
@@ -636,7 +658,7 @@ class _MainDashboardState extends State<MainDashboard> {
                                     cell.cellName.contains('Eosinophils'))
                                 .toList();
                             setState(() {
-                              selectedIndex = 3;
+                              selectedIndex = 4;
                             });
                           },
                           cells: [
@@ -654,7 +676,7 @@ class _MainDashboardState extends State<MainDashboard> {
                             )),
                           ]),
                       DataRow(
-                          selected: 4 == selectedIndex,
+                          selected: 5 == selectedIndex,
                           // color: MaterialStateColor.resolveWith((states) =>
                           //     const Color(AppConstants.primaryColor)
                           //         .withOpacity(0.8)),
@@ -664,7 +686,7 @@ class _MainDashboardState extends State<MainDashboard> {
                                     cell.cellName.contains('Basophils'))
                                 .toList();
                             setState(() {
-                              selectedIndex = 4;
+                              selectedIndex = 5;
                             });
                           },
                           cells: [
@@ -682,7 +704,7 @@ class _MainDashboardState extends State<MainDashboard> {
                             )),
                           ]),
                       DataRow(
-                          selected: 5 == selectedIndex,
+                          selected: 6 == selectedIndex,
                           // color: MaterialStateColor.resolveWith((states) =>
                           //     const Color(AppConstants.primaryColor)
                           //         .withOpacity(0.8)),
@@ -692,7 +714,7 @@ class _MainDashboardState extends State<MainDashboard> {
                                     cell.cellName.contains('Lymphocytes'))
                                 .toList();
                             setState(() {
-                              selectedIndex = 5;
+                              selectedIndex = 6;
                             });
                           },
                           cells: [
@@ -710,7 +732,7 @@ class _MainDashboardState extends State<MainDashboard> {
                             )),
                           ]),
                       DataRow(
-                          selected: 6 == selectedIndex,
+                          selected: 7 == selectedIndex,
                           // color: MaterialStateColor.resolveWith((states) =>
                           //     const Color(AppConstants.primaryColor)
                           //         .withOpacity(0.8)),
@@ -720,7 +742,7 @@ class _MainDashboardState extends State<MainDashboard> {
                                     cell.cellName.contains('Monocytes'))
                                 .toList();
                             setState(() {
-                              selectedIndex = 6;
+                              selectedIndex = 7;
                             });
                           },
                           cells: [
@@ -738,14 +760,14 @@ class _MainDashboardState extends State<MainDashboard> {
                             )),
                           ]),
                       DataRow(
-                          selected: 6 == selectedIndex,
+                          selected: 8 == selectedIndex,
                           // color: MaterialStateColor.resolveWith((states) =>
                           //     const Color(AppConstants.primaryColor)
                           //         .withOpacity(0.8)),
                           onSelectChanged: (val) {
                             queryCells = null;
                             setState(() {
-                              selectedIndex = 6;
+                              selectedIndex = 8;
                             });
                           },
                           cells: [

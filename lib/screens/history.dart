@@ -30,20 +30,6 @@ class _HistoryState extends State<History> {
         "age": item['age'],
         "id": item['id'],
         "time": item['time'],
-        "rbcNumber": 'rbcNumber',
-        "rbcProbability": 'rbcProbability',
-        "plateletsNumber": 'plateletsNumber',
-        "plateletsProbability": 'plateletsProbability',
-        "neutrophilNumber": 'neutrophilNumber',
-        "neutrophilProbability": 'neutrophilProbability',
-        "eosinophilNumber": 'eosinophilNumber',
-        "eosinophilProbability": 'eosinophilProbability',
-        "basophilNumber": 'basophilNumber',
-        "basophilProbability": 'basophilProbability',
-        "lymphocyteNumber": 'lymphocyteNumber',
-        "lymphocyteProbability": 'lymphocyteProbability',
-        "monocyteNumber": 'monocyteNumber',
-        "monocyteProbability": 'monocyteProbability',
       };
     }).toList();
     setState(() {

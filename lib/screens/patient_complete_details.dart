@@ -26,25 +26,19 @@ class PatientCompleteDetails extends StatefulWidget {
 class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
   int selectedIndex = -1;
   String? platelets;
-  String? plateletsProb;
   String? rbc;
-  String? rbcProb;
   String? neutrophilNumber;
-  String? neutrophilProbability;
   String? eosinophilNumber;
-  String? eosinophilProbability;
   String? basophilNumber;
-  String? basophilProbability;
   String? lymphocyteNumber;
-  String? lymphocyteProbability;
   String? monocyteNumber;
-  String? monocyteProbability;
   List<dynamic>? imageData;
   List<CellModel> cells = [];
   List<CellModel>? queryCells;
   String? mch;
   String? hemoglobin;
   String? sex;
+  String? wbcNumber;
 
   final patients = Hive.box('patients');
   String? patientName;
@@ -74,33 +68,25 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
     sampleCollectionTime = arguments['time'];
     sex = arguments['sex'];
 
-    imageData = arguments['images'];
-    platelets = (arguments['platelets']).toString();
-    plateletsProb = arguments['plateletsProb'].toString();
-    rbc = arguments['rbc'].toString();
-    rbcProb = arguments['rbcProb'].toString();
-    neutrophilNumber = arguments['neutrophils'].toString();
-    neutrophilProbability = arguments['neutrophilsProb'].toString();
-    eosinophilNumber = arguments['eosinophils'].toString();
-    eosinophilProbability = arguments['eosinophilProb'].toString();
-    basophilNumber = arguments['basophils'].toString();
-    basophilProbability = arguments['basophilProb'].toString();
-    lymphocyteNumber = arguments['lymphocyts'].toString();
-    lymphocyteProbability = arguments['lymphocytProb'].toString();
-    monocyteNumber = arguments['monocytes'].toString();
-    monocyteProbability = arguments['monocyteProb'].toString();
+    final counts=arguments['response']['data']['counts'];
+    imageData = arguments['response']['data']['predictions'];
+    wbcNumber=counts['WBC'].toString();
+    platelets = counts['Platelets'].toString();
+    rbc = counts['RBC'].toString();
+    neutrophilNumber = counts['Neutrophils'].toString();
+    eosinophilNumber = counts['Eosinophils'].toString();
+    basophilNumber = counts['Basophils'].toString();
+    lymphocyteNumber = counts['Lymphocytes'].toString();
+    monocyteNumber = counts['Monocytes'].toString();
+    mch = counts['MCH'].toString();
+    hemoglobin = counts['Hemoglobin'].toString();
 
-    cells = imageData!
+    cells = imageData==null?[]:imageData!
         .map((data) => CellModel(
             cellName: data['tag_name'].toString(),
             probability: data['probability'].toString(),
             cellPath: data['image_path']))
         .toList();
-
-    double rbcN = double.parse(rbc!);
-    mch = arguments['mch'].toString();
-    hemoglobin = arguments['hemoglobin'].toString();
-    // getInterpretation(rbcN, rbcN / 3);
   }
   //
   // getInterpretation(double rbc, double hemoglobin) {
@@ -937,6 +923,34 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                             )),
                             DataCell(Text(
                               '150000-410000 cumm',
+                              style: AppConstants.tableRowStyle,
+                            )),
+                          ]),
+                      DataRow(
+                          selected: 2 == selectedIndex,
+                          // color: MaterialStateColor.resolveWith((states) =>
+                          //     const Color(AppConstants.primaryColor)
+                          //         .withOpacity(0.8)),
+                          onSelectChanged: (val) {
+                            queryCells = cells
+                                .where((cell) =>
+                                cell.cellName.contains('WBC'))
+                                .toList();
+                            setState(() {
+                              selectedIndex = 2;
+                            });
+                          },
+                          cells: [
+                            DataCell(Text(
+                              'WBC',
+                              style: AppConstants.tableRowStyle,
+                            )),
+                            DataCell(Text(
+                              '${wbcNumber ?? 0}',
+                              style: AppConstants.tableRowStyle,
+                            )),
+                            DataCell(Text(
+                              '4000-11000',
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
