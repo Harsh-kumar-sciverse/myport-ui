@@ -54,57 +54,57 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
   var uuid = const Uuid();
   String interpretation = '';
 
-  // @override
-  // void didChangeDependencies() {
-  //   // TODO: implement didChangeDependencies
-  //   super.didChangeDependencies();
-  //
-  //   try {
-  //     final arguments1 = (ModalRoute.of(context)?.settings.arguments ??
-  //         <String, dynamic>{}) as Map;
-  //     final key = arguments1['key'];
-  //     final arguments = patients.get(key);
-  //
-  //     patientName = arguments['name'];
-  //     patientAge = arguments['age'];
-  //     sampleCollectionTime = arguments['time'];
-  //     sex = arguments['sex'];
-  //
-  //     final counts = arguments['response']['data']['counts'];
-  //     imageData = arguments['response']['data']['predictions'];
-  //     wbcNumber = counts['WBC'].toString();
-  //     platelets = counts['Platelets'].toString();
-  //     rbc = counts['RBC'].toString();
-  //     neutrophilNumber = counts['Neutrophils'].toString();
-  //     eosinophilNumber = counts['Eosinophils'].toString();
-  //     basophilNumber = counts['Basophils'].toString();
-  //     lymphocyteNumber = counts['Lymphocytes'].toString();
-  //     monocyteNumber = counts['Monocytes'].toString();
-  //     mch = counts['MCH'].toString();
-  //     hemoglobin = counts['Hemoglobin'].toString();
-  //
-  //     cells = imageData == null
-  //         ? []
-  //         : imageData!
-  //             .map((data) => CellModel(
-  //                 cellName: data['tag_name'].toString(),
-  //                 probability: data['probability'].toString(),
-  //                 cellPath: data['image_path']))
-  //             .toList();
-  //   } catch (e) {
-  //     Navigator.of(context)
-  //         .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': e});
-  //   }
-  // }
-  //
-  // getInterpretation(double rbc, double hemoglobin) {
-  //   if (hemoglobin < 10) {
-  //     interpretation = 'Low Hemoglobin';
-  //   } else if (hemoglobin > 20) {
-  //     interpretation = 'High Hemoglobin';
-  //   }
-  //   setState(() {});
-  // }
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+
+    try {
+      final arguments1 = (ModalRoute.of(context)?.settings.arguments ??
+          <String, dynamic>{}) as Map;
+      final key = arguments1['key'];
+      final arguments = patients.get(key);
+
+      patientName = arguments['name'];
+      patientAge = arguments['age'];
+      sampleCollectionTime = arguments['time'];
+      sex = arguments['sex'];
+
+      final counts = arguments['response']['data']['counts'];
+      imageData = arguments['response']['data']['predictions'];
+      wbcNumber = counts['WBC'].toString();
+      platelets = counts['Platelets'].toString();
+      rbc = counts['RBC'].toString();
+      neutrophilNumber = counts['Neutrophils'].toString();
+      eosinophilNumber = counts['Eosinophils'].toString();
+      basophilNumber = counts['Basophils'].toString();
+      lymphocyteNumber = counts['Lymphocytes'].toString();
+      monocyteNumber = counts['Monocytes'].toString();
+      mch = counts['MCH'].toString();
+      hemoglobin = counts['Hemoglobin'].toString();
+
+      cells = imageData == null
+          ? []
+          : imageData!
+              .map((data) => CellModel(
+                  cellName: data['tag_name'].toString(),
+                  probability: data['probability'].toString(),
+                  cellPath: data['image_path']))
+              .toList();
+    } catch (e) {
+      Navigator.of(context)
+          .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': e});
+    }
+  }
+
+  getInterpretation(double rbc, double hemoglobin) {
+    if (hemoglobin < 10) {
+      interpretation = 'Low Hemoglobin';
+    } else if (hemoglobin > 20) {
+      interpretation = 'High Hemoglobin';
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
