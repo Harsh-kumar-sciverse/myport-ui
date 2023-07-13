@@ -59,8 +59,7 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
-    try{
-
+    try {
       final arguments1 = (ModalRoute.of(context)?.settings.arguments ??
           <String, dynamic>{}) as Map;
       final key = arguments1['key'];
@@ -71,9 +70,9 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
       sampleCollectionTime = arguments['time'];
       sex = arguments['sex'];
 
-      final counts=arguments['response']['data']['counts'];
+      final counts = arguments['response']['data']['counts'];
       imageData = arguments['response']['data']['predictions'];
-      wbcNumber=counts['WBC'].toString();
+      wbcNumber = counts['WBC'].toString();
       platelets = counts['Platelets'].toString();
       rbc = counts['RBC'].toString();
       neutrophilNumber = counts['Neutrophils'].toString();
@@ -84,17 +83,18 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
       mch = counts['MCH'].toString();
       hemoglobin = counts['Hemoglobin'].toString();
 
-      cells = imageData==null?[]:imageData!
-          .map((data) => CellModel(
-          cellName: data['tag_name'].toString(),
-          probability: data['probability'].toString(),
-          cellPath: data['image_path']))
-          .toList();
-    }catch(e){
+      cells = imageData == null
+          ? []
+          : imageData!
+              .map((data) => CellModel(
+                  cellName: data['tag_name'].toString(),
+                  probability: data['probability'].toString(),
+                  cellPath: data['image_path']))
+              .toList();
+    } catch (e) {
       Navigator.of(context)
           .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': e});
     }
-
   }
   //
   // getInterpretation(double rbc, double hemoglobin) {
@@ -777,7 +777,10 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                                     border: Border.all(
                                         color: const Color(
                                             AppConstants.primaryColor))),
-                                child: Image.file(myFile,fit: BoxFit.fill,),
+                                child: Image.file(
+                                  myFile,
+                                  fit: BoxFit.fill,
+                                ),
                               );
                             })
                         : GridView.builder(
@@ -790,9 +793,7 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                             ),
                             itemCount: queryCells!.length,
                             itemBuilder: (context, index) {
-
-                              final completePath =
-                                   queryCells![index].cellPath;
+                              final completePath = queryCells![index].cellPath;
                               final myFile = File(completePath);
 
                               return Container(
@@ -891,33 +892,33 @@ class _PatientCompleteDetailsState extends State<PatientCompleteDetails> {
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
-                      DataRow(
-                          // selected: 0 == selectedIndex,
-                          // // color: MaterialStateColor.resolveWith((states) =>
-                          // //     const Color(AppConstants.primaryColor)
-                          // //         .withOpacity(0.8)),
-                          // onSelectChanged: (val) {
-                          //   queryCells = cells
-                          //       .where((cell) => cell.cellName.contains('RBC'))
-                          //       .toList();
-                          //   setState(() {
-                          //     selectedIndex = 0;
-                          //   });
-                          // },
-                          cells: [
-                            DataCell(Text(
-                              'MCH',
-                              style: AppConstants.tableRowStyle,
-                            )),
-                            DataCell(Text(
-                              '${mch == null ? 0 : mch.toString()}',
-                              style: AppConstants.tableRowStyle,
-                            )),
-                            DataCell(Text(
-                              '27-32 pg',
-                              style: AppConstants.tableRowStyle,
-                            )),
-                          ]),
+                      // DataRow(
+                      //     // selected: 0 == selectedIndex,
+                      //     // // color: MaterialStateColor.resolveWith((states) =>
+                      //     // //     const Color(AppConstants.primaryColor)
+                      //     // //         .withOpacity(0.8)),
+                      //     // onSelectChanged: (val) {
+                      //     //   queryCells = cells
+                      //     //       .where((cell) => cell.cellName.contains('RBC'))
+                      //     //       .toList();
+                      //     //   setState(() {
+                      //     //     selectedIndex = 0;
+                      //     //   });
+                      //     // },
+                      //     cells: [
+                      //       DataCell(Text(
+                      //         'MCH',
+                      //         style: AppConstants.tableRowStyle,
+                      //       )),
+                      //       DataCell(Text(
+                      //         '${mch == null ? 0 : mch.toString()}',
+                      //         style: AppConstants.tableRowStyle,
+                      //       )),
+                      //       DataCell(Text(
+                      //         '27-32 pg',
+                      //         style: AppConstants.tableRowStyle,
+                      //       )),
+                      //     ]),
                       DataRow(
                           // selected: 1 == selectedIndex,
                           // // color: MaterialStateColor.resolveWith((states) =>

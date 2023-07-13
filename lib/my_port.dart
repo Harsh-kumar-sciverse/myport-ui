@@ -54,7 +54,7 @@ class _MyPortState extends State<MyPort> {
           Calibration.routeName: (_) => const Calibration(),
           PatientCompleteDetails.routeName: (_) =>
               const PatientCompleteDetails(),
-          SplashScreen.routeName:(_)=>const SplashScreen(),
+          SplashScreen.routeName: (_) => const SplashScreen(),
         },
       ),
     );

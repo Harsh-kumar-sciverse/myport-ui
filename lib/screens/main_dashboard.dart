@@ -36,13 +36,13 @@ class _MainDashboardState extends State<MainDashboard> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
-    try{
+    try {
       final arguments1 = (ModalRoute.of(context)?.settings.arguments ??
           <String, dynamic>{}) as Map;
-      final arguments=arguments1['response']['data']['counts'];
+      final arguments = arguments1['response']['data']['counts'];
 
       imageData = arguments1['response']['data']['predictions'];
-      wbcNumber=arguments['WBC'].toString();
+      wbcNumber = arguments['WBC'].toString();
       platelets = arguments['Platelets'].toString();
       rbc = arguments['RBC'].toString();
       neutrophilNumber = arguments['Neutrophils'].toString();
@@ -53,21 +53,22 @@ class _MainDashboardState extends State<MainDashboard> {
       mch = arguments['MCH'].toString();
       hemoglobin = arguments['Hemoglobin'].toString();
 
-      cells = imageData==null?[]:imageData!
-          .map((data) => CellModel(
-          cellName: data['tag_name'].toString(),
-          probability: data['probability'].toString(),
-          cellPath: data['image_path'].toString()))
-          .toList();
+      cells = imageData == null
+          ? []
+          : imageData!
+              .map((data) => CellModel(
+                  cellName: data['tag_name'].toString(),
+                  probability: data['probability'].toString(),
+                  cellPath: data['image_path'].toString()))
+              .toList();
 
       homing();
-    }catch(e){
+    } catch (e) {
       Navigator.of(context)
           .pushNamed(ErrorScreen.routeName, arguments: {'errorCode': e});
     }
-
-
   }
+
   Future homing() async {
     MyPortApi.actionApi(actionName: 'homing', endpoint: 'motor_control');
   }
@@ -454,7 +455,10 @@ class _MainDashboardState extends State<MainDashboard> {
                                 width: 100,
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.white)),
-                                child: Image.file(myFile,fit: BoxFit.fill,),
+                                child: Image.file(
+                                  myFile,
+                                  fit: BoxFit.fill,
+                                ),
                               );
                             }),
                   ),
@@ -542,33 +546,33 @@ class _MainDashboardState extends State<MainDashboard> {
                               style: AppConstants.tableRowStyle,
                             )),
                           ]),
-                      DataRow(
-                          // selected: 0 == selectedIndex,
-                          // // color: MaterialStateColor.resolveWith((states) =>
-                          // //     const Color(AppConstants.primaryColor)
-                          // //         .withOpacity(0.8)),
-                          // onSelectChanged: (val) {
-                          //   queryCells = cells
-                          //       .where((cell) => cell.cellName.contains('RBC'))
-                          //       .toList();
-                          //   setState(() {
-                          //     selectedIndex = 0;
-                          //   });
-                          // },
-                          cells: [
-                            DataCell(Text(
-                              'MCH',
-                              style: AppConstants.tableRowStyle,
-                            )),
-                            DataCell(Text(
-                              '${mch}',
-                              style: AppConstants.tableRowStyle,
-                            )),
-                            DataCell(Text(
-                              '27-32 pg',
-                              style: AppConstants.tableRowStyle,
-                            )),
-                          ]),
+                      // DataRow(
+                      //     // selected: 0 == selectedIndex,
+                      //     // // color: MaterialStateColor.resolveWith((states) =>
+                      //     // //     const Color(AppConstants.primaryColor)
+                      //     // //         .withOpacity(0.8)),
+                      //     // onSelectChanged: (val) {
+                      //     //   queryCells = cells
+                      //     //       .where((cell) => cell.cellName.contains('RBC'))
+                      //     //       .toList();
+                      //     //   setState(() {
+                      //     //     selectedIndex = 0;
+                      //     //   });
+                      //     // },
+                      //     cells: [
+                      //       DataCell(Text(
+                      //         'MCH',
+                      //         style: AppConstants.tableRowStyle,
+                      //       )),
+                      //       DataCell(Text(
+                      //         '${mch}',
+                      //         style: AppConstants.tableRowStyle,
+                      //       )),
+                      //       DataCell(Text(
+                      //         '27-32 pg',
+                      //         style: AppConstants.tableRowStyle,
+                      //       )),
+                      //     ]),
                       DataRow(
                           // selected: 1 == selectedIndex,
                           // // color: MaterialStateColor.resolveWith((states) =>
